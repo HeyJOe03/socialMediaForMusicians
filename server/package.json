@@ -4,9 +4,9 @@
   "description": "this is the first social media",
   "main": "index.ts",
   "scripts": {
-    "test": "nodemon --execute ts-node src/index.ts",
+    "test": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
-    "start":"node dist/index.js"
+    "start": "node dist/index.js"
   },
   "author": "Carminati Giovanni",
   "license": "ISC",
@@ -14,11 +14,16 @@
     "@types/express": "^4.17.13",
     "@types/mysql": "^2.15.19",
     "@types/node": "^16.11.11",
+    "@types/socket.io": "^3.0.2",
     "nodemon": "^2.0.15",
-    "ts-node": "^10.4.0"
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "socket.io": "^4.4.0"
   }
 }
