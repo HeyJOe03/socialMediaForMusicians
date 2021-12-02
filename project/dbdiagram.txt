@@ -1,0 +1,157 @@
+Table user{
+  id bigint [pk, unique, not null] // auto-increment
+  username varchar(20) [unique, not null]
+  name varchar [not null]
+  email varchar(30) [not null]
+  hash_password varchar(32) [not null]
+  about_me bigint [not null]
+  lat DECIMAL(8,6) [default:0]
+  lon DECIMAL(9,6) [default: 0]
+  post bigint [not null]
+  is_online tinyint [default: 0]
+  is_blocked tinyint [default: 0]
+  is_looking_someone_to_play_with tinyint [default: 1]
+  created_at timestamp [not null]
+  last_profile_update timestamp [not null]
+  // when the user connect, for every followed
+  // is checked if there is something to show
+  last_post timestamp
+  last_instrument_offer timestamp
+  last_music_sheet timestamp
+}
+
+Table aboutme{
+  id bigint [pk,unique,not null]
+  description text [default: ""]
+  instrument_interested_in JSON
+  created_at timestamp [not null]
+  last_update_at timestamp [not null]
+}
+
+Ref: user.about_me - aboutme.id
+
+Table posts{
+  id bigint [pk,increment, unique]
+  description text [default:""]
+  content longblob [not null]
+  posted_by bigint [not null]
+  created_at timestamp [not null]
+  last_update_at timestamp [not null]
+  author varchar(255) [default:""]
+  title varchar(255) [default:""]
+}
+
+Ref: posts.posted_by > user.id
+
+Table hashtag{
+  id bigint [pk,unique,increment]
+  used bigint [not null]
+  hashtag_ref bigint [not null,ref: > existinghashtag.id]
+}
+
+Ref: hashtag.used > posts.id
+
+Table existinghashtag{
+  id bigint [pk,unique,increment]
+  content varchar(30) [not null, unique]
+  used bigint [default: 0]
+}
+
+Table secondhandinstruments{
+  id bigint [pk,unique,increment]
+  posted_by bigint [not null]
+  price smallint [not null]
+  instrument_description text [default: ""]
+  created_at timestamp [not null]
+  last_update_at timestamp [not null]
+}
+
+Ref: hashtag.used > secondhandinstruments.id
+Ref: secondhandinstruments.posted_by > user.id
+
+Table follow{
+  id bigint [pk, increment, not null, unique]
+  follower bigint [not null, ref: > user.id]
+  followed bigint [not null, ref: > user.id]
+}
+
+Table musicsheet{
+  id bigint [unique,pk,increment]
+  posted_by bigint [not null]
+  author varchar(255) [not null]
+  title varchar(255) [not null]
+  description text [default:""]
+  sheet longblob [not null]
+  created_at timestamp [not null]
+  last_update_at timestamp [not null]
+}
+
+Ref: musicsheet.id < hashtag.used
+Ref: musicsheet.posted_by > user.id
+
+Table tag{
+  id bigint [unique, pk, increment]
+  tagged bigint [not null,ref: > user.id]
+  where bigint [not null]
+}
+
+ref: tag.where > posts.id
+ref: tag.where > musicsheet.id
+ref: tag.where > secondhandinstruments.id
+
+Table existingintruments{
+  id bigint [unique,increment,pk]
+  name varchar(255) [unique, not null]
+}
+
+Table taggedinstruments{
+  id bigint [unique,increment,pk]
+  // instruments are a "close" number
+  name_id bigint [not null, ref: > existingintruments.id] 
+  where bigint [not null]
+}
+
+Ref: taggedinstruments.where > posts.id
+ // what an user can play
+Ref: taggedinstruments.where > user.id
+Ref: taggedinstruments.where > musicsheet.id
+Ref: taggedinstruments.where > secondhandinstruments.id
+Ref: taggedinstruments.where > searchplayer.id
+Ref: taggedinstruments.where > band.id 
+
+
+Table band{
+  id bigint [unique,increment,pk]
+  members_n smallint [not null]
+  name varchar(255) [not null]
+  lat DECIMAL(8,6) [default:0]
+  lon DECIMAL(9,6) [default: 0]
+  created_at timestamp [not null]
+  last_update_at timestamp [not null]
+}
+
+Ref: posts.posted_by > band.id
+Ref: musicsheet.posted_by > band.id
+
+Table bandmember{
+  id bigint [unique, increment, pk]
+  band bigint [not null, ref: - band.id]
+  member bigint [not null, ref: - user.id]
+  instrument_played bigint [not null, ref: - existingintruments.id]
+}
+
+Table searchplayer{
+  id bigint [unique,increment,pk]
+  searcher bigint [not null]
+  lat DECIMAL(8,6) [default:0]
+  lon DECIMAL(9,6) [default: 0]
+  description text [default:""]
+}
+
+Ref: searchplayer.searcher > user.id
+Ref: searchplayer.searcher > band.id
+
+
+
+
+Ref: "existingintruments"."id" < "musicsheet"."description"
