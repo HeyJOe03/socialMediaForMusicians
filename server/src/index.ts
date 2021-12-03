@@ -6,6 +6,7 @@ import socketio from 'socket.io'
 import mysql from 'mysql'
 import options from './dbconnection'
 import mainRouter from './routers/mainRoute';
+import path from 'path';
 
 const app = express();
 const http = require('http').Server(app);
@@ -29,4 +30,5 @@ io.on('connection',(socket) => {
 
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
+app.use(express.static(path.join(__dirname,'../test')))
 app.use('/',mainRouter)

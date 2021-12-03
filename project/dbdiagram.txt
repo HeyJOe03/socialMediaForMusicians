@@ -151,7 +151,15 @@ Table searchplayer{
 Ref: searchplayer.searcher > user.id
 Ref: searchplayer.searcher > band.id
 
-
-
-
 Ref: "existingintruments"."id" < "musicsheet"."description"
+
+Table like{
+  id bigint [unique,increment,pk]
+  liker bigint [not null, ref: > user.id]
+  liked bigint [not null]
+}
+
+Ref: like.liked > posts.id
+Ref: like.liked > musicsheet.id
+
+

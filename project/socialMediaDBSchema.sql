@@ -117,6 +117,12 @@ CREATE TABLE `searchplayer` (
   `description` text DEFAULT ""
 );
 
+CREATE TABLE `like` (
+  `id` bigint UNIQUE PRIMARY KEY AUTO_INCREMENT,
+  `liker` bigint NOT NULL,
+  `liked` bigint NOT NULL
+);
+
 ALTER TABLE `aboutme` ADD FOREIGN KEY (`id`) REFERENCES `user` (`about_me`);
 
 ALTER TABLE `posts` ADD FOREIGN KEY (`posted_by`) REFERENCES `user` (`id`);
@@ -174,3 +180,9 @@ ALTER TABLE `searchplayer` ADD FOREIGN KEY (`searcher`) REFERENCES `user` (`id`)
 ALTER TABLE `searchplayer` ADD FOREIGN KEY (`searcher`) REFERENCES `band` (`id`);
 
 ALTER TABLE `musicsheet` ADD FOREIGN KEY (`description`) REFERENCES `existingintruments` (`id`);
+
+ALTER TABLE `like` ADD FOREIGN KEY (`liker`) REFERENCES `user` (`id`);
+
+ALTER TABLE `like` ADD FOREIGN KEY (`liked`) REFERENCES `posts` (`id`);
+
+ALTER TABLE `like` ADD FOREIGN KEY (`liked`) REFERENCES `musicsheet` (`id`);
