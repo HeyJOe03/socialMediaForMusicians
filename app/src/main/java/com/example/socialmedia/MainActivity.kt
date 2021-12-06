@@ -5,6 +5,8 @@ import android.os.Bundle
 import com.example.socialmedia.databinding.ActivityMainBinding
 import io.socket.client.Socket
 
+const val EXTRA_MESSAGE = "com.example.socialmedia.MESSAGE"
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

@@ -1,5 +1,6 @@
 package com.example.socialmedia
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -29,12 +30,14 @@ class LogInSignInActivity : AppCompatActivity() {
         binding = ActivityLogInSignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         binding.btnSubmit.setOnClickListener {
             //Toast.makeText(this,  HashSHA256.hash("ciaone"), Toast.LENGTH_SHORT).show()
             if(binding.usernameET.text.toString() != "" &&  binding.passwordET.text.toString() != "") signIn()
             else inputError()
+        }
+
+        binding.gotoRegisterBtn.setOnClickListener {
+            //START registeractivity
         }
     }
 
@@ -46,7 +49,7 @@ class LogInSignInActivity : AppCompatActivity() {
         val postData = JSONObject()
         try {
             postData.put("username", binding.usernameET.text.toString())
-            postData.put("pw", HashSHA256.hash(binding.passwordET.text.toString()))
+            postData.put("pw", HashSHA256.hash(binding.passwordET.text.toString()).substring(0,32)) //takes only first 32 character
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -58,8 +61,12 @@ class LogInSignInActivity : AppCompatActivity() {
             { response ->
                 //Log.println(Log.DEBUG,"response",response.toString())
 
-                if(response[GLOBALS.KEY_SIGNIN] == GLOBALS.SIGN_IN_GOOD){
-                    //start main activity
+                if(response[GLOBALS.KEY_SIGNIN] != GLOBALS.SIGN_IN_FAILED){
+                    val ID: String = response[GLOBALS.KEY_SIGNIN].toString()
+                    val intent = Intent(this, MainActivity::class.java).apply {
+                        putExtra(EXTRA_MESSAGE, response[GLOBALS.KEY_SIGNIN].toString())
+                    }
+                    startActivity(intent)
                 }
                 else inputError()
             }

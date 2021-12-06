@@ -18,7 +18,7 @@
         android:text="Login" />
 
     <EditText
-        android:id="@+id/username_ET"
+        android:id="@+id/usernameET"
         android:background="@drawable/edit_text_design"
         android:hint="Username"
         android:textColor="#000000"
@@ -29,7 +29,7 @@
         android:layout_height="60dp"/>
 
     <EditText
-        android:id="@+id/password_ET"
+        android:id="@+id/passwordET"
         android:background="@drawable/edit_text_design"
         android:textColor="#000000"
         android:textColorHint="#9C9C9C"
@@ -54,7 +54,7 @@
         android:shadowRadius="14" />
 
     <TextView
-        android:id="@+id/signUp_btn"
+        android:id="@+id/gotoRegisterBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
