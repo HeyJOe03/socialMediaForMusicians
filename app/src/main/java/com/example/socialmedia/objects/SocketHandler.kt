@@ -1,5 +1,6 @@
-package com.example.socialmedia
+package com.example.socialmedia.objects
 
+import com.example.socialmedia.GLOBALS
 import io.socket.client.IO
 import io.socket.client.Socket
 import java.net.URISyntaxException

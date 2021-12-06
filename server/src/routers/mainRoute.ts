@@ -15,7 +15,7 @@ mainRouter.post('/login',(req:Request,res:Response) => {
 
     DB.query(query, (err,results) => {
         if(err) console.log(err)
-        if(results.length === 1)res.json({'signIn':'signin'})
+        if(results.length === 1)res.json({'signIn':results[0].id})
         else res.json({'signIn':'failed'})
     })
     

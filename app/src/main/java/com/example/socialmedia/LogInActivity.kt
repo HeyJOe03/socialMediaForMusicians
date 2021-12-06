@@ -1,43 +1,39 @@
 package com.example.socialmedia
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.example.socialmedia.databinding.ActivityLogInSignInBinding
-import okhttp3.Response
+import com.example.socialmedia.databinding.ActivityLogInBinding
+import com.example.socialmedia.objects.HashSHA256
 
 import org.json.JSONObject
 
 import org.json.JSONException
 
+class LogInActivity : AppCompatActivity() {
 
-
-
-class LogInSignInActivity : AppCompatActivity() {
-
-    private lateinit var binding : ActivityLogInSignInBinding
+    private lateinit var binding : ActivityLogInBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLogInSignInBinding.inflate(layoutInflater)
+        binding = ActivityLogInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.btnSubmit.setOnClickListener {
-            //Toast.makeText(this,  HashSHA256.hash("ciaone"), Toast.LENGTH_SHORT).show()
             if(binding.usernameET.text.toString() != "" &&  binding.passwordET.text.toString() != "") signIn()
             else inputError()
         }
 
         binding.gotoRegisterBtn.setOnClickListener {
-            //START registeractivity
+            startActivity(Intent(this, SignInActivity::class.java))
         }
     }
 
@@ -59,14 +55,22 @@ class LogInSignInActivity : AppCompatActivity() {
             postUrl,
             postData,
             { response ->
-                //Log.println(Log.DEBUG,"response",response.toString())
+                Log.println(Log.DEBUG,"response",response[GLOBALS.KEY_SIGNIN].toString())
 
-                if(response[GLOBALS.KEY_SIGNIN] != GLOBALS.SIGN_IN_FAILED){
-                    val ID: String = response[GLOBALS.KEY_SIGNIN].toString()
-                    val intent = Intent(this, MainActivity::class.java).apply {
-                        putExtra(EXTRA_MESSAGE, response[GLOBALS.KEY_SIGNIN].toString())
-                    }
-                    startActivity(intent)
+                if(response[GLOBALS.KEY_SIGNIN].toString() != GLOBALS.SIGN_IN_FAILED){
+                    val ID: Long =
+                        try {
+                            response[GLOBALS.KEY_SIGNIN].toString().toLong()
+                        }catch( e : NumberFormatException){
+                            -1
+                        }
+
+                    val sharedPreferences : SharedPreferences = this.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER,Context.MODE_PRIVATE)
+
+                    sharedPreferences.edit().putLong(GLOBALS.SP_KEY_ID, ID).apply()
+
+                    startActivity(Intent(this, MainActivity::class.java))
+                    this.finish()
                 }
                 else inputError()
             }

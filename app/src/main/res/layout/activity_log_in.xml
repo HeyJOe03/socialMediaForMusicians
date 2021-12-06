@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#FAFAFA"
     android:gravity="center"
-    tools:context=".LogInSignInActivity">
+    tools:context=".LogInActivity">
 
     <TextView
         android:layout_width="match_parent"
