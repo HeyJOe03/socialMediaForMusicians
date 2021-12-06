@@ -21,4 +21,27 @@ mainRouter.post('/login',(req:Request,res:Response) => {
     
 })
 
+mainRouter.post('/user/exist',(req,res) => {
+    let query: string = /*sql*/`SELECT username from user WHERE username='${req.body.username}'`
+    DB.query(query, (err,results) => {
+        if(err) console.log(err)
+        if(results.length === 0)res.json({'exist':'false'})
+        else res.json({'exist':'true'})
+    })
+})
+
+mainRouter.post('/user/insert',(req,res) => {
+    console.log(req.body)
+    
+    //let query: string = /*sql*/`SELECT username from user WHERE username='${req.body.username}'`
+    /*DB.query(query, (err,results) => {
+        if(err) console.log(err)
+        if(results.length === 0)res.json({'exist':'false'})
+        else res.json({'exist':'true'})
+    })*/
+
+    res.json({'inserted?':true})
+
+})
+
 export default mainRouter

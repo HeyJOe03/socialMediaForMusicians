@@ -24,6 +24,7 @@
         android:textColor="#000000"
         android:textColorHint="#9C9C9C"
         android:paddingLeft="15sp"
+        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_margin="20dp"
         android:layout_height="60dp"/>
@@ -34,6 +35,7 @@
         android:textColor="#000000"
         android:textColorHint="#9C9C9C"
         android:hint="Password"
+        android:inputType="textPassword"
         android:paddingLeft="15sp"
         android:layout_width="match_parent"
         android:layout_margin="20dp"
@@ -41,7 +43,6 @@
 
     <Button
         android:id="@+id/btnSubmit"
-        android:background="@drawable/button_design"
         android:layout_width="match_parent"
         android:layout_margin="20dp"
         android:text="Submit"
@@ -51,7 +52,8 @@
         android:shadowColor="#FAFAFA"
         android:shadowDx="0"
         android:shadowDy="0"
-        android:shadowRadius="14" />
+        android:shadowRadius="14"
+        android:background="@drawable/button_design"/>
 
     <TextView
         android:id="@+id/gotoRegisterBtn"
