@@ -3,7 +3,7 @@ import 'dotenv/config'
 import express from 'express';
 import {Server} from 'socket.io'
 import mysql from 'mysql'
-import options from './dbconnection'
+import DB from './database/dbconnection'
 import mainRouter from './routers/mainRoute';
 import path from 'path';
 import { createServer } from 'http';
@@ -13,13 +13,15 @@ const httpServer = createServer(app)
 const io = new Server(httpServer);
 const PORT = process.env.PORT || 3000
 
-const DB = mysql.createConnection(process.env.DB_URI || options).connect((err) => {
+DB.connect((err) => {
     if(err) console.log(err)
     else {
         console.log(`> DB connected`)
         httpServer.listen(PORT, () => console.log(`> Server listening on PORT: ${PORT}`))
     }
 })
+
+export = DB
 
 io.on('connection',(socket) => {
     console.log(`user ${socket.id} has connected`)

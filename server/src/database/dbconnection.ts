@@ -1,11 +1,14 @@
 import 'dotenv/config'
-import { ConnectionConfig } from 'mysql'
+import mysql from 'mysql'
 
-const options : ConnectionConfig = {
+const options : mysql.ConnectionConfig = {
     user: process.env.DB_USER || 'root',
     host: process.env.DB_HOST || 'localhost',
     password: process.env.DB_PW || '',
     database:'socialmusician',
     port: Number(process.env.DB_PORT) || 3306
 }
-export default options
+
+const DB : mysql.Connection = mysql.createConnection(process.env.DB_URI || options)
+
+export default DB

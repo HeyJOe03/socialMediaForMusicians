@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FAFAFA"
+    android:gravity="center"
+    tools:context=".LogInSignInActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="28sp"
+        android:gravity="center"
+
+        android:textColor="#F9AC36"
+        android:text="Login" />
+
+    <EditText
+        android:id="@+id/username_ET"
+        android:background="@drawable/edit_text_design"
+        android:hint="Username"
+        android:textColor="#000000"
+        android:textColorHint="#9C9C9C"
+        android:paddingLeft="15sp"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:layout_height="60dp"/>
+
+    <EditText
+        android:id="@+id/password_ET"
+        android:background="@drawable/edit_text_design"
+        android:textColor="#000000"
+        android:textColorHint="#9C9C9C"
+        android:hint="Password"
+        android:paddingLeft="15sp"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:layout_height="60dp"/>
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:background="@drawable/button_design"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:text="Submit"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:layout_height="60dp"
+        android:shadowColor="#FAFAFA"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="14" />
+
+    <TextView
+        android:id="@+id/signUp_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:textStyle="bold"
+        android:textColor="#F9AC36"
+        android:text="Sign Up" />
+
+</LinearLayout>
+
