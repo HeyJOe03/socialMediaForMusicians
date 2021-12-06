@@ -33,7 +33,7 @@ class LogInActivity : AppCompatActivity() {
         }
 
         binding.gotoRegisterBtn.setOnClickListener {
-            startActivity(Intent(this, SignInActivity::class.java))
+            startActivity(Intent(this, SignUpActivity::class.java))
         }
     }
 

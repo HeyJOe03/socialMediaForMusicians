@@ -13,7 +13,7 @@
         android:theme="@style/Theme.SocialMedia"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".SignInActivity"
+            android:name=".SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".LogInActivity"
