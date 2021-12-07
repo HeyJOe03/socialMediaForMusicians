@@ -1,11 +1,13 @@
 package com.example.socialmedia
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -51,6 +53,9 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         b.btnSubmit.setOnClickListener {
+
+            hideKeyboard()
+
             val name = b.nameET.text.toString()
             var pw = b.passwordET.text.toString()
             val email = b.emailET.text.toString()
@@ -63,7 +68,7 @@ class SignUpActivity : AppCompatActivity() {
 
             if (!dataState) Toast.makeText(this,"Error in the registration, check the password and the fields",Toast.LENGTH_LONG).show()
 
-            else checkIfUsernameIsAlreadyUsed(username,
+            checkIfUsernameIsAlreadyUsed(username,
                 object : VolleyCallback {
                     override fun onSuccess(usernameIsAlreadyTaken: Boolean) {
                         if(usernameIsAlreadyTaken) {
@@ -110,13 +115,25 @@ class SignUpActivity : AppCompatActivity() {
             postUrl,
             postData,
             { response ->
-                //Log.println(Log.DEBUG,"response",response["exist"].toString())
-                if(response["insertID"].toString() != (-1).toString()){
-                    //TODO: write shared preferences and do the server part
-                    startActivity(Intent(this, MainActivity::class.java))
-                    this.finish()
-                } else{
-                    Toast.makeText(applicationContext, "Registration Failed", Toast.LENGTH_SHORT).show()
+                Log.println(Log.ERROR, "response", response["error"].toString())
+                if(response["error"].toString() != "good"){
+                    Toast.makeText(applicationContext, response["error"].toString(), Toast.LENGTH_SHORT).show()
+                    Log.println(Log.ERROR, "error", response["error"].toString())
+                }
+                else{
+                    val myID = response["insertID"].toString().toLong()
+                    if(myID != (-1).toLong()){
+
+                        val sharedPreferences : SharedPreferences = this.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER,
+                            Context.MODE_PRIVATE)
+
+                        sharedPreferences.edit().putLong(GLOBALS.SP_KEY_ID, myID).apply()
+
+                        startActivity(Intent(this, MainActivity::class.java))
+                        this.finish()
+                    } else{
+                        Toast.makeText(applicationContext, "Registration Failed", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         ) { error ->
@@ -127,26 +144,14 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun inputsCheck(name:String,pw:String,email:String,username:String,cpw:String) : Boolean{
-        return when{
-            username == "" || username.contains(Regex("^[_A-z0-9]{1,}$")) -> false
+        return when{ //more checks comes from the server
+            username == "" -> false
             name == "" -> false
             pw == "" -> false
             email == "" -> false
-            !isValidEmail(email) -> false
             cpw != pw -> false
             else -> true
         }
-    }
-
-    private fun isValidEmail(email: String): Boolean {
-        var isValid = true
-        val expression = "^[\\w.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$"
-        val pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE)
-        val matcher = pattern.matcher(email)
-        if (!matcher.matches()) {
-            isValid = false
-        }
-        return isValid
     }
 
     private fun checkIfUsernameIsAlreadyUsed(username:String, volleyCallback: VolleyCallback){
@@ -174,5 +179,17 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         requestQueue.add(jsonObjectRequest)
+    }
+
+    private fun hideKeyboard(){
+        // since our app extends AppCompatActivity, it has access to context
+        val imm=getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        // we have to tell hide the keyboard from what. inorder to do is we have to pass window token
+        // all of our views,like message, name, button have access to same window token. since u have button
+        imm.hideSoftInputFromWindow(b.btnSubmit.windowToken, 0)
+
+        // if you are using binding object
+        // imm.hideSoftInputFromWindow(binding.button.windowToken,0)
+
     }
 }

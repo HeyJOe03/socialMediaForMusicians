@@ -3,8 +3,8 @@ import DB from '../database/dbconnection'
 import User from "../@types/user";
 
 import {selectUserLogIn,selectOneUsername} from '../database/sql/selectUser'
-import {insertNewUser} from '../database/sql/insertUser'   
-import { userInfo } from "os";
+import {insertNewUser} from '../database/sql/insertUser'
+import { OkPacket} from "mysql";
 
 const mainRouter = express.Router()
 
@@ -50,8 +50,8 @@ mainRouter.post('/user/insert',(req,res) => {
     let sql = insertNewUser(obj)
     
     DB.query(sql, (err,results) => {
-        if(err) res.json({'inserted?':false})
-        else res.json({'inserted?':true})
+        if(err) res.json({'error':'good','insertID':-1})
+        else res.json({'error':'good','insertID':(results as OkPacket).insertId})
     })
 })
 
