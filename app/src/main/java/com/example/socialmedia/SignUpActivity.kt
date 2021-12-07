@@ -128,7 +128,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun inputsCheck(name:String,pw:String,email:String,username:String,cpw:String) : Boolean{
         return when{
-            username == "" -> false
+            username == "" || username.contains(Regex("^[_A-z0-9]{1,}$")) -> false
             name == "" -> false
             pw == "" -> false
             email == "" -> false
