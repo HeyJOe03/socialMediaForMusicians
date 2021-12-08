@@ -14,6 +14,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.socialmedia.databinding.ActivitySignUpBinding
+import com.example.socialmedia.fragments.RegistrationErrorFragment
 import com.example.socialmedia.objects.HashSHA256
 import com.google.android.material.internal.ContextUtils.getActivity
 import org.json.JSONException
@@ -117,8 +118,10 @@ class SignUpActivity : AppCompatActivity() {
             { response ->
                 Log.println(Log.ERROR, "response", response["error"].toString())
                 if(response["error"].toString() != "good"){
-                    Toast.makeText(applicationContext, response["error"].toString(), Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, response["error"].toString(), Toast.LENGTH_SHORT).show()
                     Log.println(Log.ERROR, "error", response["error"].toString())
+
+                    openErrorFragment(response["error"].toString())
                 }
                 else{
                     val myID = response["insertID"].toString().toLong()
@@ -190,6 +193,13 @@ class SignUpActivity : AppCompatActivity() {
 
         // if you are using binding object
         // imm.hideSoftInputFromWindow(binding.button.windowToken,0)
+
+    }
+
+    private fun openErrorFragment(error : String){
+
+        val dialog = RegistrationErrorFragment.newInstance(error)
+        dialog.show(supportFragmentManager, "Filter Dialog")
 
     }
 }

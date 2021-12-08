@@ -3,10 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="30dp"
+    android:layout_gravity="center"
     tools:context=".fragments.RegistrationErrorFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/errorTV"
+        android:textAlignment="center"
+        android:textColor="@color/red"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textSize="20sp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/hello_blank_fragment" />
