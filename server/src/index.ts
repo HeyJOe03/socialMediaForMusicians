@@ -9,7 +9,7 @@ import {Server} from 'socket.io'
 // Modules
 import DB from './database/dbconnection'
 import mainRouter from './routers/mainRoute';
-import logInSignInRouter from './routers/logInSignInRouter'
+import logInSignUpRouter from './routers/logInSignUpRouter'
 
 // define consts
 const app = express();
@@ -25,8 +25,6 @@ DB.connect((err) => {
         httpServer.listen(PORT, () => console.log(`> Server listening on PORT: ${PORT}`))
     }
 })
-
-export = DB
 
 // SocketIO 
 
@@ -44,4 +42,4 @@ app.use(express.static(path.join(__dirname,'../public')))
 
 app.use('/',mainRouter)
 
-app.use('/LogIn-SignUp',logInSignInRouter)
+app.use('/LogIn-SignUp',logInSignUpRouter)

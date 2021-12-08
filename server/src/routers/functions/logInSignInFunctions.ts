@@ -1,5 +1,5 @@
 import ExpressRouterCallback from "../../@types/expressCalback"
-import DB from "../../index"
+import DB from "../../database/dbconnection"
 import { selectOneUsername, selectUserLogIn} from "../../database/sql/selectUser"
 import User from "../../@types/user"
 import { OkPacket } from "mysql"
