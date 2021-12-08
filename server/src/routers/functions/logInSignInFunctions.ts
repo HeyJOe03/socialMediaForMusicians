@@ -14,7 +14,7 @@ export const userExist : ExpressRouterCallback = (req,res) => {
     })
 }
 
-export const userSignIn : ExpressRouterCallback = (req,res) => {
+export const userSignUp : ExpressRouterCallback = (req,res) => {
     let obj: User = req.body as User
     let message = inputCheck(obj)
     if (message != 'good'){

@@ -1,11 +1,10 @@
-package com.example.socialmedia
+package com.example.socialmedia.loginsigninActivities
 
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Looper
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -13,14 +12,14 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.socialmedia.GLOBALS
+import com.example.socialmedia.MainActivity
+import com.example.socialmedia.R
 import com.example.socialmedia.databinding.ActivitySignUpBinding
 import com.example.socialmedia.fragments.RegistrationErrorFragment
 import com.example.socialmedia.objects.HashSHA256
-import com.google.android.material.internal.ContextUtils.getActivity
 import org.json.JSONException
 import org.json.JSONObject
-import java.security.AccessController.getContext
-import java.util.regex.Pattern
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -36,7 +35,9 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(b.root)
 
         b.btnLookingForOtherPlayers.setOnClickListener {
-            val bgState : Boolean = b.btnLookingForOtherPlayers.background.constantState == getDrawable(R.drawable.btn_looking_for_other_players)?.constantState
+            val bgState : Boolean = b.btnLookingForOtherPlayers.background.constantState == getDrawable(
+                R.drawable.btn_looking_for_other_players
+            )?.constantState
 
             if (bgState) {
                 b.btnLookingForOtherPlayers.setBackgroundResource(R.drawable.btn_not_looking_for_other_players)
@@ -62,14 +63,16 @@ class SignUpActivity : AppCompatActivity() {
             val email = b.emailET.text.toString()
             val username = b.usernameET.text.toString()
             val cpw = b.confirmPasswordET.text.toString()
-            val lookingForOtherPlayers : Boolean = b.btnLookingForOtherPlayers.background.constantState == getDrawable(R.drawable.btn_looking_for_other_players)?.constantState
+            val lookingForOtherPlayers : Boolean = b.btnLookingForOtherPlayers.background.constantState == getDrawable(
+                R.drawable.btn_looking_for_other_players
+            )?.constantState
 
 
             val dataState = inputsCheck(name,pw,email,username,cpw)
 
             if (!dataState) Toast.makeText(this,"Error in the registration, check the password and the fields",Toast.LENGTH_LONG).show()
 
-            checkIfUsernameIsAlreadyUsed(username,
+            checkIfUsernameIsAlreadyUsedRequest(username,
                 object : VolleyCallback {
                     override fun onSuccess(usernameIsAlreadyTaken: Boolean) {
                         if(usernameIsAlreadyTaken) {
@@ -81,16 +84,16 @@ class SignUpActivity : AppCompatActivity() {
                         else {
                             val now = System.currentTimeMillis()
                             pw = HashSHA256.hash(pw).substring(0,32)
-                            submitNewUser(username,pw,email,name,lookingForOtherPlayers,now,now,now,now,now)
+                            submitNewUserRequest(username,pw,email,name,lookingForOtherPlayers,now,now,now,now,now)
                         }
                     }
                 })
         }
     }
 
-    fun submitNewUser(username: String,password:String, email: String, name: String,lookingForOtherPlayers:Boolean,created_at: Long,
-                      last_profile_update: Long, last_post: Long, last_instrument_offer: Long, last_music_sheet: Long ){
-        val postUrl = GLOBALS.SERVER + "user/insert"
+    fun submitNewUserRequest(username: String, password:String, email: String, name: String, lookingForOtherPlayers:Boolean, created_at: Long,
+                             last_profile_update: Long, last_post: Long, last_instrument_offer: Long, last_music_sheet: Long ){
+        val postUrl = GLOBALS.SERVER_SIGN_UP
         val requestQueue: RequestQueue = Volley.newRequestQueue(this)
 
         val postData = JSONObject()
@@ -127,7 +130,8 @@ class SignUpActivity : AppCompatActivity() {
                     val myID = response["insertID"].toString().toLong()
                     if(myID != (-1).toLong()){
 
-                        val sharedPreferences : SharedPreferences = this.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER,
+                        val sharedPreferences : SharedPreferences = this.getSharedPreferences(
+                            GLOBALS.SHARED_PREF_ID_USER,
                             Context.MODE_PRIVATE)
 
                         sharedPreferences.edit().putLong(GLOBALS.SP_KEY_ID, myID).apply()
@@ -157,8 +161,8 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkIfUsernameIsAlreadyUsed(username:String, volleyCallback: VolleyCallback){
-        val postUrl = GLOBALS.SERVER + "user/exist"
+    private fun checkIfUsernameIsAlreadyUsedRequest(username:String, volleyCallback: VolleyCallback){
+        val postUrl = GLOBALS.SERVER_USER_EXIST
         val requestQueue: RequestQueue = Volley.newRequestQueue(this)
 
         val postData = JSONObject()

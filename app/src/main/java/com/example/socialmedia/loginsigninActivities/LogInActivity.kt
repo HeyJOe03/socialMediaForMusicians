@@ -1,4 +1,4 @@
-package com.example.socialmedia
+package com.example.socialmedia.loginsigninActivities
 
 import android.content.Context
 import android.content.Intent
@@ -11,6 +11,9 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.socialmedia.GLOBALS
+import com.example.socialmedia.MainActivity
+import com.example.socialmedia.R
 import com.example.socialmedia.databinding.ActivityLogInBinding
 import com.example.socialmedia.objects.HashSHA256
 
@@ -28,7 +31,7 @@ class LogInActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnSubmit.setOnClickListener {
-            if(binding.usernameET.text.toString() != "" &&  binding.passwordET.text.toString() != "") signIn()
+            if(binding.usernameET.text.toString() != "" &&  binding.passwordET.text.toString() != "") signInRequest()
             else inputError()
         }
 
@@ -37,9 +40,8 @@ class LogInActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun signIn(){
-        val postUrl = GLOBALS.SERVER + "login"
+    private fun signInRequest(){
+        val postUrl = GLOBALS.SERVER_LOG_IN
         val requestQueue: RequestQueue = Volley.newRequestQueue(this)
 
         val postData = JSONObject()

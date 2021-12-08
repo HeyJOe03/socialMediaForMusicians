@@ -44,4 +44,4 @@ app.use(express.static(path.join(__dirname,'../public')))
 
 app.use('/',mainRouter)
 
-app.use('/LogIn-SignIn',logInSignInRouter)
+app.use('/LogIn-SignUp',logInSignInRouter)

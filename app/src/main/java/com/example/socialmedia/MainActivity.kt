@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.example.socialmedia.databinding.ActivityMainBinding
+import com.example.socialmedia.loginsigninActivities.LogInActivity
 import com.example.socialmedia.objects.SocketHandler
 import io.socket.client.Socket
 

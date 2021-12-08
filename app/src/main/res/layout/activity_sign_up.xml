@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:background="#FAFAFA"
     android:gravity="center"
-    tools:context=".SignUpActivity">
+    tools:context=".loginsigninActivities.SignUpActivity">
 
 
     <TextView
