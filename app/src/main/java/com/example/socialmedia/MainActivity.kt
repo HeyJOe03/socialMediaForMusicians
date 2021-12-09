@@ -37,6 +37,10 @@ class MainActivity : AppCompatActivity() {
         SocketHandler.establishConnection()
         mSocket = SocketHandler.getSocket()
 
+
+        startActivity(Intent(this, ProfileActivity::class.java)) // starts the login page
+        this.finish() //close the activity
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

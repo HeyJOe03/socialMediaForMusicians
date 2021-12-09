@@ -4,12 +4,14 @@ import path from 'path';
 import { createServer } from 'http';
 // Installed libraries
 import 'dotenv/config'
-import express, { RequestHandler } from 'express';
+import express from 'express';
 import {Server} from 'socket.io'
 // Modules
 import DB from './database/dbconnection'
 import mainRouter from './routers/mainRoute';
 import logInSignUpRouter from './routers/logInSignUpRouter'
+import profileRouter from './routers/profileRoute';
+import { profile } from 'console';
 
 // define consts
 const app = express();
@@ -43,3 +45,4 @@ app.use(express.static(path.join(__dirname,'../public')))
 app.use('/',mainRouter)
 
 app.use('/LogIn-SignUp',logInSignUpRouter)
+app.use('/profile', profileRouter)
