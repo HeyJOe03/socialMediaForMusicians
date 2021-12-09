@@ -132,8 +132,8 @@ class SignUpActivity : AppCompatActivity() {
 
                         sharedPreferences.edit().putLong(GLOBALS.SP_KEY_ID, myID).apply()
 
-                        //startActivity(Intent(this, MainActivity::class.java))
-                        //this.finish()
+                        startActivity(Intent(this, MainActivity::class.java))
+                        this.finish()
                     } else{
                         Toast.makeText(applicationContext, "Registration Failed", Toast.LENGTH_SHORT).show()
                     }
