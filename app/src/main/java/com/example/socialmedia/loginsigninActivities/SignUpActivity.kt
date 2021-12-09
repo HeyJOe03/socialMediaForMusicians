@@ -20,6 +20,8 @@ import com.example.socialmedia.fragments.RegistrationErrorFragment
 import com.example.socialmedia.objects.HashSHA256
 import org.json.JSONException
 import org.json.JSONObject
+import java.time.Instant
+import java.time.LocalDateTime
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -82,17 +84,15 @@ class SignUpActivity : AppCompatActivity() {
                             ).show()
                         }
                         else {
-                            val now = System.currentTimeMillis()
                             pw = HashSHA256.hash(pw).substring(0,32)
-                            submitNewUserRequest(username,pw,email,name,lookingForOtherPlayers,now,now,now,now,now)
+                            submitNewUserRequest(username,pw,email,name,lookingForOtherPlayers)
                         }
                     }
                 })
         }
     }
 
-    fun submitNewUserRequest(username: String, password:String, email: String, name: String, lookingForOtherPlayers:Boolean, created_at: Long,
-                             last_profile_update: Long, last_post: Long, last_instrument_offer: Long, last_music_sheet: Long ){
+    fun submitNewUserRequest(username: String, password:String, email: String, name: String, lookingForOtherPlayers:Boolean){
         val postUrl = GLOBALS.SERVER_SIGN_UP
         val requestQueue: RequestQueue = Volley.newRequestQueue(this)
 
@@ -103,12 +103,8 @@ class SignUpActivity : AppCompatActivity() {
             postData.put("email",email)
             postData.put("name",name)
             postData.put("hash_password",password)
-            postData.put("is_looking_someone_to_play_with", lookingForOtherPlayers.toString())
-            postData.put("created_at", created_at.toString())
-            postData.put("last_profile_update", last_profile_update.toString())
-            postData.put("last_post", last_post.toString())
-            postData.put("last_instrument_offer", last_instrument_offer.toString())
-            postData.put("last_music_sheet", last_music_sheet.toString())
+            postData.put("is_looking_someone_to_play_with", lookingForOtherPlayers)
+            Log.println(Log.DEBUG,"request:", postData.toString())
 
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -136,8 +132,8 @@ class SignUpActivity : AppCompatActivity() {
 
                         sharedPreferences.edit().putLong(GLOBALS.SP_KEY_ID, myID).apply()
 
-                        startActivity(Intent(this, MainActivity::class.java))
-                        this.finish()
+                        //startActivity(Intent(this, MainActivity::class.java))
+                        //this.finish()
                     } else{
                         Toast.makeText(applicationContext, "Registration Failed", Toast.LENGTH_SHORT).show()
                     }

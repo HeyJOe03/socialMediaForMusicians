@@ -45,17 +45,10 @@ const inputCheck = (u:User): string => {
     const emailRegex = new RegExp(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/)
     const nameRegex = new RegExp(/^[a-zA-Z]+$/)
 
-    if(!u.username || !u.name || !u.email || !u.hash_password || null == u.created_at || null == u.last_profile_update || null == u.last_post || null == u.last_music_sheet || null == u.last_instrument_offer) return "Missing fields"
+    if(!u.username || !u.name || !u.email || !u.hash_password) return "Missing fields"
     else if(!usernameRegex.test(u.username)) return "Error in the username sintax"
     else if (!emailRegex.test(u.email)) return "error in the email sintax"
     else if (!nameRegex.test(u.name)) return "error in the name, it mustn't contain number, spaces or symbols"
     else if (u.hash_password.length != 32) return "password must be the first 32 character of Hash256"
-    else if (
-        u.created_at < 0 ||
-        u.last_profile_update < 0 ||
-        u.last_post < 0 ||
-        u.last_instrument_offer < 0 ||
-        u.last_music_sheet < 0
-    ) return "error in timestamps"
     else return "good"   
 }
