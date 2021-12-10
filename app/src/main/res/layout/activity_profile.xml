@@ -10,7 +10,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/profilePicture"
         android:maxHeight="100dp"
         android:maxWidth="100dp"
         android:minWidth="100dp"

@@ -12,6 +12,8 @@ object GLOBALS {
     const val SERVER_SIGN_UP = "$SERVER_ROUTE_LOG_IN_SIGN_UP/userSignUp"
     const val SERVER_USER_EXIST = "$SERVER_ROUTE_LOG_IN_SIGN_UP/userExist"
 
+    const val SERVER_PROFILE = "$SERVER/profile/fromID"
+
     const val KEY_SIGNIN = "signIn"
     const val SIGN_IN_FAILED = "failed"
 

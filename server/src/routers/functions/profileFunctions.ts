@@ -18,7 +18,12 @@ export const profileFromID:ExpressRouterCallback = (req,res) => {
         DB.query(sql, (err,result) => {
             if(err) res.status(500)
             else{
-                res.json(result[0])
+                // console.log(result[0].profile_image)
+                //const image = Buffer.from(result[0].profile_image).toString("base64")
+                //res.json({...result[0],profile_image:image})
+
+                const image = Buffer.from((result[0].profile_image as Buffer).toJSON().data).toString('base64')
+                res.json({...result[0], profile_image: 'data:image/jpeg;base64,' + image})
             }
         })
     }
