@@ -13,6 +13,9 @@ object GLOBALS {
     const val SERVER_USER_EXIST = "$SERVER_ROUTE_LOG_IN_SIGN_UP/userExist"
 
     const val SERVER_PROFILE = "$SERVER/profile/fromID"
+    fun SERVER_PROFILE_PIC(id: Long): String{
+        return "$SERVER/profile/img/$id"
+    }
 
     const val KEY_SIGNIN = "signIn"
     const val SIGN_IN_FAILED = "failed"
