@@ -63,7 +63,7 @@ export const userPosts: ExpressRouterCallback = (req,res) => {
                 for(let i = 0; i< (result as any[]).length;i++){
                     result[i].content = (result[i].content as Buffer).toString('base64')
                 }
-                res.json(result)
+                res.json({"result":result})
             }
         })
     }

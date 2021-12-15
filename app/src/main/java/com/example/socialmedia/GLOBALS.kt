@@ -17,6 +17,8 @@ object GLOBALS {
         return "$SERVER/profile/img/$id"
     }
 
+    const val SERVER_PROFILE_POSTS = "$SERVER/profile/posts"
+
     const val KEY_SIGNIN = "signIn"
     const val SIGN_IN_FAILED = "failed"
 

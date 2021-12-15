@@ -17,11 +17,15 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
+import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.ActivityProfileBinding
+import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
-import android.R.string
 import java.lang.Exception
+import com.google.gson.reflect.TypeToken
+import org.json.JSONArray
+import java.lang.reflect.Type
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -40,6 +44,8 @@ class ProfileActivity : AppCompatActivity() {
 
     private lateinit var adapter: ProfilePostRecycleView
     private lateinit var layoutMenager: LinearLayoutManager
+
+    private val gson : Gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,8 +74,43 @@ class ProfileActivity : AppCompatActivity() {
         b.myPostRV.adapter = adapter
         b.myPostRV.layoutManager = layoutMenager
 
-        // TODO: postRequests()
+        postRequests()
         //postRequests()
+    }
+
+    private fun postRequests() {
+        val postUrl = GLOBALS.SERVER_PROFILE_POSTS
+        val requestQueue: RequestQueue = Volley.newRequestQueue(this)
+
+        val postData = JSONObject()
+        try {
+            postData.put("id", userID)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST,
+            postUrl,
+            postData,
+            { response ->
+
+                val groupListType: Type = object : TypeToken<ArrayList<Post>>() {}.type
+
+                for(i in 0..((response["result"] as JSONArray).length()-1)) {
+                    val b = gson.fromJson((response["result"] as JSONArray).get(i).toString(),Post::class.java)
+                    Log.println(Log.DEBUG,"id",b.id.toString())
+                }
+
+                //val posts = gson.fromJson(response["result"].toString(),Post::class.java)
+
+
+            }
+        ) { error ->
+            error.printStackTrace()
+        }
+
+        requestQueue.add(jsonObjectRequest)
     }
 
     private fun profileRequest(){
