@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.transform.CircleCropTransformation
@@ -28,7 +29,7 @@ import org.json.JSONArray
 import java.lang.reflect.Type
 
 
-class ProfileActivity : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity(), ProfilePostRecycleView.OnItemClickListener {
 
     private lateinit var b: ActivityProfileBinding
     private lateinit var sharedPref: SharedPreferences
@@ -45,6 +46,8 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var adapter: ProfilePostRecycleView
     private lateinit var layoutMenager: LinearLayoutManager
 
+    private val posts: MutableList<Post> = mutableListOf()
+
     private val gson : Gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +59,7 @@ class ProfileActivity : AppCompatActivity() {
         userID = sharedPref.getLong(GLOBALS.SP_KEY_ID,-1)
 
         layoutMenager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-        adapter = ProfilePostRecycleView(emptyList())
+        adapter = ProfilePostRecycleView(emptyList(),this)
 
         profileRequest()
 
@@ -85,8 +88,6 @@ class ProfileActivity : AppCompatActivity() {
             { response ->
 
                 val groupListType: Type = object : TypeToken<ArrayList<Post>>() {}.type
-
-                val posts: MutableList<Post> = mutableListOf<Post>()
 
                 for(i in 0..((response["result"] as JSONArray).length()-1)) {
                     val post = gson.fromJson((response["result"] as JSONArray).get(i).toString(),Post::class.java)
@@ -155,6 +156,15 @@ class ProfileActivity : AppCompatActivity() {
         b.descriptionTV.text = description
         b.instrumentInterestedInTV.text = instrumentInterestedIn
         b.usernameTV.text = username
+    }
+
+
+    override fun onClickListener(position: Int) {
+        // Toast.makeText(this, posts[position].description, Toast.LENGTH_SHORT).show()
+        val dialog = PostDialog(posts[position])
+        dialog.show(supportFragmentManager,"post dialog")
+
+        //dismiss()
     }
 
 }

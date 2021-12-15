@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.socialmedia.R
@@ -16,23 +15,27 @@ import com.example.socialmedia.dataClass.Post
 import java.lang.Exception
 
 class ProfilePostRecycleView(
-    private var dataSet: List<Post>
+    private var dataSet: List<Post>,
+    private val onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<ProfilePostRecycleView.ViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, onItemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(view) {
         val postImg: ImageView
         //val postTitle: TextView
 
         init {
             postImg = view.findViewById(R.id.post_img)
             //postTitle = view.findViewById(R.id.post_title)
+            itemView.setOnClickListener {
+                onItemClickListener.onClickListener(layoutPosition)
+            }
         }
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, p1: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.post_card, viewGroup, false)
-        return ViewHolder(view)
+        return ViewHolder(view, onItemClickListener)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
@@ -73,6 +76,10 @@ class ProfilePostRecycleView(
             height,
             false
         )
+    }
+
+    interface OnItemClickListener{
+        fun onClickListener(position: Int)
     }
 }
 
