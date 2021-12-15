@@ -1,6 +1,6 @@
 import ExpressRouterCallback from "../../@types/expressCalback"
 import DB from "../../database/dbconnection"
-import { selectProfile, selectProfilePicture} from "../../database/sql/selectUser"
+import { selectProfile, selectProfilePicture, selectPosts} from "../../database/sql/selectUser"
 
 export const profileFromID:ExpressRouterCallback = (req,res) => {
     if(!req.body.id)res.status(500)
@@ -47,5 +47,25 @@ export const profileImageFromID:ExpressRouterCallback =(req,res) => {
             res.end(result[0].profile_image as Buffer)
         }
     })
+
+}
+
+export const userPosts: ExpressRouterCallback = (req,res) => {
+
+    if(req.body.id == undefined || isNaN(parseInt(req.body.id))) res.status(500).json({'error':'id not provided'})
+
+    else{
+        let id = parseInt(req.body.id)
+        let sql = selectPosts(id)
+        DB.query(sql,(err,result) => {
+            if(err) res.status(500).json({'error':"query error"})
+            else{
+                for(let i = 0; i< (result as any[]).length;i++){
+                    result[i].content = (result[i].content as Buffer).toString('base64')
+                }
+                res.json(result)
+            }
+        })
+    }
 
 }

@@ -1,5 +1,5 @@
 import {Router} from "express";
-import { profileFromID,profileImageFromID } from "./functions/profileFunctions";
+import { profileFromID,profileImageFromID,userPosts } from "./functions/profileFunctions";
 
 const profileRouter = Router()
 export = profileRouter
@@ -7,3 +7,5 @@ export = profileRouter
 profileRouter.post('/fromID',profileFromID)
 
 profileRouter.get('/img/:id',profileImageFromID)
+
+profileRouter.post('/posts',userPosts)

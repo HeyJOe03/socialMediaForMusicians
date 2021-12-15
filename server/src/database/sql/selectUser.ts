@@ -15,3 +15,7 @@ export const selectProfile = (id: number) : string => {
 export const selectProfilePicture = (id: number) : string => {
     return /*sql*/`SELECT profile_image FROM aboutme WHERE aboutme.id = ${id}`
 }
+
+export const selectPosts = (id: number) : string => {
+    return /*sql*/`SELECT * FROM posts WHERE posted_by = ${id}`
+}
