@@ -2,7 +2,7 @@ package com.example.socialmedia
 
 object GLOBALS {
     private const val SERVER_PROTOCOL: String = "http"
-    private const val SERVER_ADDRESS: String = "192.168.5.128"
+    private const val SERVER_ADDRESS: String = "192.168.1.102"
     private const val SERVER_PORT: Int = 5000
 
     const val SERVER = "$SERVER_PROTOCOL://$SERVER_ADDRESS:$SERVER_PORT"
@@ -13,6 +13,7 @@ object GLOBALS {
     const val SERVER_USER_EXIST = "$SERVER_ROUTE_LOG_IN_SIGN_UP/userExist"
 
     const val SERVER_PROFILE = "$SERVER/profile/fromID"
+
     fun SERVER_PROFILE_PIC(id: Long): String{
         return "$SERVER/profile/img/$id"
     }

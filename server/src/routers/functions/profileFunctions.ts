@@ -60,9 +60,9 @@ export const userPosts: ExpressRouterCallback = (req,res) => {
         DB.query(sql,(err,result) => {
             if(err) res.status(500).json({'error':"query error"})
             else{
-                for(let i = 0; i< (result as any[]).length;i++){
+                for(let i = 0; i < (result as any[]).length; i++)
                     result[i].content = (result[i].content as Buffer).toString('base64')
-                }
+                
                 res.json({"result":result})
             }
         })
