@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
     android:background="@color/white"
     android:padding="20dp"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ProfileActivities.ProfileActivity">
 
 
     <ImageView
         android:id="@+id/profilePicture"
-        android:maxHeight="100dp"
-        android:maxWidth="100dp"
-        android:minWidth="100dp"
-        android:minHeight="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxWidth="100dp"
+        android:maxHeight="100dp"
+        android:contentDescription="profile image"
+        android:minWidth="100dp"
+        android:minHeight="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@drawable/ic_placeholder" />
 
     <TextView
         android:id="@+id/usernameTV"
@@ -31,7 +36,7 @@
         android:textColor="@color/red"
         android:gravity="center_vertical"
         android:textStyle="bold"
-        android:textSize="30dp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@id/profilePicture"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/profilePicture"
@@ -83,3 +88,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bioLayout"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
