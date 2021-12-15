@@ -26,8 +26,7 @@ export const profileFromID:ExpressRouterCallback = (req,res) => {
 export const profileImageFromID:ExpressRouterCallback =(req,res) => {
     
     const id = parseInt(req.params.id)
-    console.log(id)
-
+    // console.log(id)
     if(isNaN(id)) {
         res.status(500).send("id error")
         return

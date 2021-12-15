@@ -11,7 +11,6 @@ import DB from './database/dbconnection'
 import mainRouter from './routers/mainRoute';
 import logInSignUpRouter from './routers/logInSignUpRouter'
 import profileRouter from './routers/profileRoute';
-import { profile } from 'console';
 
 // define consts
 const app = express();
