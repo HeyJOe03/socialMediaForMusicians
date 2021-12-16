@@ -8,8 +8,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
-import com.example.socialmedia.profileFragment.ProfileFragment
 import com.example.socialmedia.databinding.ActivityMainBinding
+import com.example.socialmedia.profileFragment.ProfileFragment
 import com.example.socialmedia.loginsigninActivities.LogInActivity
 import com.example.socialmedia.homeFragment.HomeFragment
 import com.example.socialmedia.objects.SocketHandler

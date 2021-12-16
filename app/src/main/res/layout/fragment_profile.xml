@@ -13,19 +13,20 @@
     tools:context=".profileFragment.ProfileFragment">
 
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profilePicture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxWidth="100dp"
-        android:maxHeight="100dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:contentDescription="profile image"
-        android:minWidth="100dp"
-        android:minHeight="100dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/ic_placeholder"
-        android:background="@drawable/circle_shape_profile"/>
+        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+        android:padding="3dp"
+        app:strokeColor="@color/grey_700"
+        app:strokeWidth="3dp"/>
 
     <TextView
         android:id="@+id/usernameTV"

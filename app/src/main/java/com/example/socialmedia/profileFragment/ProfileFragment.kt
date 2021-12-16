@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
@@ -176,8 +177,22 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
         b.descriptionTV.text = description
         b.instrumentInterestedInTV.text = instrumentInterestedIn
         b.usernameTV.text = username
-        b.profilePicture.setImageBitmap(profileImg)
+        // oldW : newW = oldH : newH
+        if(profileImg != null){
+            val newWidth = (profileImg!!.width * 100) / profileImg!!.height
+            //profileImg = resizeBitmap(profileImg!!,newWidth,100)
+            b.profilePicture.setImageBitmap(profileImg)
+            b.profilePicture.scaleType = ImageView.ScaleType.CENTER_CROP
+        }
+    }
 
+    private fun resizeBitmap(bitmap: Bitmap, width: Int, height: Int): Bitmap {
+        return Bitmap.createScaledBitmap(
+            bitmap,
+            width,
+            height,
+            false
+        )
     }
 
     override fun onClickListener(position: Int) {
