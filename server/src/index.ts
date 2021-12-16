@@ -2,12 +2,16 @@
 // Node libraries
 import path from 'path';
 import { createServer } from 'http';
+
 // Installed libraries
 import 'dotenv/config'
 import express from 'express';
 import {Server} from 'socket.io'
+
 // Modules
 import DB from './database/dbconnection'
+
+// Routes
 import mainRouter from './routers/mainRoute';
 import logInSignUpRouter from './routers/logInSignUpRouter'
 import profileRouter from './routers/profileRoute';

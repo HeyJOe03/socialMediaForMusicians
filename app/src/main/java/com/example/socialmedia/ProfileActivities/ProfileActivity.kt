@@ -1,14 +1,13 @@
 package com.example.socialmedia.ProfileActivities
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
-import android.widget.Toast
+import android.view.Menu
+import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.transform.CircleCropTransformation
@@ -20,13 +19,11 @@ import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.ActivityProfileBinding
+import com.example.socialmedia.loginsigninActivities.LogInActivity
 import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
-import java.lang.Exception
-import com.google.gson.reflect.TypeToken
 import org.json.JSONArray
-import java.lang.reflect.Type
 
 
 class ProfileActivity : AppCompatActivity(), ProfilePostRecycleView.OnItemClickListener {
@@ -70,6 +67,27 @@ class ProfileActivity : AppCompatActivity(), ProfilePostRecycleView.OnItemClickL
         //postRequests()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.logOutMenu -> {
+                logOut()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun logOut(){
+        sharedPref.edit().remove(GLOBALS.SP_KEY_ID).apply()
+        startActivity(Intent(this, LogInActivity::class.java))
+        this.finish()
+    }
+
     private fun postRequests() {
         val postUrl = GLOBALS.SERVER_PROFILE_POSTS
         val requestQueue: RequestQueue = Volley.newRequestQueue(this)
@@ -87,9 +105,7 @@ class ProfileActivity : AppCompatActivity(), ProfilePostRecycleView.OnItemClickL
             postData,
             { response ->
 
-                val groupListType: Type = object : TypeToken<ArrayList<Post>>() {}.type
-
-                for(i in 0..((response["result"] as JSONArray).length()-1)) {
+                for(i in 0 until (response["result"] as JSONArray).length()) {
                     val post = gson.fromJson((response["result"] as JSONArray).get(i).toString(),Post::class.java)
                     posts.add(post)
                     //Log.println(Log.DEBUG,"id",post.id.toString())
