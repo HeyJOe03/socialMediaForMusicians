@@ -8,6 +8,7 @@
         <entry key="..\:/Users/jocar/AndroidStudioProjects/SocialMedia/app/src/main/res/drawable/btn_not_looking_for_other_players.xml" value="0.2703125" />
         <entry key="..\:/Users/jocar/AndroidStudioProjects/SocialMedia/app/src/main/res/drawable/button_design.xml" value="0.2703125" />
         <entry key="..\:/Users/jocar/AndroidStudioProjects/SocialMedia/app/src/main/res/drawable/buttondesign.xml" value="0.2703125" />
+        <entry key="..\:/Users/jocar/AndroidStudioProjects/SocialMedia/app/src/main/res/drawable/circle_shape_profile.xml" value="0.2703125" />
         <entry key="..\:/Users/jocar/AndroidStudioProjects/SocialMedia/app/src/main/res/drawable/edit_text_design.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/jocar/AndroidStudioProjects/SocialMedia/app/src/main/res/drawable/edit_text_design_error.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/jocar/AndroidStudioProjects/SocialMedia/app/src/main/res/drawable/edittextdesign.xml" value="0.2703125" />
@@ -21,6 +22,7 @@
         <entry key="..\:/Users/jocar/AndroidStudioProjects/SocialMedia/app/src/main/res/layout/activity_sign_in.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/jocar/AndroidStudioProjects/SocialMedia/app/src/main/res/layout/activity_sign_up.xml" value="0.23550724637681159" />
         <entry key="..\:/Users/jocar/AndroidStudioProjects/SocialMedia/app/src/main/res/layout/fragment_menu.xml" value="0.19479166666666667" />
+        <entry key="..\:/Users/jocar/AndroidStudioProjects/SocialMedia/app/src/main/res/layout/fragment_profile.xml" value="0.1" />
         <entry key="..\:/Users/jocar/AndroidStudioProjects/SocialMedia/app/src/main/res/layout/fragment_registration_error.xml" value="0.264" />
         <entry key="..\:/Users/jocar/AndroidStudioProjects/SocialMedia/app/src/main/res/layout/post_card.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/jocar/AndroidStudioProjects/SocialMedia/app/src/main/res/layout/post_dialog.xml" value="0.2" />

@@ -2,7 +2,10 @@ package com.example.socialmedia.profileFragment
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +43,7 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
     private var isLookingSomeoneToPlayWith: Boolean = false
     private lateinit var name: String
     private lateinit var email: String
+    private var profileImg: Bitmap? = null
 
     private lateinit var adapter: ProfilePostRecycleView
     private lateinit var layoutMenager: LinearLayoutManager
@@ -147,15 +151,17 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
                 instrumentInterestedIn = response["instrument_interested_in"] as String
                 val n = (response["is_looking_someone_to_play_with"] as Int)
                 isLookingSomeoneToPlayWith = n == 1
+                profileImg = (response["profile_image"] as String).toBitmap()
 
                 val url = GLOBALS.SERVER_PROFILE_PIC(userID)
                 Log.println(Log.DEBUG,"url",url)
 
+                /*
                 b.profilePicture.load(url){
                     crossfade(true)
                     placeholder(R.drawable.ic_placeholder)
                     transformations(CircleCropTransformation())
-                }
+                } */
 
                 setProfileDataView()
             }
@@ -170,6 +176,8 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
         b.descriptionTV.text = description
         b.instrumentInterestedInTV.text = instrumentInterestedIn
         b.usernameTV.text = username
+        b.profilePicture.setImageBitmap(profileImg)
+
     }
 
     override fun onClickListener(position: Int) {
@@ -183,6 +191,12 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun String.toBitmap(): Bitmap? {
+        Base64.decode(this, Base64.DEFAULT).apply {
+            return BitmapFactory.decodeByteArray(this, 0, size)
+        }
     }
 
 }

@@ -24,7 +24,8 @@
         android:minHeight="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_placeholder" />
+        tools:srcCompat="@drawable/ic_placeholder"
+        android:background="@drawable/circle_shape_profile"/>
 
     <TextView
         android:id="@+id/usernameTV"
