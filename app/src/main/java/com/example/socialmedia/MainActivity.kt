@@ -41,14 +41,11 @@ class MainActivity : AppCompatActivity() {
         mSocket = SocketHandler.getSocket()
 
 
-        //startActivity(Intent(this, ProfileFragment::class.java)) // starts the login page
-        //this.finish() //close the activity
-
         val profileFragment : ProfileFragment = ProfileFragment()
         val homeFragment: HomeFragment = HomeFragment()
 
         makeCurrentFragment(homeFragment)
-        b.navMenu.selectedItemId = R.id.home
+        b.navMenu.selectedItemId = R.id.ic_home
 
         b.navMenu.setOnNavigationItemSelectedListener{
             when(it.itemId){

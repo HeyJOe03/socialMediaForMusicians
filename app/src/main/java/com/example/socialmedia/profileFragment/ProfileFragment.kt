@@ -179,20 +179,9 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
         b.usernameTV.text = username
         // oldW : newW = oldH : newH
         if(profileImg != null){
-            val newWidth = (profileImg!!.width * 100) / profileImg!!.height
-            //profileImg = resizeBitmap(profileImg!!,newWidth,100)
             b.profilePicture.setImageBitmap(profileImg)
             b.profilePicture.scaleType = ImageView.ScaleType.CENTER_CROP
         }
-    }
-
-    private fun resizeBitmap(bitmap: Bitmap, width: Int, height: Int): Bitmap {
-        return Bitmap.createScaledBitmap(
-            bitmap,
-            width,
-            height,
-            false
-        )
     }
 
     override fun onClickListener(position: Int) {

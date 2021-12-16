@@ -70,12 +70,7 @@ class ProfilePostRecycleView(
     }
 
     private fun resizeBitmap(bitmap: Bitmap, width: Int, height: Int): Bitmap {
-        return Bitmap.createScaledBitmap(
-            bitmap,
-            width,
-            height,
-            false
-        )
+        return Bitmap.createScaledBitmap(bitmap,width,height,false)
     }
 
     interface OnItemClickListener{
