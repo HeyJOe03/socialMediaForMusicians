@@ -1,4 +1,4 @@
-package com.example.socialmedia.ProfileActivities
+package com.example.socialmedia.profileFragment
 
 import android.app.Dialog
 import android.graphics.Bitmap
@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.example.socialmedia.R
 import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.PostDialogBinding
 

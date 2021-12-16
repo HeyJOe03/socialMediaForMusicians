@@ -1,4 +1,4 @@
-package com.example.socialmedia.ProfileActivities
+package com.example.socialmedia.profileFragment
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

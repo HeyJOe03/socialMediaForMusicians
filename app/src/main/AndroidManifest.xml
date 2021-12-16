@@ -14,7 +14,7 @@
         android:theme="@style/Theme.SocialMedia"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ProfileActivities.ProfileActivity"
+            android:name=".profileFragment.ProfileFragment"
             android:exported="false" />
         <activity
             android:name=".loginsigninActivities.SignUpActivity"

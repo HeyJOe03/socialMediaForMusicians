@@ -1,13 +1,13 @@
-package com.example.socialmedia.ProfileActivities
+package com.example.socialmedia.profileFragment
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.transform.CircleCropTransformation
@@ -18,18 +18,19 @@ import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.dataClass.Post
-import com.example.socialmedia.databinding.ActivityProfileBinding
-import com.example.socialmedia.loginsigninActivities.LogInActivity
+import com.example.socialmedia.databinding.FragmentProfileBinding
 import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONArray
 
 
-class ProfileActivity : AppCompatActivity(), ProfilePostRecycleView.OnItemClickListener {
+class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
 
-    private lateinit var b: ActivityProfileBinding
-    private lateinit var sharedPref: SharedPreferences
+    private var _binding: FragmentProfileBinding? = null
+    private val b  get() = _binding!!
+
+    private var sharedPref: SharedPreferences? = null
     private var userID: Long = -1
 
     private lateinit var username: String
@@ -47,50 +48,50 @@ class ProfileActivity : AppCompatActivity(), ProfilePostRecycleView.OnItemClickL
 
     private val gson : Gson = Gson()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        b = ActivityProfileBinding.inflate(layoutInflater)
-        setContentView(b.root)
+    private var requestsDone = false
 
-        sharedPref = this.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
-        userID = sharedPref.getLong(GLOBALS.SP_KEY_ID,-1)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_profile,container,false)
+    }
 
-        layoutMenager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view,savedInstanceState)
+        _binding = FragmentProfileBinding.bind(view)
+        //setContentView(b.root)
+
+        sharedPref = activity?.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
+        userID = sharedPref!!.getLong(GLOBALS.SP_KEY_ID,-1)
+
+        layoutMenager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         adapter = ProfilePostRecycleView(emptyList(),this)
-
-        profileRequest()
 
         b.myPostRV.adapter = adapter
         b.myPostRV.layoutManager = layoutMenager
 
-        postRequests()
-        //postRequests()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu,menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.logOutMenu -> {
-                logOut()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+        if(!requestsDone){
+            postRequests()
+            profileRequest()
+            requestsDone = true
+        } else {
+            adapter.setData(posts.toList())
+            setProfileDataView()
         }
     }
 
-    private fun logOut(){
-        sharedPref.edit().remove(GLOBALS.SP_KEY_ID).apply()
-        startActivity(Intent(this, LogInActivity::class.java))
-        this.finish()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 
     private fun postRequests() {
+
+        Log.println(Log.ERROR,"requesting","vhfhidfuhgdifghdfihgidfhigdhih")
+
         val postUrl = GLOBALS.SERVER_PROFILE_POSTS
-        val requestQueue: RequestQueue = Volley.newRequestQueue(this)
+        val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
         val postData = JSONObject()
         try {
@@ -104,21 +105,18 @@ class ProfileActivity : AppCompatActivity(), ProfilePostRecycleView.OnItemClickL
             postUrl,
             postData,
             { response ->
-
+                Log.println(Log.ERROR,"lenght",(response["result"] as JSONArray).length().toString())
                 for(i in 0 until (response["result"] as JSONArray).length()) {
                     val post = gson.fromJson((response["result"] as JSONArray).get(i).toString(),Post::class.java)
                     posts.add(post)
                     //Log.println(Log.DEBUG,"id",post.id.toString())
                 }
-
                 adapter.setData(posts.toList())
-
-                //val posts = gson.fromJson(response["result"].toString(),Post::class.java)
-
-
             }
         ) { error ->
             error.printStackTrace()
+            Log.println(Log.ERROR,"error","errror")
+
         }
 
         requestQueue.add(jsonObjectRequest)
@@ -126,7 +124,7 @@ class ProfileActivity : AppCompatActivity(), ProfilePostRecycleView.OnItemClickL
 
     private fun profileRequest(){
         val postUrl = GLOBALS.SERVER_PROFILE
-        val requestQueue: RequestQueue = Volley.newRequestQueue(this)
+        val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
         val postData = JSONObject()
         try {
@@ -174,13 +172,17 @@ class ProfileActivity : AppCompatActivity(), ProfilePostRecycleView.OnItemClickL
         b.usernameTV.text = username
     }
 
-
     override fun onClickListener(position: Int) {
         // Toast.makeText(this, posts[position].description, Toast.LENGTH_SHORT).show()
         val dialog = PostDialog(posts[position])
-        dialog.show(supportFragmentManager,"post dialog")
+        dialog.show(childFragmentManager,"post dialog")
 
         //dismiss()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }
