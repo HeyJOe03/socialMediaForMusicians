@@ -25,4 +25,7 @@ object GLOBALS {
 
     const val SHARED_PREF_ID_USER = "user"
     const val SP_KEY_ID = "ID"
+
+    const val CAMERA_PHOTO_RESULT_CODE: Int = 102
+    const val CAMERA_PERMISSION_REQUEST_CODE: Int = 101
 }

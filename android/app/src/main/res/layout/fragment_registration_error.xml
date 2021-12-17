@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:padding="30dp"
     android:layout_gravity="center"
-    tools:context=".fragments.RegistrationErrorFragment">
+    tools:context=".dialogs.RegistrationErrorFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

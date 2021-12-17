@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
+import com.example.socialmedia.addPostFragment.AddPostFragment
 import com.example.socialmedia.databinding.ActivityMainBinding
 import com.example.socialmedia.profileFragment.ProfileFragment
 import com.example.socialmedia.loginsigninActivities.LogInActivity
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         val profileFragment : ProfileFragment = ProfileFragment()
         val homeFragment: HomeFragment = HomeFragment()
+        val addPostFragment: AddPostFragment = AddPostFragment()
 
         makeCurrentFragment(homeFragment)
         b.navMenu.selectedItemId = R.id.ic_home
@@ -51,6 +53,7 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.ic_profile -> makeCurrentFragment(profileFragment)
                 R.id.ic_home -> makeCurrentFragment(homeFragment)
+                R.id.ic_add -> makeCurrentFragment(addPostFragment)
             }
             true
         }

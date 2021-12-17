@@ -16,12 +16,10 @@ import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.MainActivity
 import com.example.socialmedia.R
 import com.example.socialmedia.databinding.ActivitySignUpBinding
-import com.example.socialmedia.fragments.RegistrationErrorFragment
+import com.example.socialmedia.dialogs.RegistrationErrorFragment
 import com.example.socialmedia.objects.HashSHA256
 import org.json.JSONException
 import org.json.JSONObject
-import java.time.Instant
-import java.time.LocalDateTime
 
 class SignUpActivity : AppCompatActivity() {
 
