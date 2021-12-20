@@ -6,15 +6,18 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Base64
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.activityViewModels
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.databinding.FragmentAddPostBinding
 import com.example.socialmedia.databinding.PostPreview2Binding
+import java.io.ByteArrayOutputStream
 
 class AddPostFragment : Fragment() {
 
@@ -68,6 +71,11 @@ class AddPostFragment : Fragment() {
         } else if(indexCurrentPostPreview == nOfPreviews){
             b.btnNext.isClickable = false
             b.btnNext.visibility = View.INVISIBLE
+            b.btnPost.visibility = View.VISIBLE
+        }
+
+        if(indexCurrentPostPreview != nOfPreviews){
+            b.btnPost.visibility = View.INVISIBLE
         }
     }
 
@@ -113,4 +121,20 @@ class AddPostFragment : Fragment() {
         var i = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(i,GLOBALS.CAMERA_PHOTO_RESULT_CODE)
     }
+
+    private fun encodeImage(bm: Bitmap): String? {
+        val baos = ByteArrayOutputStream()
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val b = baos.toByteArray()
+        return Base64.encodeToString(b, Base64.DEFAULT)
+    }
+
+    private fun Bitmap.toBase64(): String? {
+        val baos = ByteArrayOutputStream()
+        this.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val b = baos.toByteArray()
+        return Base64.encodeToString(b, Base64.DEFAULT)
+    }
+
+
 }
