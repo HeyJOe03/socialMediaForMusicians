@@ -55,9 +55,10 @@ class PostDialog(
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
+    /*
     private fun String.toBitmap(): Bitmap? {
         Base64.decode(this, Base64.DEFAULT).apply {
             return BitmapFactory.decodeByteArray(this, 0, size)
         }
-    }
+    }*/
 }
