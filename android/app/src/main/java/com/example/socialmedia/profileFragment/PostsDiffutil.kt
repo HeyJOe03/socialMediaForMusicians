@@ -23,7 +23,7 @@ class PostsDiffutil(
         return when{
             oldList[oldItemPosition].id != newList[newItemPosition].id -> false
             oldList[oldItemPosition].description != newList[newItemPosition].description -> false
-            oldList[oldItemPosition].content != newList[newItemPosition].content -> false
+            //oldList[oldItemPosition].content != newList[newItemPosition].content -> false
             oldList[oldItemPosition].posted_by != newList[newItemPosition].posted_by -> false
             oldList[oldItemPosition].created_at != newList[newItemPosition].created_at -> false
             oldList[oldItemPosition].last_update_at != newList[newItemPosition].last_update_at -> false

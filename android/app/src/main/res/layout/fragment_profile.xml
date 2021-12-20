@@ -12,7 +12,6 @@
     android:layout_height="wrap_content"
     tools:context=".profileFragment.ProfileFragment">
 
-
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profilePicture"
         android:layout_width="100dp"

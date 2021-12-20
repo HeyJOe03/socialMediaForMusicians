@@ -1,6 +1,6 @@
 import ExpressRouterCallback from "../../@types/expressCalback"
 import DB from "../../database/dbconnection"
-import { selectProfile, selectProfilePicture, selectPosts} from "../../database/sql/selectUser"
+import { selectProfile, selectProfilePicture, selectPostsInfo} from "../../database/sql/selectUser"
 
 export const profileFromID:ExpressRouterCallback = (req,res) => {
     if(!req.body.id)res.status(500)
@@ -59,15 +59,10 @@ export const userPosts: ExpressRouterCallback = (req,res) => {
 
     else{
         let id = parseInt(req.body.id)
-        let sql = selectPosts(id)
+        let sql = selectPostsInfo(id)
         DB.query(sql,(err,result) => {
             if(err) res.status(500).json({'error':"query error"})
-            else{
-                for(let i = 0; i < (result as any[]).length; i++)
-                    result[i].content = (result[i].content as Buffer).toString('base64')
-                
-                res.json({"result":result})
-            }
+            else res.json({"result":result})   
         })
     }
 

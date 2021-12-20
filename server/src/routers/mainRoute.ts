@@ -1,6 +1,4 @@
-import express, {Request,Response} from "express";
-import DB from "../database/dbconnection";
-
+import express, {Request,Response} from "express"
 const mainRouter = express.Router()
 export = mainRouter
 

@@ -44,7 +44,7 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
     private var isLookingSomeoneToPlayWith: Boolean = false
     private lateinit var name: String
     private lateinit var email: String
-    private var profileImg: Bitmap? = null
+    //private var profileImg: Bitmap? = null
 
     private lateinit var adapter: ProfilePostRecycleView
     private lateinit var layoutMenager: LinearLayoutManager
@@ -85,10 +85,6 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
             adapter.setData(posts.toList())
             setProfileDataView()
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     private fun postRequests() {
@@ -152,17 +148,15 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
                 instrumentInterestedIn = response["instrument_interested_in"] as String
                 val n = (response["is_looking_someone_to_play_with"] as Int)
                 isLookingSomeoneToPlayWith = n == 1
-                profileImg = (response["profile_image"] as String).toBitmap()
+                //profileImg = (response["profile_image"] as String).toBitmap()
 
                 val url = GLOBALS.SERVER_PROFILE_PIC(userID)
-                Log.println(Log.DEBUG,"url",url)
 
-                /*
                 b.profilePicture.load(url){
                     crossfade(true)
                     placeholder(R.drawable.ic_placeholder)
                     transformations(CircleCropTransformation())
-                } */
+                }
 
                 setProfileDataView()
             }
@@ -178,10 +172,11 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
         b.instrumentInterestedInTV.text = instrumentInterestedIn
         b.usernameTV.text = username
         // oldW : newW = oldH : newH
+        /*
         if(profileImg != null){
             b.profilePicture.setImageBitmap(profileImg)
             b.profilePicture.scaleType = ImageView.ScaleType.CENTER_CROP
-        }
+        }*/
     }
 
     override fun onClickListener(position: Int) {
