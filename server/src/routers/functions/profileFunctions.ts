@@ -15,13 +15,17 @@ export const profileFromID:ExpressRouterCallback = (req,res) => {
             }
         } else id = req.body.id
         let sql = selectProfile(id)
+        console.log(sql)
         DB.query(sql, (err,result) => {
-            if(err) res.status(500)
+            if(err){
+                res.status(500)
+                console.log(err)
+            } 
             else if( result[0] == undefined) res.status(500).send("no result")
             else res.json(result[0])
             /*{
-               // const b64 = Buffer.from(result[0].profile_image).toString('base64')
-                //res.json({...result[0],'profile_image':b64})
+               // const b64 = Buffer.from(result[0].profile_pic).toString('base64')
+                //res.json({...result[0],'profile_pic':b64})
                 res.json(result[0])
             }*/
         })
@@ -47,9 +51,9 @@ export const profileImageFromID:ExpressRouterCallback =(req,res) => {
             // console.log(result)
             res.writeHead(200, {
                 'Content-Type': 'image/png',
-                'Content-Length': (result[0].profile_image as Buffer).length
+                'Content-Length': (result[0].profile_pic as Buffer).length
             });
-            res.end(result[0].profile_image as Buffer)
+            res.end(result[0].profile_pic as Buffer)
         }
     })
 

@@ -89,8 +89,6 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
 
     private fun postRequests() {
 
-        Log.println(Log.ERROR,"requesting","vhfhidfuhgdifghdfihgidfhigdhih")
-
         val postUrl = GLOBALS.SERVER_PROFILE_POSTS
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
@@ -106,11 +104,10 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
             postUrl,
             postData,
             { response ->
-                Log.println(Log.ERROR,"lenght",(response["result"] as JSONArray).length().toString())
+                //Log.println(Log.DEBUG,"lenght",(response["result"] as JSONArray).length().toString())
                 for(i in 0 until (response["result"] as JSONArray).length()) {
                     val post = gson.fromJson((response["result"] as JSONArray).get(i).toString(),Post::class.java)
                     posts.add(post)
-                    //Log.println(Log.DEBUG,"id",post.id.toString())
                 }
                 adapter.setData(posts.toList())
             }
@@ -171,12 +168,6 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
         b.descriptionTV.text = description
         b.instrumentInterestedInTV.text = instrumentInterestedIn
         b.usernameTV.text = username
-        // oldW : newW = oldH : newH
-        /*
-        if(profileImg != null){
-            b.profilePicture.setImageBitmap(profileImg)
-            b.profilePicture.scaleType = ImageView.ScaleType.CENTER_CROP
-        }*/
     }
 
     override fun onClickListener(position: Int) {

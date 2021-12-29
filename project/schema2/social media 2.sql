@@ -10,6 +10,7 @@ CREATE TABLE `user` (
   `lat` DECIMAL(8,6) DEFAULT 0,
   `lon` DECIMAL(9,6) DEFAULT 0,
   `description` text DEFAULT "",
+  `instrument_interested_in` text DEFAULT "",
   `profile_pic` longblob DEFAULT "",
   `created_at` timestamp DEFAULT (now()),
   `last_post` timestamp DEFAULT (now()),

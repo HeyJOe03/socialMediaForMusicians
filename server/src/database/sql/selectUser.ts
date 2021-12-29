@@ -8,12 +8,11 @@ export const selectOneUsername = (username: string) : string => {
 }
 
 export const selectProfile = (id: number) : string => {
-    return /*sql*/`SELECT user.id,username,name,email,is_looking_someone_to_play_with,description,instrument_interested_in 
-    FROM user LEFT JOIN aboutme ON user.id = aboutme.id WHERE user.id = ${id}`
+    return /*sql*/`SELECT username,name,email,description,instrument_interested_in,is_looking_someone_to_play_with FROM user WHERE id = ${id}`
 }
 
 export const selectProfilePicture = (id: number) : string => {
-    return /*sql*/`SELECT profile_image FROM aboutme WHERE aboutme.id = ${id}`
+    return /*sql*/`SELECT profile_pic FROM user WHERE user.id = ${id}`
 }
 
 export const selectPostsInfo = (id: number) : string => {
