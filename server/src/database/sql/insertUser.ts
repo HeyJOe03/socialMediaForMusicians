@@ -14,7 +14,7 @@ export const insertNewUser = (user: User) : string => {
 export const insertNewPost = (post: Post) : string => {
     let sql = /*sql*/`
         INSERT INTO posts (author,title,description,posted_by,content) 
-        VALUES ('${post.author}','${post.title}','${post.description}','${post.posted_by}',?)`
+        VALUES ('${post.author}','${post.title}','${post.description}',${post.posted_by},?)`
 
     return sql
 }

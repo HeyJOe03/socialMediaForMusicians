@@ -28,7 +28,6 @@ postRouter.get('/:id',(req,res) => {
 
 postRouter.post('/load',(req,res) => {
     const sql = insertNewPost(req.body as Post)
-    console.log(sql)
     const b = Buffer.from((req.body as Post).content,'base64')
     DB.query(sql,b,(err) => {
         if(err)res.json({'error':err.message})

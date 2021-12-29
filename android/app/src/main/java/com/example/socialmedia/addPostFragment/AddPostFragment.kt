@@ -1,7 +1,9 @@
 package com.example.socialmedia.addPostFragment
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -14,10 +16,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentTransaction
+import coil.load
+import coil.transform.CircleCropTransformation
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.databinding.FragmentAddPostBinding
 import kotlinx.coroutines.internal.artificialFrame
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -29,13 +39,7 @@ class AddPostFragment : Fragment() {
     private var indexCurrentPostPreview: Int = 1
     private val nOfPreviews: Int = 2
 
-
     private var imagePreview: Bitmap? = null
-    private var title: String = ""
-    private var author: String= ""
-    private var description: String= ""
-    private var hashtag: List<String> = emptyList()
-    private var tags: List<String> = emptyList()
 
     private val postPreview2Fragment: PostPreview2Fragment = PostPreview2Fragment()
 
@@ -72,12 +76,32 @@ class AddPostFragment : Fragment() {
         b.btnPost.setOnClickListener {
             val data = postPreview2Fragment.getData()
             data.put("content",imagePreview?.toBase64())
+            val sharedPreferences : SharedPreferences = activity!!.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
+            val userID = sharedPreferences.getLong(GLOBALS.SP_KEY_ID,-1)
+            data.put("posted_by",userID)
 
-            Log.println(Log.DEBUG,"request",data.toString())
-            //TODO: send
+            profileRequest(data)
+            activity?.onBackPressed()
+            // TODO: fixme sei una testa di cazzo devi chiudere sta cazzo di attività ciaone
         }
 
         if(hasCameraPermission) openCamera()
+    }
+
+    private fun profileRequest(postData: JSONObject){
+        val postUrl = GLOBALS.SERVER + "/post/load"
+        val requestQueue: RequestQueue = Volley.newRequestQueue(context)
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST,
+            postUrl,
+            postData,
+            {}
+        ) { error ->
+            error.printStackTrace()
+        }
+
+        requestQueue.add(jsonObjectRequest)
     }
 
     private fun setButtonsNextBack(){

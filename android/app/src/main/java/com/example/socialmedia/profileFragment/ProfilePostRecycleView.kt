@@ -41,17 +41,6 @@ class ProfilePostRecycleView(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        //viewHolder.postTitle.text = dataSet[position].description
-        /*
-        try {
-            val img: Bitmap? = dataSet[position].content.toBitmap()
-            if (img != null) // oldWidth : 400 = oldHeight : x
-                viewHolder.postImg.setImageBitmap(resizeBitmap(img, 400, (img.height * 400) / img.width))
-
-            viewHolder.postImg.contentDescription = dataSet[position].description
-        } catch (e: Exception) {
-            Log.println(Log.ERROR, "error", "null image conversion")
-        }*/
 
         viewHolder.postImg.load(GLOBALS.POST_IMG(dataSet[position].id)){
             crossfade(true)
