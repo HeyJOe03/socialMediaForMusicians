@@ -1,5 +1,5 @@
 CREATE TABLE `user` (
-  `id` bigint UNIQUE PRIMARY KEY NOT NULL,
+  `id` bigint UNIQUE PRIMARY KEY AUTO_INCREMENT,
   `username` varchar(20) UNIQUE NOT NULL,
   `email` varchar(30) NOT NULL,
   `hash_password` varchar(32) NOT NULL,
@@ -10,6 +10,7 @@ CREATE TABLE `user` (
   `lat` DECIMAL(8,6) DEFAULT 0,
   `lon` DECIMAL(9,6) DEFAULT 0,
   `description` text DEFAULT "",
+  `profile_pic` longblob DEFAULT "",
   `created_at` timestamp DEFAULT (now()),
   `last_post` timestamp DEFAULT (now()),
   `last_instrument_offer` timestamp DEFAULT (now()),

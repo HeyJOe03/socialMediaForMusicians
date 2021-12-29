@@ -1,7 +1,7 @@
 ///////////////////////user////////////////////////////
 
 Table user{
-  id bigint [pk, unique, not null] // auto-increment
+  id bigint [pk, unique, increment] // auto-increment
   username varchar(20) [unique, not null]
   email varchar(30) [not null]
   hash_password varchar(32) [not null]
@@ -12,6 +12,7 @@ Table user{
   lat DECIMAL(8,6) [default:0]
   lon DECIMAL(9,6) [default: 0]
   description text [default: ""]
+  profile_pic longblob [default: ""]
   created_at timestamp [default:`now()`]
   // when the user connect, for every followed
   // is checked if there is something to show

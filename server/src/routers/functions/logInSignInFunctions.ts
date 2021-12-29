@@ -2,7 +2,7 @@ import ExpressRouterCallback from "../../@types/expressCalback"
 import DB from "../../database/dbconnection"
 import { selectOneUsername, selectUserLogIn} from "../../database/sql/selectUser"
 import User from "../../@types/user"
-import { OkPacket } from "mysql"
+import { OkPacket, MysqlError } from "mysql"
 import { insertNewUser } from "../../database/sql/insertUser"
 
 export const userExist : ExpressRouterCallback = (req,res) => {
@@ -25,7 +25,10 @@ export const userSignUp : ExpressRouterCallback = (req,res) => {
     //else
     let sql = insertNewUser(obj)
     DB.query(sql, (err,results) => {
-        if(err) res.json({'error':'good','insertID':-1})
+        if(err){
+            res.json({'error':'impossible insert user','insertID':-1})
+            console.log(err)
+        }
         else res.json({'error':'good','insertID':(results as OkPacket).insertId})
     })
 }
