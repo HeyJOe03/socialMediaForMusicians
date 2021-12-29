@@ -22,6 +22,8 @@ export const userSignUp : ExpressRouterCallback = (req,res) => {
         return
     }
 
+    //console.log(req.body)
+
     //else
     let sql = insertNewUser(obj)
     DB.query(sql, (err,results) => {
