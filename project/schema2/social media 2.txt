@@ -1,72 +1,52 @@
+///////////////////////user////////////////////////////
+
 Table user{
   id bigint [pk, unique, not null] // auto-increment
   username varchar(20) [unique, not null]
-  name varchar [not null]
   email varchar(30) [not null]
   hash_password varchar(32) [not null]
-  about_me bigint [not null]
-  lat DECIMAL(8,6) [default:0]
-  lon DECIMAL(9,6) [default: 0]
-  post bigint [not null]
   is_online tinyint [default: 0]
   is_blocked tinyint [default: 0]
   is_looking_someone_to_play_with tinyint [default: 1]
-  created_at timestamp [not null]
-  last_profile_update timestamp [not null]
+  name varchar [not null]
+  lat DECIMAL(8,6) [default:0]
+  lon DECIMAL(9,6) [default: 0]
+  description text [default: ""]
+  created_at timestamp [default:`now()`]
   // when the user connect, for every followed
   // is checked if there is something to show
-  last_post timestamp
-  last_instrument_offer timestamp
-  last_music_sheet timestamp
+  last_post timestamp [default:`now()`]
+  last_instrument_offer timestamp [default:`now()`]
+  last_music_sheet timestamp [default:`now()`]
 }
 
-Table aboutme{
-  id bigint [pk,unique,not null]
-  description text [default: ""]
-  instrument_interested_in JSON
-  created_at timestamp [not null]
-  last_update_at timestamp [not null]
+Table follow{
+  id bigint [pk, increment, not null, unique]
+  follower bigint [not null, ref: > user.id]
+  followed bigint [not null, ref: > user.id]
 }
 
-Ref: user.about_me - aboutme.id
+//////////// contents ///////////////
 
 Table posts{
   id bigint [pk,increment, unique]
+  author varchar(255) [default:""]
+  title varchar(255) [default:""]
   description text [default:""]
   content longblob [not null]
   posted_by bigint [not null]
-  created_at timestamp [not null]
-  last_update_at timestamp [not null]
-  author varchar(255) [default:""]
-  title varchar(255) [default:""]
+  likes bigint [default:0]
+  created_at timestamp [default:`now()`]
+  last_update_at timestamp [default:`now()`]
 }
-
-Ref: posts.posted_by > user.id
-
-Table hashtag{
-  id bigint [pk,unique,increment]
-  used bigint [not null]
-  hashtag_ref bigint
-}
-
-Ref: hashtag.used > posts.id
 
 Table secondhandinstruments{
   id bigint [pk,unique,increment]
   posted_by bigint [not null]
   price smallint [not null]
   instrument_description text [default: ""]
-  created_at timestamp [not null]
-  last_update_at timestamp [not null]
-}
-
-Ref: hashtag.used > secondhandinstruments.id
-Ref: secondhandinstruments.posted_by > user.id
-
-Table follow{
-  id bigint [pk, increment, not null, unique]
-  follower bigint [not null, ref: > user.id]
-  followed bigint [not null, ref: > user.id]
+  created_at timestamp [default:`now()`]
+  last_update_at timestamp [default:`now()`]
 }
 
 Table musicsheet{
@@ -76,46 +56,35 @@ Table musicsheet{
   title varchar(255) [not null]
   description text [default:""]
   sheet longblob [not null]
-  created_at timestamp [not null]
-  last_update_at timestamp [not null]
+  created_at timestamp [default:`now()`]
+  last_update_at timestamp [default:`now()`]
 }
 
-Ref: musicsheet.id < hashtag.used
-Ref: musicsheet.posted_by > user.id
+///////////////////////////////////////7///////
+
+Table hashtag{
+  id bigint [pk,unique,increment]
+  hashtag_name text [not null]
+  hashtag_in bigint [not null]
+}
 
 Table tag{
   id bigint [unique, pk, increment]
-  tagged bigint [not null,ref: > user.id]
-  where bigint [not null]
+  tagged bigint
+  tagged_in bigint [not null]
 }
-
-ref: tag.where > posts.id
-ref: tag.where > musicsheet.id
-ref: tag.where > secondhandinstruments.id
 
 Table taggedinstruments{
   id bigint [unique,increment,pk]
-  // instruments are a "close" number
-  name_id bigint
-  where bigint [not null]
+  instrument_name text [not null]
+  tagged_in bigint [not null]
 }
 
-Ref: taggedinstruments.where > posts.id
- // what an user can play
-Ref: taggedinstruments.where > user.id
-Ref: taggedinstruments.where > musicsheet.id
-Ref: taggedinstruments.where > secondhandinstruments.id
-Ref: taggedinstruments.where > searchplayer.id
+/////////// relations ////////////////////
 
-
-Table searchplayer{
-  id bigint [unique,increment,pk]
-  searcher bigint [not null]
-  lat DECIMAL(8,6) [default:0]
-  lon DECIMAL(9,6) [default: 0]
-  description text [default:""]
-}
-
-Ref: searchplayer.searcher > user.id
+Ref: musicsheet.posted_by > user.id
+Ref: tag.tagged > user.id
+Ref: secondhandinstruments.posted_by > user.id
+Ref: posts.posted_by > user.id
 
 
