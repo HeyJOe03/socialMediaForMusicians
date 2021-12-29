@@ -7,26 +7,37 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.FragmentTransaction
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.databinding.FragmentAddPostBinding
-import com.example.socialmedia.databinding.PostPreview2Binding
+import kotlinx.coroutines.internal.artificialFrame
 import java.io.ByteArrayOutputStream
+import java.util.*
 
 class AddPostFragment : Fragment() {
 
     private var _binding: FragmentAddPostBinding? = null
     private val b get() = _binding!!
     private var hasCameraPermission: Boolean = false
-    private var imagePreview: Bitmap? = null
     private var indexCurrentPostPreview: Int = 1
     private val nOfPreviews: Int = 2
+
+
+    private var imagePreview: Bitmap? = null
+    private var title: String = ""
+    private var author: String= ""
+    private var description: String= ""
+    private var hashtag: List<String> = emptyList()
+    private var tags: List<String> = emptyList()
+
+    private val postPreview2Fragment: PostPreview2Fragment = PostPreview2Fragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +45,7 @@ class AddPostFragment : Fragment() {
         if(ActivityCompat.checkSelfPermission(this.context!!, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.CAMERA),GLOBALS.CAMERA_PERMISSION_REQUEST_CODE)
         } else hasCameraPermission = true
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -55,6 +67,14 @@ class AddPostFragment : Fragment() {
             indexCurrentPostPreview--
             setButtonsNextBack()
             runFragment()
+        }
+
+        b.btnPost.setOnClickListener {
+            val data = postPreview2Fragment.getData()
+            data.put("content",imagePreview?.toBase64())
+
+            Log.println(Log.DEBUG,"request",data.toString())
+            //TODO: send
         }
 
         if(hasCameraPermission) openCamera()
@@ -80,11 +100,12 @@ class AddPostFragment : Fragment() {
     }
 
     private fun runFragment(){
-        val fragment : Fragment = when (indexCurrentPostPreview){
+        val fragment: Fragment = when (indexCurrentPostPreview){
             1 -> PostPreview1Fragment(imagePreview)
-            2 -> PostPreview2Fragment()
+            2 -> postPreview2Fragment
             else -> throw Exception("indexCurrentPostPreview out of range")
         }
+
         val transaction = childFragmentManager.beginTransaction()
         transaction.apply {
             replace(R.id.fl_addPost_wrapper, fragment)
@@ -99,12 +120,11 @@ class AddPostFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == GLOBALS.CAMERA_PHOTO_RESULT_CODE){
             val pic: Bitmap? = data?.getParcelableExtra("data")
             imagePreview = pic
-            val fragment: PostPreview1Fragment = PostPreview1Fragment(imagePreview)
-            val transaction = childFragmentManager.beginTransaction()
+            val fragment = PostPreview1Fragment(imagePreview)
+            val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
             transaction.apply {
                 replace(R.id.fl_addPost_wrapper, fragment)
                 commit()
@@ -118,7 +138,7 @@ class AddPostFragment : Fragment() {
     }
 
     private fun openCamera(){
-        var i = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val i = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(i,GLOBALS.CAMERA_PHOTO_RESULT_CODE)
     }
 
@@ -135,6 +155,4 @@ class AddPostFragment : Fragment() {
         val b = baos.toByteArray()
         return Base64.encodeToString(b, Base64.DEFAULT)
     }
-
-
 }

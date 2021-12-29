@@ -7,11 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.socialmedia.R
-import com.example.socialmedia.databinding.PostPreview1Binding
 import com.google.android.material.imageview.ShapeableImageView
 
 class PostPreview1Fragment(
-    val img: Bitmap?
+    private val img: Bitmap?
 ) : Fragment() {
     private lateinit var imageView: ShapeableImageView
 
@@ -26,7 +25,4 @@ class PostPreview1Fragment(
         imageView.setImageBitmap(img)
     }
 
-    /*fun setData(img: Bitmap?){
-        imageView.setImageBitmap(img)
-    }*/
 }

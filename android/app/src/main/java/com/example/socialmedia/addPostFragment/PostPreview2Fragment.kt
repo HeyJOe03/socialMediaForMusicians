@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.socialmedia.R
 import com.example.socialmedia.databinding.FragmentAddPostBinding
 import com.example.socialmedia.databinding.PostPreview2Binding
+import org.json.JSONObject
 
 class PostPreview2Fragment : Fragment() {
 
@@ -25,15 +26,7 @@ class PostPreview2Fragment : Fragment() {
         // setResult("requestKey", bundleOf("bundleKey" to result))
     }
 
-    data class PostInformation(
-        val title: String,
-        val author: String,
-        val description: String,
-        val hastag: List<String>,
-        val tags: List<String>
-    )
-
-    fun getData(): PostInformation{
+    fun getData(): JSONObject{
 
         val hashtag: MutableList<String> = b.hashtagET.text.toString().split(" ").toMutableList()
         val tag: MutableList<String> = b.tagET.text.toString().split(" ").toMutableList()
@@ -48,17 +41,18 @@ class PostPreview2Fragment : Fragment() {
         tag.removeIf { !it.contains('@') }
 
         for (i in tag.indices) {
-            hashtag[i] = hashtag[i].filterNot { it == '@' }
-            hashtag[i] = hashtag[i].filterNot { it == ' ' }
+            tag[i] = tag[i].filterNot { it == '@' }
+            tag[i] = tag[i].filterNot { it == ' ' }
         }
 
-        return PostInformation(
-            b.titleET.text.toString(),
-            b.authorET.text.toString(),
-            b.descriptionET.text.toString(),
-            hashtag.toList(),
-            tag.toList()
-        )
+        val json: JSONObject = JSONObject()
+        json.put("hashtag",hashtag.toString())
+        json.put("tag",tag.toString())
+        json.put("description", b.descriptionET.text.toString())
+        json.put("author",b.authorET.text.toString())
+        json.put("title",b.titleET.text.toString())
+
+        return json
     }
 
     override fun onDestroyView() {
