@@ -41,6 +41,8 @@ export const profileImageFromID:ExpressRouterCallback =(req,res) => {
         return
     }
 
+    //console.log(id)
+
     const sql = selectProfilePicture(id)
 
     DB.query(sql, (err,result) => {
