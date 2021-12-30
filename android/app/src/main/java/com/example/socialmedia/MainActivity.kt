@@ -5,8 +5,10 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.socialmedia.addPostFragment.AddPostFragment
 import com.example.socialmedia.databinding.ActivityMainBinding
@@ -16,13 +18,20 @@ import com.example.socialmedia.homeFragment.HomeFragment
 import com.example.socialmedia.objects.SocketHandler
 import io.socket.client.Socket
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
 
     private lateinit var b: ActivityMainBinding
     private lateinit var sharedPref: SharedPreferences
     private var userID: Long = -1
 
     private lateinit var mSocket: Socket
+
+    override fun onClose(message: String) {
+        //Log.println(Log.ERROR, "message", "message ${message}")
+        //Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        b.navMenu.selectedItemId = R.id.ic_home
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         b = ActivityMainBinding.inflate(layoutInflater)
@@ -41,10 +50,9 @@ class MainActivity : AppCompatActivity() {
         SocketHandler.establishConnection()
         mSocket = SocketHandler.getSocket()
 
-
         val profileFragment : ProfileFragment = ProfileFragment()
         val homeFragment: HomeFragment = HomeFragment()
-        val addPostFragment: AddPostFragment = AddPostFragment()
+        val addPostFragment: AddPostFragment = AddPostFragment(this)
 
         makeCurrentFragment(homeFragment)
         b.navMenu.selectedItemId = R.id.ic_home
@@ -69,6 +77,8 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.main_menu,menu)
         return true
     }
+
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

@@ -16,7 +16,7 @@ class RegistrationErrorFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_registration_error, container, false)
+        return inflater.inflate(R.layout.fragment_dialog_registration_error, container, false)
     }
 
     private lateinit var errorTV : TextView

@@ -9,15 +9,12 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentTransaction
-import coil.load
-import coil.transform.CircleCropTransformation
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
@@ -25,19 +22,24 @@ import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.databinding.FragmentAddPostBinding
-import kotlinx.coroutines.internal.artificialFrame
-import org.json.JSONException
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.util.*
 
-class AddPostFragment : Fragment() {
+class AddPostFragment(
+    val setOnClose: AddPostFragment.SetOnClose
+) : Fragment() {
+
+    interface SetOnClose{
+        fun onClose(message: String)
+    }
 
     private var _binding: FragmentAddPostBinding? = null
     private val b get() = _binding!!
     private var hasCameraPermission: Boolean = false
     private var indexCurrentPostPreview: Int = 1
     private val nOfPreviews: Int = 2
+    private var message = "answer"
 
     private var imagePreview: Bitmap? = null
 
@@ -81,8 +83,6 @@ class AddPostFragment : Fragment() {
             data.put("posted_by",userID)
 
             profileRequest(data)
-            activity?.onBackPressed()
-            // TODO: fixme sei una testa di cazzo devi chiudere sta cazzo di attività ciaone
         }
 
         if(hasCameraPermission) openCamera()
@@ -96,9 +96,14 @@ class AddPostFragment : Fragment() {
             Request.Method.POST,
             postUrl,
             postData,
-            {}
+            {
+                message = "good"
+                parentFragmentManager.beginTransaction().remove(this).commit()
+            }
         ) { error ->
+            message = error.message.toString()
             error.printStackTrace()
+            parentFragmentManager.beginTransaction().remove(this).commit()
         }
 
         requestQueue.add(jsonObjectRequest)
@@ -159,6 +164,9 @@ class AddPostFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        setOnClose.onClose(message)
+
+        indexCurrentPostPreview = 1
     }
 
     private fun openCamera(){
