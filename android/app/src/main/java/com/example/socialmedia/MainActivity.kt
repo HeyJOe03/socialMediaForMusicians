@@ -11,7 +11,9 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.socialmedia.addPostFragment.AddPostFragment
+import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.ActivityMainBinding
+import com.example.socialmedia.dialogs.PostDialog
 import com.example.socialmedia.profileFragment.ProfileFragment
 import com.example.socialmedia.loginsigninActivities.LogInActivity
 import com.example.socialmedia.homeFragment.HomeFragment
@@ -26,9 +28,11 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
 
     private lateinit var mSocket: Socket
 
-    override fun onClose(message: String) {
+    override fun onClose(message: String, post: Post) {
         //Log.println(Log.ERROR, "message", "message ${message}")
         //Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        val dialog = PostDialog(post)
+        dialog.show(supportFragmentManager,"post dialog")
         b.navMenu.selectedItemId = R.id.ic_home
     }
 

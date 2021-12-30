@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
+import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.FragmentAddPostBinding
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -30,29 +32,17 @@ class AddPostFragment(
     val setOnClose: AddPostFragment.SetOnClose
 ) : Fragment() {
 
-    interface SetOnClose{
-        fun onClose(message: String)
-    }
-
     private var _binding: FragmentAddPostBinding? = null
     private val b get() = _binding!!
     private var hasCameraPermission: Boolean = false
     private var indexCurrentPostPreview: Int = 1
     private val nOfPreviews: Int = 2
     private var message = "answer"
+    private lateinit var post: Post
 
     private var imagePreview: Bitmap? = null
 
     private val postPreview2Fragment: PostPreview2Fragment = PostPreview2Fragment()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        if(ActivityCompat.checkSelfPermission(this.context!!, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.CAMERA),GLOBALS.CAMERA_PERMISSION_REQUEST_CODE)
-        } else hasCameraPermission = true
-
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -62,6 +52,10 @@ class AddPostFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAddPostBinding.bind(view)
+
+        if(ActivityCompat.checkSelfPermission(this.context!!, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.CAMERA),GLOBALS.CAMERA_PERMISSION_REQUEST_CODE)
+        } else hasCameraPermission = true
 
         b.btnNext.setOnClickListener{
             indexCurrentPostPreview++
@@ -82,25 +76,34 @@ class AddPostFragment(
             val userID = sharedPreferences.getLong(GLOBALS.SP_KEY_ID,-1)
             data.put("posted_by",userID)
 
-            profileRequest(data)
+            loadPostRequest(data)
         }
 
         if(hasCameraPermission) openCamera()
+        //else parentFragmentManager.beginTransaction().remove(this).commit()
     }
 
-    private fun profileRequest(postData: JSONObject){
+    private fun loadPostRequest(postData: JSONObject){
+
         val postUrl = GLOBALS.SERVER + "/post/load"
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
+
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.POST,
             postUrl,
             postData,
-            {
+            {it ->
+                post = Post(it.getLong("id"),postData.getString("description"),null,
+                    null,null,postData.getString("author"),postData.getString("title"))
                 message = "good"
                 parentFragmentManager.beginTransaction().remove(this).commit()
             }
         ) { error ->
+
+            post = Post(-1,postData.getString("description"),null,
+                null,null,postData.getString("author"),postData.getString("title"))
+            message = "good"
             message = error.message.toString()
             error.printStackTrace()
             parentFragmentManager.beginTransaction().remove(this).commit()
@@ -143,9 +146,15 @@ class AddPostFragment(
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode == GLOBALS.CAMERA_PERMISSION_REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.d("kfk","hviudvldfhbgiufhiuvfhiuvbhiuhfiuhbiugfhbiufhbgfbhfbfhbiuhhihiu")
+        Log.println(Log.ERROR,"request code",(requestCode == GLOBALS.CAMERA_PERMISSION_REQUEST_CODE).toString() )
+        Log.println(Log.ERROR,"grant results",grantResults.toString())
+        if(requestCode == GLOBALS.CAMERA_PERMISSION_REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             hasCameraPermission = true
+            openCamera()
+            Log.println(Log.ERROR,"result","eccomiiii")
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -164,8 +173,7 @@ class AddPostFragment(
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        setOnClose.onClose(message)
-
+        setOnClose.onClose(message,post)
         indexCurrentPostPreview = 1
     }
 
@@ -186,5 +194,9 @@ class AddPostFragment(
         this.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val b = baos.toByteArray()
         return Base64.encodeToString(b, Base64.DEFAULT)
+    }
+
+    interface SetOnClose{
+        fun onClose(message: String, post: Post)
     }
 }

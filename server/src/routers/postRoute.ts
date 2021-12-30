@@ -3,6 +3,7 @@ import DB from "../database/dbconnection";
 import { selectPostPicture } from "../database/sql/selectUser";
 import { insertNewPost } from "../database/sql/insertUser";
 import Post from "../@types/post";
+import { OkPacket } from "mysql";
 
 const postRouter = express.Router()
 export = postRouter
@@ -30,8 +31,8 @@ postRouter.post('/load',(req,res) => {
     //console.log({...req.body,content:(req.body.content as String).length})
     const sql = insertNewPost(req.body as Post)
     const b = Buffer.from((req.body as Post).content,'base64')
-    DB.query(sql,b,(err) => {
+    DB.query(sql,b,(err,result) => {
         if(err)res.json({'error':err.message})
-        else res.json({'ok':'ok'})
+        else res.json({'ok':'ok','id':(result as OkPacket).insertId})
     })
 })
