@@ -14,7 +14,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -24,6 +26,7 @@ import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.FragmentAddPostBinding
+import com.google.android.material.snackbar.Snackbar
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -38,9 +41,25 @@ class AddPostFragment(
     private var indexCurrentPostPreview: Int = 1
     private val nOfPreviews: Int = 2
     private var message = "answer"
-    private lateinit var post: Post
+    private var post: Post? = null
+
+    private lateinit var layout: View
+    //private lateinit var viewForStuff: View
 
     private var imagePreview: Bitmap? = null
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                hasCameraPermission = true
+                openCamera()
+            } else {
+                hasCameraPermission = false
+                parentFragmentManager.beginTransaction().remove(this).commit()
+            }
+        }
 
     private val postPreview2Fragment: PostPreview2Fragment = PostPreview2Fragment()
 
@@ -52,9 +71,12 @@ class AddPostFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAddPostBinding.bind(view)
+        layout = b.layoutMainAddPost
+
+        post = null
 
         if(ActivityCompat.checkSelfPermission(this.context!!, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.CAMERA),GLOBALS.CAMERA_PERMISSION_REQUEST_CODE)
+            requestPermission(view)
         } else hasCameraPermission = true
 
         b.btnNext.setOnClickListener{
@@ -80,7 +102,6 @@ class AddPostFragment(
         }
 
         if(hasCameraPermission) openCamera()
-        //else parentFragmentManager.beginTransaction().remove(this).commit()
     }
 
     private fun loadPostRequest(postData: JSONObject){
@@ -145,6 +166,7 @@ class AddPostFragment(
         }
     }
 
+    /*
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         Log.d("kfk","hviudvldfhbgiufhiuvfhiuvbhiuhfiuhbiugfhbiufhbgfbhfbfhbiuhhihiu")
@@ -155,7 +177,7 @@ class AddPostFragment(
             openCamera()
             Log.println(Log.ERROR,"result","eccomiiii")
         }
-    }
+    }*/
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == GLOBALS.CAMERA_PHOTO_RESULT_CODE){
@@ -196,7 +218,62 @@ class AddPostFragment(
         return Base64.encodeToString(b, Base64.DEFAULT)
     }
 
+    private fun requestPermission(view: View){
+        when {
+            ContextCompat.checkSelfPermission(
+                context!!,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                layout.showSnackbar(
+                    view,
+                    getString(R.string.permission_granted),
+                    Snackbar.LENGTH_INDEFINITE,
+                    null
+                ) {}
+            }
+
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                activity!!,
+                Manifest.permission.CAMERA
+            ) -> {
+                layout.showSnackbar(
+                    view,
+                    getString(R.string.permission_required),
+                    Snackbar.LENGTH_INDEFINITE,
+                    getString(R.string.ok)
+                ) {
+                    requestPermissionLauncher.launch(
+                        Manifest.permission.CAMERA
+                    )
+                }
+            }
+
+            else -> {
+                requestPermissionLauncher.launch(
+                    Manifest.permission.CAMERA
+                )
+            }
+        }
+    }
+
+    private fun View.showSnackbar(
+        view: View,
+        msg: String,
+        length: Int,
+        actionMessage: CharSequence?,
+        action: (View) -> Unit
+    ) {
+        val snackbar = Snackbar.make(view, msg, length)
+        if (actionMessage != null) {
+            snackbar.setAction(actionMessage) {
+                action(this)
+            }.show()
+        } else {
+            snackbar.show()
+        }
+    }
+
     interface SetOnClose{
-        fun onClose(message: String, post: Post)
+        fun onClose(message: String, post: Post?)
     }
 }

@@ -28,11 +28,14 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
 
     private lateinit var mSocket: Socket
 
-    override fun onClose(message: String, post: Post) {
+    override fun onClose(message: String, post: Post?) {
         //Log.println(Log.ERROR, "message", "message ${message}")
         //Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        val dialog = PostDialog(post)
-        dialog.show(supportFragmentManager,"post dialog")
+        if(post != null)
+        {
+            val dialog = PostDialog(post)
+            dialog.show(supportFragmentManager,"post dialog")
+        }
         b.navMenu.selectedItemId = R.id.ic_home
     }
 
