@@ -32,7 +32,7 @@ import java.io.ByteArrayOutputStream
 import java.util.*
 
 class AddPostFragment(
-    val setOnClose: AddPostFragment.SetOnClose
+    private val setOnClose: AddPostFragment.SetOnClose
 ) : Fragment() {
 
     private var _binding: FragmentAddPostBinding? = null
@@ -165,19 +165,6 @@ class AddPostFragment(
             commit()
         }
     }
-
-    /*
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        Log.d("kfk","hviudvldfhbgiufhiuvfhiuvbhiuhfiuhbiugfhbiufhbgfbhfbfhbiuhhihiu")
-        Log.println(Log.ERROR,"request code",(requestCode == GLOBALS.CAMERA_PERMISSION_REQUEST_CODE).toString() )
-        Log.println(Log.ERROR,"grant results",grantResults.toString())
-        if(requestCode == GLOBALS.CAMERA_PERMISSION_REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            hasCameraPermission = true
-            openCamera()
-            Log.println(Log.ERROR,"result","eccomiiii")
-        }
-    }*/
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == GLOBALS.CAMERA_PHOTO_RESULT_CODE){

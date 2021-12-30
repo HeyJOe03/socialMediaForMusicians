@@ -31,10 +31,9 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
     override fun onClose(message: String, post: Post?) {
         //Log.println(Log.ERROR, "message", "message ${message}")
         //Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        if(post != null)
-        {
+        if (post != null) {
             val dialog = PostDialog(post)
-            dialog.show(supportFragmentManager,"post dialog")
+            dialog.show(supportFragmentManager, "post dialog")
         }
         b.navMenu.selectedItemId = R.id.ic_home
     }
@@ -44,10 +43,10 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
         b = ActivityMainBinding.inflate(layoutInflater)
         setContentView(b.root)
 
-        sharedPref = this.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER,Context.MODE_PRIVATE)
-        userID = sharedPref.getLong(GLOBALS.SP_KEY_ID,-1)
+        sharedPref = this.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
+        userID = sharedPref.getLong(GLOBALS.SP_KEY_ID, -1)
 
-        if(userID == (-1).toLong()) { // if the user has not been saved locally
+        if (userID == (-1).toLong()) { // if the user has not been saved locally
             startActivity(Intent(this, LogInActivity::class.java)) // starts the login page
             this.finish() //close the activity
             return //end the function
@@ -57,15 +56,15 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
         SocketHandler.establishConnection()
         mSocket = SocketHandler.getSocket()
 
-        val profileFragment : ProfileFragment = ProfileFragment()
+        val profileFragment: ProfileFragment = ProfileFragment()
         val homeFragment: HomeFragment = HomeFragment()
         val addPostFragment: AddPostFragment = AddPostFragment(this)
 
         makeCurrentFragment(homeFragment)
         b.navMenu.selectedItemId = R.id.ic_home
 
-        b.navMenu.setOnNavigationItemSelectedListener{
-            when(it.itemId){
+        b.navMenu.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
                 R.id.ic_profile -> makeCurrentFragment(profileFragment)
                 R.id.ic_home -> makeCurrentFragment(homeFragment)
                 R.id.ic_add -> makeCurrentFragment(addPostFragment)
@@ -75,7 +74,7 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
     }
 
     private fun makeCurrentFragment(fragment: Fragment) =
-        supportFragmentManager.beginTransaction().apply{
+        supportFragmentManager.beginTransaction().apply {
             replace(R.id.fl_wrapper, fragment)
             commit()
         }
@@ -84,8 +83,6 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
         menuInflater.inflate(R.menu.main_menu,menu)
         return true
     }
-
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
