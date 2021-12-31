@@ -1,11 +1,12 @@
 import ExpressRouterCallback from "../../@types/expressCalback"
-import express from "express";
 import DB from "../../database/dbconnection";
 import { selectPostPicture } from "../../database/sql/selectUser";
 import { insertNewPost } from "../../database/sql/insertUser";
 import Post from "../../@types/post";
 import { OkPacket } from "mysql";
 import { deletePost } from "../../database/sql/delete";
+
+type BodyUpdate = {id:Number,author:string,title:string,description:string}
 
 export const getPostImgFromId : ExpressRouterCallback = (req,res) => {
     const id = parseInt(req.params.id)
@@ -46,4 +47,16 @@ export const deleteUserPost: ExpressRouterCallback = (req,res) => {
             else res.status(200).json(id)
         })
     }
+}
+
+export const updatePost: ExpressRouterCallback = (req,res) => {
+    const {id,author,title,description} : BodyUpdate = req.body
+
+    let sql = /*sql*/ `UPDATE posts SET author = '${author}',title = '${title}', description = '${description}' WHERE id = ${id};`
+
+    DB.query(sql,(err) => {
+        if(err)res.status(500).json({'error':err.message})
+        else res.status(200).json({'good':'ok'})
+    })
+
 }
