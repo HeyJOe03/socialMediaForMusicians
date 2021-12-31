@@ -171,11 +171,18 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
     }
 
     override fun onClickListener(position: Int) {
-        // Toast.makeText(this, posts[position].description, Toast.LENGTH_SHORT).show()
+
         val dialog = PostDialog(posts[position])
         dialog.show(childFragmentManager,"post dialog")
 
         //dismiss()
+    }
+
+    override fun onLongClickListener(position: Int) {
+
+        val dialog = PostDialog(posts[position])
+        dialog.show(childFragmentManager,"post update-delete dialog")
+
     }
 
     override fun onDestroyView() {

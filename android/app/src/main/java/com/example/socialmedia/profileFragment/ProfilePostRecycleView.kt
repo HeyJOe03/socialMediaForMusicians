@@ -30,6 +30,7 @@ class ProfilePostRecycleView(
             //postTitle = view.findViewById(R.id.post_title)
             itemView.setOnClickListener {
                 onItemClickListener.onClickListener(layoutPosition)
+                onItemClickListener.onLongClickListener(layoutPosition)
             }
         }
     }
@@ -72,28 +73,6 @@ class ProfilePostRecycleView(
 
     interface OnItemClickListener{
         fun onClickListener(position: Int)
+        fun onLongClickListener(position: Int)
     }
 }
-
-
-/*
-      *** reference source developer.android.com ***
-      Bitmap createScaledBitmap (Bitmap src, int dstWidth, int dstHeight, boolean filter)
-          Creates a new bitmap, scaled from an existing bitmap, when possible. If the specified
-          width and height are the same as the current width and height of the source bitmap,
-          the source bitmap is returned and no new bitmap is created.
-
-      Parameters
-          src Bitmap : The source bitmap.
-              This value must never be null.
-
-      dstWidth int : The new bitmap's desired width.
-      dstHeight int : The new bitmap's desired height.
-      filter boolean : true if the source should be filtered.
-
-      Returns
-          Bitmap : The new scaled bitmap or the source bitmap if no scaling is required.
-
-      Throws
-          IllegalArgumentException : if width is <= 0, or height is <= 0
-  */
