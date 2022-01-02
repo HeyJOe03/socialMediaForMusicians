@@ -1,6 +1,7 @@
 package com.example.socialmedia.dialogs
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
@@ -22,7 +23,8 @@ import org.json.JSONException
 import org.json.JSONObject
 
 class PostEditDialog(
-    private val post: Post
+    private val post: Post,
+    private val setOnDismiss: SetOnDismiss
 ): DialogFragment() {
     private var mView: View? = null
     private lateinit var b: PostEditDialogBinding
@@ -39,11 +41,7 @@ class PostEditDialog(
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         Log.println(Log.ERROR,"post in long click",post.toString())
 
@@ -60,11 +58,6 @@ class PostEditDialog(
         }
 
         return mView
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
     }
 
     private fun deletePostRequest() {
@@ -96,7 +89,7 @@ class PostEditDialog(
         val postData = JSONObject()
         postData.put("id", post.id)
         postData.put("author",b.authorET.text.toString())
-        postData.put("title",b.authorET.text.toString())
+        postData.put("title",b.titleET.text.toString())
         postData.put("description",b.descriptionET.text.toString())
 
         val jsonObjectRequest = JsonObjectRequest(
@@ -110,5 +103,20 @@ class PostEditDialog(
         }
 
         requestQueue.add(jsonObjectRequest)
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        setOnDismiss.onDismiss()
+    }
+
+    /*
+    fun onDismiss(dialog: DialogInterface,setOnDismiss: SetOnDismiss) {
+        super.onDismiss(dialog)
+        setOnDismiss.onDismiss()
+    }*/
+
+    interface SetOnDismiss{
+        fun onDismiss()
     }
 }

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,9 +29,11 @@ import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONArray
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 
 
-class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
+class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, PostEditDialog.SetOnDismiss {
 
     private var _binding: FragmentProfileBinding? = null
     private val b  get() = _binding!!
@@ -54,13 +57,9 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
 
     private val gson : Gson = Gson()
 
-    private var requestsDone = false
+    //private var requestsDone = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_profile,container,false)
     }
 
@@ -78,14 +77,19 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
         b.myPostRV.adapter = adapter
         b.myPostRV.layoutManager = layoutMenager
 
-        if(!requestsDone){
-            postRequests()
-            profileRequest()
-            requestsDone = true
-        } else {
-            adapter.setData(posts.toList())
-            setProfileDataView()
+        b.refreshLayout.setOnRefreshListener {
+            Handler().postDelayed(
+                { // Runnable
+                    postRequests()
+                    profileRequest()
+                    b.refreshLayout.isRefreshing = false
+                },
+                1000,
+            ) // This is how you can choose when it will end
         }
+
+        postRequests()
+        profileRequest()
     }
 
     private fun postRequests() {
@@ -180,10 +184,8 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
     }
 
     override fun onLongClickListener(position: Int) {
-
-        val dialog = PostEditDialog(posts[position])
+        val dialog = PostEditDialog(posts[position],this)
         dialog.show(childFragmentManager,"post update-delete dialog")
-
     }
 
     override fun onDestroyView() {
@@ -191,10 +193,8 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
         _binding = null
     }
 
-    private fun String.toBitmap(): Bitmap? {
-        Base64.decode(this, Base64.DEFAULT).apply {
-            return BitmapFactory.decodeByteArray(this, 0, size)
-        }
+    override fun onDismiss() {
+        TODO("Not yet implemented, call the refresh")
     }
 
 }
