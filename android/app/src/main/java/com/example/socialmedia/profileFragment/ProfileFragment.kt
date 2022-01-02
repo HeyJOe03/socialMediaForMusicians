@@ -2,11 +2,8 @@ package com.example.socialmedia.profileFragment
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Handler
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,8 +26,6 @@ import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONArray
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 
 
 class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, PostEditDialog.SetOnDismiss {
@@ -80,16 +75,14 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
         b.refreshLayout.setOnRefreshListener {
             Handler().postDelayed(
                 { // Runnable
-                    postRequests()
-                    profileRequest()
+                    refresh()
                     b.refreshLayout.isRefreshing = false
                 },
                 1000,
             ) // This is how you can choose when it will end
         }
 
-        postRequests()
-        profileRequest()
+        refresh()
     }
 
     private fun postRequests() {
@@ -109,7 +102,8 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
             postUrl,
             postData,
             { response ->
-                //Log.println(Log.DEBUG,"lenght",(response["result"] as JSONArray).length().toString())
+                posts.clear()
+
                 for(i in 0 until (response["result"] as JSONArray).length()) {
                     val post = gson.fromJson((response["result"] as JSONArray).get(i).toString(),Post::class.java)
                     posts.add(post)
@@ -119,7 +113,6 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
         ) { error ->
             error.printStackTrace()
             Log.println(Log.ERROR,"error","errror")
-
         }
 
         requestQueue.add(jsonObjectRequest)
@@ -176,11 +169,8 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
     }
 
     override fun onClickListener(position: Int) {
-
         val dialog = PostDialog(posts[position])
         dialog.show(childFragmentManager,"post dialog")
-
-        //dismiss()
     }
 
     override fun onLongClickListener(position: Int) {
@@ -193,8 +183,13 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
         _binding = null
     }
 
+    private fun refresh(){
+        postRequests()
+        profileRequest()
+    }
+
     override fun onDismiss() {
-        TODO("Not yet implemented, call the refresh")
+        refresh()
     }
 
 }

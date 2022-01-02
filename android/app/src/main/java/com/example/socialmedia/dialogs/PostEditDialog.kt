@@ -1,6 +1,7 @@
 package com.example.socialmedia.dialogs
 
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
@@ -57,6 +58,10 @@ class PostEditDialog(
             deletePostRequest()
         }
 
+        b.postEditDialogLayout.setOnClickListener {
+            dismiss()
+        }
+
         return mView
     }
 
@@ -109,12 +114,6 @@ class PostEditDialog(
         super.onDismiss(dialog)
         setOnDismiss.onDismiss()
     }
-
-    /*
-    fun onDismiss(dialog: DialogInterface,setOnDismiss: SetOnDismiss) {
-        super.onDismiss(dialog)
-        setOnDismiss.onDismiss()
-    }*/
 
     interface SetOnDismiss{
         fun onDismiss()
