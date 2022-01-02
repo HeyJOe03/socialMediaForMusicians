@@ -50,6 +50,7 @@ export const deleteUserPost: ExpressRouterCallback = (req,res) => {
 }
 
 export const updatePost: ExpressRouterCallback = (req,res) => {
+
     const {id,author,title,description} : BodyUpdate = req.body
 
     let sql = /*sql*/ `UPDATE posts SET author = '${author}',title = '${title}', description = '${description}' WHERE id = ${id};`
