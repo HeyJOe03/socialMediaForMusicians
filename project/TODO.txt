@@ -1,2 +1,0 @@
-[ ] update - delete post //FIX GLOBALS
-[ ] update -delete profile
