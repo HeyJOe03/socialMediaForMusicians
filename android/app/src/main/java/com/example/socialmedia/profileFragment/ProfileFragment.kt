@@ -23,6 +23,7 @@ import com.example.socialmedia.R
 import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.FragmentProfileBinding
 import com.example.socialmedia.dialogs.PostDialog
+import com.example.socialmedia.dialogs.PostEditDialog
 import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
@@ -180,7 +181,7 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener {
 
     override fun onLongClickListener(position: Int) {
 
-        val dialog = PostDialog(posts[position])
+        val dialog = PostEditDialog(posts[position])
         dialog.show(childFragmentManager,"post update-delete dialog")
 
     }

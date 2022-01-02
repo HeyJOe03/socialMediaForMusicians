@@ -30,7 +30,11 @@ class ProfilePostRecycleView(
             //postTitle = view.findViewById(R.id.post_title)
             itemView.setOnClickListener {
                 onItemClickListener.onClickListener(layoutPosition)
+            }
+
+            itemView.setOnLongClickListener {
                 onItemClickListener.onLongClickListener(layoutPosition)
+                true
             }
         }
     }

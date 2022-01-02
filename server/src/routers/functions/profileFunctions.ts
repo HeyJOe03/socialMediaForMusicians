@@ -15,7 +15,7 @@ export const profileFromID:ExpressRouterCallback = (req,res) => {
             }
         } else id = req.body.id
         let sql = selectProfile(id)
-        console.log(sql)
+        
         DB.query(sql, (err,result) => {
             if(err){
                 res.status(500)

@@ -1,2 +1,2 @@
-[ ] update - delete post
+[ ] update - delete post //done serverside now I was putting images in the client layout 
 [ ] update -delete profile
