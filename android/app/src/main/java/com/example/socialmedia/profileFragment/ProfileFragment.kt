@@ -27,7 +27,6 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONArray
 
-
 class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, PostEditDialog.SetOnDismiss {
 
     private var _binding: FragmentProfileBinding? = null
