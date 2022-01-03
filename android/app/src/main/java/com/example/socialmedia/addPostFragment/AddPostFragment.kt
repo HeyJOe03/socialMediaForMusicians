@@ -1,11 +1,14 @@
 package com.example.socialmedia.addPostFragment
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
@@ -24,6 +27,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
+import com.example.socialmedia.ShopFragment
 import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.FragmentAddPostBinding
 import com.google.android.material.snackbar.Snackbar
@@ -76,6 +80,15 @@ class AddPostFragment(
             runFragment()
         }
 
+        b.btnLoadFromCamera.setOnClickListener {
+            if(hasCameraPermission) openCamera()
+            else requestPermission(view)
+        }
+
+        b.btnLoadFromGallery.setOnClickListener {
+            pickImage()
+        }
+
         b.btnPost.setOnClickListener {
             val data = postPreview2Fragment.getData()
             data.put("content",imagePreview?.toBase64())
@@ -85,8 +98,12 @@ class AddPostFragment(
 
             loadPostRequest(data)
         }
+    }
 
-        //if(hasCameraPermission) openCamera()
+    private fun pickImage(){
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, GLOBALS.IMAGE_REQUEST_CODE)
     }
 
     private fun loadPostRequest(postData: JSONObject){
@@ -161,6 +178,29 @@ class AddPostFragment(
                 replace(R.id.fl_addPost_wrapper, fragment)
                 commit()
             }
+
+            b.btnLoadFromGallery.visibility = View.GONE
+            b.btnLoadFromCamera.visibility = View.GONE
+            b.btnNext.visibility = View.VISIBLE
+        }
+        else if(requestCode == GLOBALS.IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            //image.setImageURI(data?.data)
+            val imagePreview = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, data?.data!!))
+            } else {
+                MediaStore.Images.Media.getBitmap(requireContext().contentResolver, data?.data!!)
+            }
+
+            val fragment = PostPreview1Fragment(imagePreview)
+            val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
+            transaction.apply {
+                replace(R.id.fl_addPost_wrapper, fragment)
+                commit()
+            }
+
+            b.btnLoadFromGallery.visibility = View.GONE
+            b.btnLoadFromCamera.visibility = View.GONE
+            b.btnNext.visibility = View.VISIBLE
         }
     }
 

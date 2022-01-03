@@ -32,4 +32,5 @@ object GLOBALS {
 
     const val CAMERA_PHOTO_RESULT_CODE: Int = 102
     const val CAMERA_PERMISSION_REQUEST_CODE: Int = 101
+    const val IMAGE_REQUEST_CODE: Int = 103
 }
