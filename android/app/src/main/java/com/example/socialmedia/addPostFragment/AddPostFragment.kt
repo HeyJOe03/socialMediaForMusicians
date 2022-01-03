@@ -276,10 +276,7 @@ class AddPostFragment(
         fun onClose(message: String, post: Post?)
     }
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
                 hasCameraPermission = true
                 openCamera()
