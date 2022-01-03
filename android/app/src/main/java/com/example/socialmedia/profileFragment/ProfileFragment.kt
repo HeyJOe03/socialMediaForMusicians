@@ -81,6 +81,10 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
             ) // This is how you can choose when it will end
         }
 
+        b.btnEditProfile.setOnClickListener{
+
+        }
+
         refresh()
     }
 
