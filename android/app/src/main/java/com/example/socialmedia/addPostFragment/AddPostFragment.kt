@@ -44,27 +44,12 @@ class AddPostFragment(
     private var post: Post? = null
 
     private lateinit var layout: View
-    //private lateinit var viewForStuff: View
 
     private var imagePreview: Bitmap? = null
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                hasCameraPermission = true
-                openCamera()
-            } else {
-                hasCameraPermission = false
-                parentFragmentManager.beginTransaction().remove(this).commit()
-            }
-        }
-
     private val postPreview2Fragment: PostPreview2Fragment = PostPreview2Fragment()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_add_post, container, false)
     }
 
@@ -101,7 +86,7 @@ class AddPostFragment(
             loadPostRequest(data)
         }
 
-        if(hasCameraPermission) openCamera()
+        //if(hasCameraPermission) openCamera()
     }
 
     private fun loadPostRequest(postData: JSONObject){
@@ -191,13 +176,6 @@ class AddPostFragment(
         startActivityForResult(i,GLOBALS.CAMERA_PHOTO_RESULT_CODE)
     }
 
-    private fun encodeImage(bm: Bitmap): String? {
-        val baos = ByteArrayOutputStream()
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val b = baos.toByteArray()
-        return Base64.encodeToString(b, Base64.DEFAULT)
-    }
-
     private fun Bitmap.toBase64(): String? {
         val baos = ByteArrayOutputStream()
         this.compress(Bitmap.CompressFormat.JPEG, 100, baos)
@@ -243,13 +221,7 @@ class AddPostFragment(
         }
     }
 
-    private fun View.showSnackbar(
-        view: View,
-        msg: String,
-        length: Int,
-        actionMessage: CharSequence?,
-        action: (View) -> Unit
-    ) {
+    private fun View.showSnackbar(view: View, msg: String, length: Int, actionMessage: CharSequence?, action: (View) -> Unit) {
         val snackbar = Snackbar.make(view, msg, length)
         if (actionMessage != null) {
             snackbar.setAction(actionMessage) {
@@ -263,4 +235,17 @@ class AddPostFragment(
     interface SetOnClose{
         fun onClose(message: String, post: Post?)
     }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                hasCameraPermission = true
+                openCamera()
+            } else {
+                hasCameraPermission = false
+                parentFragmentManager.beginTransaction().remove(this).commit()
+            }
+        }
 }
