@@ -77,6 +77,64 @@
             android:textColor="@color/black"
             />
 
+        <Button
+            android:id="@+id/looking_for_other_players_btn"
+            android:background="@drawable/btn_looking_for_other_players"
+            android:layout_width="match_parent"
+            android:layout_margin="20dp"
+            android:text="I'm looking for other people to play with"
+            android:textColor="#000000"
+            android:textSize="13sp"
+            android:layout_height="40dp"
+            android:shadowColor="#FAFAFA"/>
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical">
+            <LinearLayout
+                android:weightSum="2"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_get_coord"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Get Coord"/>
+                <Button
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="clear coord"/>
+
+
+
+            </LinearLayout>
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="2"
+               android:orientation="horizontal">
+               <EditText
+                   android:id="@+id/lat_ET"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:textColor="@color/black"
+                   android:textColorHint="@color/grey_500"
+                   android:hint="lat"/>
+               <EditText
+                   android:id="@+id/lon_ET"
+                   android:textColor="@color/black"
+                   android:textColorHint="@color/grey_500"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:hint="lon"/>
+           </LinearLayout>
+       </LinearLayout>
 
     </LinearLayout>
 </ScrollView>
