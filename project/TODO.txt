@@ -1,4 +1,6 @@
 - [] profile update
+     - add in shared preferences the profile in the login
+     - add load image profile from editPost
 
 -[] timestamp last update
 
