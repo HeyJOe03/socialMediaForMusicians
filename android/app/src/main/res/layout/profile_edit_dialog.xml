@@ -29,37 +29,41 @@
 
         <EditText
             android:id="@+id/usernameET"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="username:"
+            android:inputType="text"
             android:textColorHint="@color/grey_500"
             android:textColor="@color/black"
             />
 
         <EditText
             android:id="@+id/emailET"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="email:"
+            android:inputType="textEmailAddress"
             android:textColorHint="@color/grey_500"
             android:textColor="@color/black"
             />
 
         <EditText
             android:id="@+id/nameET"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="name:"
+            android:inputType="text"
             android:textColorHint="@color/grey_500"
             android:textColor="@color/black"
             />
 
         <EditText
             android:id="@+id/descriptionET"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:inputType="text"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="description:"
@@ -69,9 +73,10 @@
 
         <EditText
             android:id="@+id/instrument_interested_in_ET"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:inputType="text"
             android:hint="instrument you are interested in:"
             android:textColorHint="@color/grey_500"
             android:textColor="@color/black"
