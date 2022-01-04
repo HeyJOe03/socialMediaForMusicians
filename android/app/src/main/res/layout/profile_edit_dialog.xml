@@ -11,6 +11,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:background = "@color/white"
         android:padding="20dp">
 
@@ -83,10 +84,12 @@
             />
 
         <Button
-            android:id="@+id/looking_for_other_players_btn"
+            android:id="@+id/btn_looking_for_other_players"
             android:background="@drawable/btn_looking_for_other_players"
-            android:layout_width="match_parent"
-            android:layout_margin="20dp"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"
             android:text="I'm looking for other people to play with"
             android:textColor="#000000"
             android:textSize="13sp"
@@ -139,7 +142,15 @@
                    android:layout_weight="1"
                    android:hint="lon"/>
            </LinearLayout>
-       </LinearLayout>
 
+       </LinearLayout>
+        <Button
+            android:id="@+id/btn_edit_save"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="Save"
+            android:layout_gravity="center"
+            android:textSize="30sp"
+            android:background="@drawable/button_design"/>
     </LinearLayout>
 </ScrollView>

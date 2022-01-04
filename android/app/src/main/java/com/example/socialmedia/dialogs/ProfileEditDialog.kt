@@ -24,13 +24,24 @@ class ProfileEditDialog : DialogFragment() {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         // buttons
+        b.btnGetCoord.setOnClickListener {
+
+        }
+
+        b.btnLookingForOtherPlayers.setOnClickListener {
+
+        }
+
+        b.btnEditSave.setOnClickListener {
+
+        }
+
+        b.profilePic.setOnClickListener {
+            
+        }
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
