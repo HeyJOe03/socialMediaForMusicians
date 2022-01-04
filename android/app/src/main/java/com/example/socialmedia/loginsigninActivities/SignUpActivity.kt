@@ -90,7 +90,7 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    fun submitNewUserRequest(username: String, password:String, email: String, name: String, lookingForOtherPlayers:Boolean){
+    private fun submitNewUserRequest(username: String, password:String, email: String, name: String, lookingForOtherPlayers:Boolean){
         val postUrl = GLOBALS.SERVER_SIGN_UP
         val requestQueue: RequestQueue = Volley.newRequestQueue(this)
 
