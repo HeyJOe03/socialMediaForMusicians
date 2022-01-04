@@ -1,6 +1,10 @@
 import ExpressRouterCallback from "../../@types/expressCalback"
 import DB from "../../database/dbconnection"
-import { selectProfile, selectProfilePicture, selectPostsInfo} from "../../database/sql/selectUser"
+import { selectProfile, selectProfilePicture, selectPostsInfo, selectOneUsername} from "../../database/sql/selectUser"
+import Profile from "../../@types/profile"
+import { Response } from "express"
+import { updateProfile } from "../../database/sql/update"
+import { OkPacket, queryCallback } from "mysql"
 
 export const profileFromID:ExpressRouterCallback = (req,res) => {
     if(!req.body.id)res.status(500)
@@ -74,4 +78,45 @@ export const userPosts: ExpressRouterCallback = (req,res) => {
         })
     }
 
+}
+
+export const profileEdit: ExpressRouterCallback = (req,res) => {
+    const newProfile = req.body as Profile
+
+    const inputsOK: string = inputCheck(newProfile)
+
+    if(inputsOK != 'good') res.status(500).json({'err':inputsOK})
+
+    else{
+
+        const sql = updateProfile(newProfile)
+        DB.query(sql,newProfile.profile_pic? Buffer.from(newProfile.profile_pic,'base64') : null,(err,result) => {
+            if (err) res.status(500).json({'err':err.message})
+            else{
+                if((result as OkPacket).affectedRows == 1)res.status(200).json({"query":"good"})
+                else res.status(500).json({"result":result})
+            }
+        })
+
+
+    }
+
+}
+
+const inputCheck = (p:Profile): string => {
+
+    const usernameRegex = new RegExp(/^[a-zA-Z0-9](_(?!(\\.|_))|\\.(?!(_|\\.))|[a-zA-Z0-9]){6,18}[a-zA-Z0-9]$/)
+    const emailRegex = new RegExp(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/)
+    const nameRegex = new RegExp(/^[a-zA-Z]+$/)
+
+    if(!p.username || !p.name || !p.email //|| !p.hash_password 
+        || p.is_looking_someone_to_play_with == null || p.lat == null 
+        || p.lon == null || p.description == null 
+        || p.instrument_interested_in == null //|| p.profile_pic == null
+        ) return "Missing fields"
+    else if(!usernameRegex.test(p.username)) return "Error in the username sintax"
+    else if (!emailRegex.test(p.email)) return "error in the email sintax"
+    else if (!nameRegex.test(p.name)) return "error in the name, it mustn't contain number, spaces or symbols"
+    //else if (p.hash_password.length != 32) return "password must be the first 32 character of Hash256"
+    else return "good"   
 }

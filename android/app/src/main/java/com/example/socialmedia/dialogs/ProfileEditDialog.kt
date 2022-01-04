@@ -40,7 +40,7 @@ class ProfileEditDialog : DialogFragment() {
         }
 
         b.profilePic.setOnClickListener {
-            
+
         }
 
         return super.onCreateView(inflater, container, savedInstanceState)
