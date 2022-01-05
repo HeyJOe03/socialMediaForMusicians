@@ -32,6 +32,7 @@ class ProfileEditDialog : DialogFragment() {
     private lateinit var b: ProfileEditDialogBinding
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var profilePic: Bitmap
+    private var profileIsChanged = false
 
     // binding
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -89,6 +90,7 @@ class ProfileEditDialog : DialogFragment() {
 
         if(requestCode == GLOBALS.IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             b.profilePic.setImageURI(data?.data)
+            profileIsChanged = true
             profilePic = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 ImageDecoder.decodeBitmap(
                     ImageDecoder.createSource(
@@ -109,7 +111,7 @@ class ProfileEditDialog : DialogFragment() {
         val userID = sharedPreferences.getLong(GLOBALS.SP_KEY_ID,-1)
         val hash_password = sharedPreferences.getString(GLOBALS.SP_KEY_PW,"")
 
-        val is_looking_someone_to_play_with : Boolean = (b.btnLookingForOtherPlayers.background.constantState == resources.getDrawable(R.id.btnLookingForOtherPlayers)?.constantState)
+        val is_looking_someone_to_play_with : Boolean = (b.btnLookingForOtherPlayers.background.constantState == resources.getDrawable(R.drawable.btn_looking_for_other_players)?.constantState)
 
         JSON.put("id",userID)
         JSON.put("hash_password",hash_password)
@@ -120,7 +122,7 @@ class ProfileEditDialog : DialogFragment() {
         JSON.put("lon",b.lonET.text.toString().toFloat())
         JSON.put("description",b.descriptionET.text.toString())
         JSON.put("instrument_interested_in",b.instrumentInterestedInET.text.toString())
-        JSON.put("profile_pic",profilePic.toBase64())
+        if(profileIsChanged)JSON.put("profile_pic",profilePic.toBase64())
 
         return JSON
     }
