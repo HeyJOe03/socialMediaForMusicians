@@ -85,16 +85,19 @@ export const profileEdit: ExpressRouterCallback = (req,res) => {
 
     const inputsOK: string = inputCheck(newProfile)
 
+    //console.log({...req.body,'profile_pic':'base64'})
+
     if(inputsOK != 'good') res.status(500).json({'err':inputsOK})
 
     else{
 
         const sql = updateProfile(newProfile)
+
         DB.query(sql,newProfile.profile_pic? Buffer.from(newProfile.profile_pic,'base64') : null,(err,result) => {
-            if (err) res.status(500).json({'err':err.message})
+            if (err) res.status(500).send({'err':err.message})
             else{
                 if((result as OkPacket).affectedRows == 1)res.status(200).json({"query":"good"})
-                else res.status(500).json({"result":result})
+                else res.status(500).send({"result":result})
             }
         })
 

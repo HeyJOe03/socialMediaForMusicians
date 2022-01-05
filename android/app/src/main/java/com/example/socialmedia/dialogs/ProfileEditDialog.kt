@@ -114,6 +114,7 @@ class ProfileEditDialog : DialogFragment() {
         val is_looking_someone_to_play_with : Boolean = (b.btnLookingForOtherPlayers.background.constantState == resources.getDrawable(R.drawable.btn_looking_for_other_players)?.constantState)
 
         JSON.put("id",userID)
+        JSON.put("username",b.usernameET.text.toString())
         JSON.put("hash_password",hash_password)
         JSON.put("email",b.emailET.text.toString())
         JSON.put("is_looking_someone_to_play_with",is_looking_someone_to_play_with)
@@ -133,7 +134,7 @@ class ProfileEditDialog : DialogFragment() {
     }
 
     private fun postEditProfileRequest(requestBody: JSONObject){
-        val postUrl = GLOBALS.SERVER + "/profile/update"
+        val postUrl = GLOBALS.SERVER + "/profile/edit"
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
         val jsonObjectRequest = JsonObjectRequest(
