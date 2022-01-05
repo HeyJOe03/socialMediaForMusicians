@@ -70,6 +70,7 @@ class LogInActivity : AppCompatActivity() {
                     val sharedPreferences : SharedPreferences = this.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER,Context.MODE_PRIVATE)
 
                     sharedPreferences.edit().putLong(GLOBALS.SP_KEY_ID, ID).apply()
+                    sharedPreferences.edit().putString(GLOBALS.SP_KEY_PW, postData.getString("pw")).apply()
 
                     startActivity(Intent(this, MainActivity::class.java))
                     this.finish()

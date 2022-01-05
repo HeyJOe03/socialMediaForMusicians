@@ -5,3 +5,19 @@
 -[] timestamp last update
 
 - [] tags and like query
+
+
+
+
+//val bgState : Boolean = b.btnLookingForOtherPlayers.background.constantState == getDrawable(
+                R.drawable.btn_looking_for_other_players
+            )?.constantState
+
+            if (bgState) {
+                b.btnLookingForOtherPlayers.setBackgroundResource(R.drawable.btn_not_looking_for_other_players)
+                b.btnLookingForOtherPlayers.text = "I'm not looking for other people to play with"
+            }
+            else {
+                b.btnLookingForOtherPlayers.setBackgroundResource(R.drawable.btn_looking_for_other_players)
+                b.btnLookingForOtherPlayers.text = "I'm looking for other people to play with"
+            }
