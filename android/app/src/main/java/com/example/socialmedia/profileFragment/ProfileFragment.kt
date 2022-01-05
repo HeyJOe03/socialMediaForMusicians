@@ -20,8 +20,10 @@ import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.FragmentProfileBinding
+import com.example.socialmedia.dialogs.ErrorDialog
 import com.example.socialmedia.dialogs.PostDialog
 import com.example.socialmedia.dialogs.PostEditDialog
+import com.example.socialmedia.dialogs.ProfileEditDialog
 import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
@@ -64,6 +66,7 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
 
         sharedPref = activity?.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
         userID = sharedPref!!.getLong(GLOBALS.SP_KEY_ID,-1)
+        val hash_password = sharedPref!!.getString(GLOBALS.SP_KEY_PW,"")
 
         layoutMenager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         adapter = ProfilePostRecycleView(emptyList(),this)
@@ -82,7 +85,8 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
         }
 
         b.btnEditProfile.setOnClickListener{
-
+            val dialog = ProfileEditDialog()
+            dialog.show(parentFragmentManager, "edit profile")
         }
 
         refresh()

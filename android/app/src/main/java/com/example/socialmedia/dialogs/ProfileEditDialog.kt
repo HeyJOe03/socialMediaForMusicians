@@ -51,6 +51,11 @@ class ProfileEditDialog : DialogFragment() {
 
 
         // buttons
+
+        b.layoutProfileEditDialog.setOnClickListener{
+            dismiss()
+        }
+
         b.btnGetCoord.setOnClickListener {
 
         }
@@ -129,6 +134,35 @@ class ProfileEditDialog : DialogFragment() {
             dialog.show(parentFragmentManager, "Error")}
 
         requestQueue.add(jsonObjectRequest)
+    }
+
+    private fun getMyProfileRequest(){
+
+        val requestBody: JSONObject = JSONObject()
+
+        val sharedPref : SharedPreferences? = activity?.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
+        val userID = sharedPref!!.getLong(GLOBALS.SP_KEY_ID,-1)
+        val hash_password = sharedPref!!.getString(GLOBALS.SP_KEY_PW,"")
+        requestBody.put("id",userID)
+        requestBody.put("hash_password",hash_password)
+
+        val postUrl = GLOBALS.SERVER + "/profile/myProfile"
+        val requestQueue: RequestQueue = Volley.newRequestQueue(context)
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST,
+            postUrl,
+            requestBody,
+            {
+                // TODO: implement here all the datas inside thir view
+            }
+        ) { e -> e.printStackTrace()
+            val dialog = ErrorDialog.newInstance(e.message.toString())
+            dialog.show(parentFragmentManager, "Error")
+        }
+
+        requestQueue.add(jsonObjectRequest)
+
     }
 
     private fun pickImage(){

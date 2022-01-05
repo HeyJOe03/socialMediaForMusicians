@@ -120,3 +120,18 @@ const inputCheck = (p:Profile): string => {
     //else if (p.hash_password.length != 32) return "password must be the first 32 character of Hash256"
     else return "good"   
 }
+
+export const postMyProfile:ExpressRouterCallback = (req,res) => {
+    // TODO: add check on the hash_password
+    const sql = /*sql*/`SELECT * FROM user WHERE id = ${req.body.id}`
+    DB.query(sql,(err,response) => {
+        if(err) res.status(500).json({"error":err.message})
+        else{
+            if(response.length === 0) res.status(500).json({"err":"wrong password or ID"})
+            else{
+                const profile = {...response[0],"profile_pic":(response[0].profile_pic as Buffer).toString('base64')}
+                res.status(200).json(profile)
+            }
+        }
+    })
+}
