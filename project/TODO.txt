@@ -1,6 +1,6 @@
 - [] profile update
-     - add in shared preferences the profile in the login
-     - add load image profile from editPost
+    - must check the button and the image + call update to the profile when its closed the Dialog + beautify the error display
+    - add position request
 
 -[] timestamp last update
 
