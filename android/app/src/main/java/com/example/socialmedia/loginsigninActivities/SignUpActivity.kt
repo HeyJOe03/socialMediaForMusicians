@@ -16,7 +16,7 @@ import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.MainActivity
 import com.example.socialmedia.R
 import com.example.socialmedia.databinding.ActivitySignUpBinding
-import com.example.socialmedia.dialogs.RegistrationErrorDialog
+import com.example.socialmedia.dialogs.ErrorDialog
 import com.example.socialmedia.objects.HashSHA256
 import org.json.JSONException
 import org.json.JSONObject
@@ -197,7 +197,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun openErrorFragment(error : String){
 
-        val dialog = RegistrationErrorDialog.newInstance(error)
+        val dialog = ErrorDialog.newInstance(error)
         dialog.show(supportFragmentManager, "Filter Dialog")
 
     }

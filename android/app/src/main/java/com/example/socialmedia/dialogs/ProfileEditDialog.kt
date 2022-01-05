@@ -11,7 +11,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,6 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
-import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.ProfileEditDialogBinding
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -124,9 +122,11 @@ class ProfileEditDialog : DialogFragment() {
             postUrl,
             requestBody,
             {
-                
+                dismiss()
             }
-        ) { e -> e.printStackTrace() }
+        ) { e -> e.printStackTrace()
+            val dialog = ErrorDialog.newInstance(e.message.toString())
+            dialog.show(parentFragmentManager, "Error")}
 
         requestQueue.add(jsonObjectRequest)
     }
