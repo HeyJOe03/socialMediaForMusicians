@@ -129,9 +129,21 @@ export const postMyProfile:ExpressRouterCallback = (req,res) => {
         else{
             if(result.length === 0) res.status(500).json({"err":"wrong password or ID"})
             else{
-                const profile = {...result[0],"profile_pic":(result[0].profile_pic as Buffer).toString('base64'),"lat":result[0].lat.toString(),"lon":result[0].lon.toString()}
+                const r = result[0] as Profile 
+                const profile = {...r,
+                    "profile_pic":(result[0].profile_pic as Buffer).toString('base64'),
+                    "lat":r.lat.toString(),
+                    "lon":r.lon.toString(),
+                    'is_online': intToBool(result[0].is_online),
+                    'is_blocked': intToBool(result[0].is_blocked),
+                    "is_looking_someone_to_play_with": intToBool(result[0].is_looking_someone_to_play_with),
+                }
                 res.status(200).json(profile)
             }
         }
     })
+}
+
+const intToBool = (n : Number) : boolean => {
+    return n == 1 ? true : false
 }

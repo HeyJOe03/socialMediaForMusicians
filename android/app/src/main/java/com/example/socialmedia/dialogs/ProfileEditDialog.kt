@@ -17,7 +17,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.DialogFragment
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -62,7 +61,7 @@ class ProfileEditDialog : DialogFragment() {
         }
 
         b.btnLookingForOtherPlayers.setOnClickListener {
-            val bgState : Boolean = b.btnLookingForOtherPlayers.background.constantState == getDrawable(context!!, R.drawable.btn_looking_for_other_players)?.constantState
+            val bgState : Boolean = (b.btnLookingForOtherPlayers.background.constantState == resources.getDrawable(R.drawable.btn_looking_for_other_players)?.constantState)
 
             if (bgState) {
                 b.btnLookingForOtherPlayers.setBackgroundResource(R.drawable.btn_not_looking_for_other_players)
@@ -110,7 +109,7 @@ class ProfileEditDialog : DialogFragment() {
         val userID = sharedPreferences.getLong(GLOBALS.SP_KEY_ID,-1)
         val hash_password = sharedPreferences.getString(GLOBALS.SP_KEY_PW,"")
 
-        val is_looking_someone_to_play_with : Boolean = b.btnLookingForOtherPlayers.background.constantState == getDrawable(context!!, R.drawable.btn_looking_for_other_players)?.constantState
+        val is_looking_someone_to_play_with : Boolean = (b.btnLookingForOtherPlayers.background.constantState == resources.getDrawable(R.id.btnLookingForOtherPlayers)?.constantState)
 
         JSON.put("id",userID)
         JSON.put("hash_password",hash_password)
