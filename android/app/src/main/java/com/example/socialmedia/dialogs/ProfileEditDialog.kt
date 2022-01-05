@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
@@ -14,13 +15,16 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.DialogFragment
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
+import com.example.socialmedia.R
 import com.example.socialmedia.databinding.ProfileEditDialogBinding
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -45,10 +49,7 @@ class ProfileEditDialog : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        // request for the profile infos
-
-        // put the information in the right place
-
+        getMyProfileRequest()
 
         // buttons
 
@@ -61,7 +62,16 @@ class ProfileEditDialog : DialogFragment() {
         }
 
         b.btnLookingForOtherPlayers.setOnClickListener {
+            val bgState : Boolean = b.btnLookingForOtherPlayers.background.constantState == getDrawable(context!!, R.drawable.btn_looking_for_other_players)?.constantState
 
+            if (bgState) {
+                b.btnLookingForOtherPlayers.setBackgroundResource(R.drawable.btn_not_looking_for_other_players)
+                b.btnLookingForOtherPlayers.text = "I'm not looking for other people to play with"
+            }
+            else {
+                b.btnLookingForOtherPlayers.setBackgroundResource(R.drawable.btn_looking_for_other_players)
+                b.btnLookingForOtherPlayers.text = "I'm looking for other people to play with"
+            }
         }
 
         b.btnEditSave.setOnClickListener {
@@ -99,10 +109,13 @@ class ProfileEditDialog : DialogFragment() {
         val sharedPreferences : SharedPreferences = activity!!.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
         val userID = sharedPreferences.getLong(GLOBALS.SP_KEY_ID,-1)
         val hash_password = sharedPreferences.getString(GLOBALS.SP_KEY_PW,"")
+
+        val is_looking_someone_to_play_with : Boolean = b.btnLookingForOtherPlayers.background.constantState == getDrawable(context!!, R.drawable.btn_looking_for_other_players)?.constantState
+
         JSON.put("id",userID)
         JSON.put("hash_password",hash_password)
         JSON.put("email",b.emailET.text.toString())
-        JSON.put("is_looking_someone_to_play_with",true)
+        JSON.put("is_looking_someone_to_play_with",is_looking_someone_to_play_with)
         JSON.put("name",b.nameET.text.toString())
         JSON.put("lat",b.latET.text.toString().toFloat())
         JSON.put("lon",b.lonET.text.toString().toFloat())
@@ -153,8 +166,32 @@ class ProfileEditDialog : DialogFragment() {
             Request.Method.POST,
             postUrl,
             requestBody,
-            {
-                // TODO: implement here all the datas inside thir view
+            { res ->
+                val string_profile_pic : String= res.getString("profile_pic")
+                profilePic = string_profile_pic.toBitmap()!!
+                b.profilePic.setImageBitmap(profilePic)
+
+                (b.usernameET as TextView).text = res.getString("username")
+                (b.emailET as TextView).text = res.getString("email")
+                (b.nameET as TextView).text = res.getString("name")
+                (b.latET as TextView).text = res.getString("lat")
+                (b.lonET as TextView).text = res.getString("lon")
+                (b.descriptionET as TextView).text = res.getString("description")
+                (b.instrumentInterestedInET as TextView).text = res.getString("instrument_interested_in")
+
+                val button_state : Boolean = res.getBoolean("is_looking_someone_to_play_with")
+
+                //val bgState : Boolean = b.btnLookingForOtherPlayers.background.constantState == getDrawable(context!!, R.drawable.btn_looking_for_other_players)?.constantState
+
+                if (button_state) {
+                    b.btnLookingForOtherPlayers.setBackgroundResource(R.drawable.btn_not_looking_for_other_players)
+                    b.btnLookingForOtherPlayers.text = "I'm not looking for other people to play with"
+                }
+                else {
+                    b.btnLookingForOtherPlayers.setBackgroundResource(R.drawable.btn_looking_for_other_players)
+                    b.btnLookingForOtherPlayers.text = "I'm looking for other people to play with"
+                }
+
             }
         ) { e -> e.printStackTrace()
             val dialog = ErrorDialog.newInstance(e.message.toString())
@@ -176,5 +213,11 @@ class ProfileEditDialog : DialogFragment() {
         this.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val b = baos.toByteArray()
         return Base64.encodeToString(b, Base64.DEFAULT)
+    }
+
+    private fun String.toBitmap(): Bitmap? {
+        Base64.decode(this, Base64.DEFAULT).apply {
+            return BitmapFactory.decodeByteArray(this, 0, size)
+        }
     }
 }

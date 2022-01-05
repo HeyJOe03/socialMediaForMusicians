@@ -124,12 +124,12 @@ const inputCheck = (p:Profile): string => {
 export const postMyProfile:ExpressRouterCallback = (req,res) => {
     // TODO: add check on the hash_password
     const sql = /*sql*/`SELECT * FROM user WHERE id = ${req.body.id}`
-    DB.query(sql,(err,response) => {
+    DB.query(sql,(err,result) => {
         if(err) res.status(500).json({"error":err.message})
         else{
-            if(response.length === 0) res.status(500).json({"err":"wrong password or ID"})
+            if(result.length === 0) res.status(500).json({"err":"wrong password or ID"})
             else{
-                const profile = {...response[0],"profile_pic":(response[0].profile_pic as Buffer).toString('base64')}
+                const profile = {...result[0],"profile_pic":(result[0].profile_pic as Buffer).toString('base64'),"lat":result[0].lat.toString(),"lon":result[0].lon.toString()}
                 res.status(200).json(profile)
             }
         }
