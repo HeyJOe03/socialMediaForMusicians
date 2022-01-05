@@ -12,7 +12,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,7 +26,6 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
-import com.example.socialmedia.ShopFragment
 import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.FragmentAddPostBinding
 import com.google.android.material.snackbar.Snackbar
@@ -94,7 +92,9 @@ class AddPostFragment(
             data.put("content",imagePreview?.toBase64())
             val sharedPreferences : SharedPreferences = activity!!.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
             val userID = sharedPreferences.getLong(GLOBALS.SP_KEY_ID,-1)
+            val hash_password = sharedPreferences.getString(GLOBALS.SP_KEY_PW,"")
             data.put("posted_by",userID)
+            data.put("hash_password",hash_password)
 
             loadPostRequest(data)
         }

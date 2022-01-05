@@ -5,10 +5,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.socialmedia.addPostFragment.AddPostFragment
 import com.example.socialmedia.dataClass.Post
@@ -18,6 +16,7 @@ import com.example.socialmedia.profileFragment.ProfileFragment
 import com.example.socialmedia.loginsigninActivities.LogInActivity
 import com.example.socialmedia.homeFragment.HomeFragment
 import com.example.socialmedia.objects.SocketHandler
+import com.example.socialmedia.shopFragment.ShopFragment
 import io.socket.client.Socket
 
 class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {

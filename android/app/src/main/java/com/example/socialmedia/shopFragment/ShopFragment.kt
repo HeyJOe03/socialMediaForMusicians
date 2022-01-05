@@ -1,4 +1,4 @@
-package com.example.socialmedia
+package com.example.socialmedia.shopFragment
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import com.example.socialmedia.R
 
 class ShopFragment : Fragment() {
 
@@ -42,7 +43,7 @@ class ShopFragment : Fragment() {
     private fun pickImage(){
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent,IMAGE_REQUEST_CODE)
+        startActivityForResult(intent, IMAGE_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
