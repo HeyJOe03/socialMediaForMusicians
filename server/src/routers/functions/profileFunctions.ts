@@ -1,10 +1,9 @@
 import ExpressRouterCallback from "../../@types/expressCalback"
 import DB from "../../database/dbconnection"
-import { selectProfile, selectProfilePicture, selectPostsInfo, selectOneUsername} from "../../database/sql/selectUser"
+import { selectProfile, selectProfilePicture, selectPostsInfo, selectProfileFull} from "../../database/sql/selectUser"
 import Profile from "../../@types/profile"
-import { Response } from "express"
 import { updateProfile } from "../../database/sql/update"
-import { OkPacket, queryCallback } from "mysql"
+import { OkPacket } from "mysql"
 
 export const profileFromID:ExpressRouterCallback = (req,res) => {
     if(!req.body.id)res.status(500)
@@ -124,9 +123,9 @@ const inputCheck = (p:Profile): string => {
     else return "good"   
 }
 
-export const postMyProfile:ExpressRouterCallback = (req,res) => {
+export const profileFullFromID:ExpressRouterCallback = (req,res) => {
     // TODO: add check on the hash_password
-    const sql = /*sql*/`SELECT * FROM user WHERE id = ${req.body.id}`
+    const sql = selectProfileFull(req.body.id) //select all but not the profile image
     DB.query(sql,(err,result) => {
         if(err) res.status(500).json({"error":err.message})
         else{
@@ -149,4 +148,17 @@ export const postMyProfile:ExpressRouterCallback = (req,res) => {
 
 const intToBool = (n : Number) : boolean => {
     return n == 1 ? true : false
+}
+
+export const editProfilePic : ExpressRouterCallback = (req,res) => {
+    try {
+        const b = Buffer.from(req.body.img as string,'base64')
+        let sql = /*sql*/`UPDATE user SET profile_pic = ?`
+        DB.query(sql,b,(err,result) => {
+            if(err) res.status(500)//.json({"err":err.message})
+            else res.status(200)
+        })
+    } catch (error) {
+        res.status(500)
+    }
 }
