@@ -145,6 +145,7 @@ class ProfileEditDialog : DialogFragment() {
             {
                 //dismiss()
                 if(profilePic != null)profilePicEditRequest()
+                else dismiss()
             }
         ) { e -> e.printStackTrace()
             val dialog = ErrorDialog.newInstance(e.message.toString())
@@ -208,7 +209,7 @@ class ProfileEditDialog : DialogFragment() {
 
                 //val bgState : Boolean = b.btnLookingForOtherPlayers.background.constantState == getDrawable(context!!, R.drawable.btn_looking_for_other_players)?.constantState
 
-                if (button_state) {
+                if (!button_state) {
                     b.btnLookingForOtherPlayers.setBackgroundResource(R.drawable.btn_not_looking_for_other_players)
                     b.btnLookingForOtherPlayers.text = "I'm not looking for other people to play with"
                 }

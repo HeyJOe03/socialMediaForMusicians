@@ -26,5 +26,6 @@ export const selectPostPicture = (id: number) : string => {
 export const selectProfileFull = (id:number) : string => {
     return/*sql*/`SELECT id,username,email,hash_password,is_online,is_blocked,is_looking_someone_to_play_with,
     name,lat,lon,description,instrument_interested_in,created_at,last_post,last_instrument_offer,last_music_sheet
+    FROM user
     WHERE id = ${id}`
 }

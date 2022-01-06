@@ -125,7 +125,9 @@ const inputCheck = (p:Profile): string => {
 
 export const profileFullFromID:ExpressRouterCallback = (req,res) => {
     // TODO: add check on the hash_password
+    
     const sql = selectProfileFull(req.body.id) //select all but not the profile image
+    //console.log(sql)
     DB.query(sql,(err,result) => {
         if(err) res.status(500).json({"error":err.message})
         else{
@@ -133,7 +135,6 @@ export const profileFullFromID:ExpressRouterCallback = (req,res) => {
             else{
                 const r = result[0] as Profile 
                 const profile = {...r,
-                    "profile_pic":(result[0].profile_pic as Buffer).toString('base64'),
                     "lat":r.lat.toString(),
                     "lon":r.lon.toString(),
                     'is_online': intToBool(result[0].is_online),
