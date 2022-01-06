@@ -18,6 +18,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import coil.load
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
@@ -31,8 +32,8 @@ import java.io.ByteArrayOutputStream
 class ProfileEditDialog : DialogFragment() {
     private lateinit var b: ProfileEditDialogBinding
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var profilePic: Bitmap
-    private var profileIsChanged = false
+    private var profilePic: Bitmap? = null
+    //private var profileIsChanged = false
 
     // binding
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -90,7 +91,7 @@ class ProfileEditDialog : DialogFragment() {
 
         if(requestCode == GLOBALS.IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             b.profilePic.setImageURI(data?.data)
-            profileIsChanged = true
+            //profileIsChanged = true
             profilePic = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 ImageDecoder.decodeBitmap(
                     ImageDecoder.createSource(
@@ -123,7 +124,7 @@ class ProfileEditDialog : DialogFragment() {
         JSON.put("lon",b.lonET.text.toString().toFloat())
         JSON.put("description",b.descriptionET.text.toString())
         JSON.put("instrument_interested_in",b.instrumentInterestedInET.text.toString())
-        if(profileIsChanged)JSON.put("profile_pic",profilePic.toBase64())
+        //if(profileIsChanged)JSON.put("profile_pic",profilePic?.toBase64())
 
         return JSON
     }
@@ -143,7 +144,7 @@ class ProfileEditDialog : DialogFragment() {
             requestBody,
             {
                 //dismiss()
-                if(profileIsChanged)profilePicEditRequest()
+                if(profilePic != null)profilePicEditRequest()
             }
         ) { e -> e.printStackTrace()
             val dialog = ErrorDialog.newInstance(e.message.toString())
@@ -154,7 +155,7 @@ class ProfileEditDialog : DialogFragment() {
 
     private fun profilePicEditRequest(){
         val JSON = JSONObject()
-        JSON.put("img",profilePic.toBase64()) // if control made in the response of postEditProfileRequest
+        JSON.put("img",profilePic?.toBase64()) // if control made in the response of postEditProfileRequest
 
         val postUrl = GLOBALS.SERVER + "/profile/editpic"
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
@@ -191,9 +192,9 @@ class ProfileEditDialog : DialogFragment() {
             postUrl,
             requestBody,
             { res ->
-                val string_profile_pic : String= res.getString("profile_pic")
-                profilePic = string_profile_pic.toBitmap()!!
-                b.profilePic.setImageBitmap(profilePic)
+                //val string_profile_pic : String= res.getString("profile_pic")
+                //profilePic = string_profile_pic.toBitmap()!!
+                b.profilePic.load(GLOBALS.SERVER + "/profile/img/${userID}")
 
                 (b.usernameET as TextView).text = res.getString("username")
                 (b.emailET as TextView).text = res.getString("email")
