@@ -1,6 +1,5 @@
 - [] profile update
-    - made a request only for the profile image
-    - must check the button and the image + call update to the profile when its closed the Dialog + beautify the error display
+    - call update to the profile when its closed the Dialog + beautify the error display
     - add position request
 
 -[] timestamp last update
