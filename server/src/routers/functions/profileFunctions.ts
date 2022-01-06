@@ -157,7 +157,7 @@ export const editProfilePic : ExpressRouterCallback = (req,res) => {
         let sql = /*sql*/`UPDATE user SET profile_pic = ?`
         DB.query(sql,b,(err,result) => {
             if(err) res.status(500)//.json({"err":err.message})
-            else res.status(200)
+            else res.status(200).json({'image':'inserted'})
         })
     } catch (error) {
         res.status(500)

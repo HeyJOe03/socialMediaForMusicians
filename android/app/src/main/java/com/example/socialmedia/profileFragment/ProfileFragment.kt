@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
+import coil.request.CachePolicy
 import coil.transform.CircleCropTransformation
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -157,6 +158,7 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
                 b.profilePicture.load(url){
                     crossfade(true)
                     placeholder(R.drawable.ic_placeholder)
+                    memoryCachePolicy(CachePolicy.DISABLED) //without this don't update from the same url
                     transformations(CircleCropTransformation())
                 }
 

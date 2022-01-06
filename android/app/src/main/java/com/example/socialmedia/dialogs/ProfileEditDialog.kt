@@ -19,6 +19,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import coil.load
+import coil.transform.CircleCropTransformation
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
@@ -90,7 +91,11 @@ class ProfileEditDialog : DialogFragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if(requestCode == GLOBALS.IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            b.profilePic.setImageURI(data?.data)
+            b.profilePic.load(data?.data){
+                crossfade(true)
+                placeholder(R.drawable.ic_placeholder)
+                transformations(CircleCropTransformation())
+            }
             //profileIsChanged = true
             profilePic = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 ImageDecoder.decodeBitmap(
@@ -169,7 +174,7 @@ class ProfileEditDialog : DialogFragment() {
                 dismiss()
             }
         ) { e -> e.printStackTrace()
-            val dialog = ErrorDialog.newInstance(e.message.toString())
+            val dialog = ErrorDialog.newInstance(e.networkResponse.data.toString())
             dialog.show(parentFragmentManager, "Error")}
 
         requestQueue.add(jsonObjectRequest)
@@ -195,7 +200,11 @@ class ProfileEditDialog : DialogFragment() {
             { res ->
                 //val string_profile_pic : String= res.getString("profile_pic")
                 //profilePic = string_profile_pic.toBitmap()!!
-                b.profilePic.load(GLOBALS.SERVER + "/profile/img/${userID}")
+                b.profilePic.load(GLOBALS.SERVER_PROFILE_PIC(userID)){
+                    crossfade(true)
+                    placeholder(R.drawable.ic_placeholder)
+                    transformations(CircleCropTransformation())
+                }
 
                 (b.usernameET as TextView).text = res.getString("username")
                 (b.emailET as TextView).text = res.getString("email")
