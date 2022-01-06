@@ -10,6 +10,5 @@ export const updateProfile = (p: Profile) : string => {
         lon = ${p.lon},
         description = '${p.description}',
         instrument_interested_in = '${p.instrument_interested_in}'
-        ${p.profile_pic ? ",profile_pic = ? ": " "}
         WHERE id = ${p.id}`
 }

@@ -142,6 +142,28 @@ class ProfileEditDialog : DialogFragment() {
             postUrl,
             requestBody,
             {
+                //dismiss()
+                if(profileIsChanged)profilePicEditRequest()
+            }
+        ) { e -> e.printStackTrace()
+            val dialog = ErrorDialog.newInstance(e.message.toString())
+            dialog.show(parentFragmentManager, "Error")}
+
+        requestQueue.add(jsonObjectRequest)
+    }
+
+    private fun profilePicEditRequest(){
+        val JSON = JSONObject()
+        JSON.put("img",profilePic.toBase64()) // if control made in the response of postEditProfileRequest
+
+        val postUrl = GLOBALS.SERVER + "/profile/editpic"
+        val requestQueue: RequestQueue = Volley.newRequestQueue(context)
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST,
+            postUrl,
+            JSON,
+            {
                 dismiss()
             }
         ) { e -> e.printStackTrace()
