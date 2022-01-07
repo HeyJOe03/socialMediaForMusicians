@@ -18,7 +18,7 @@ export const userSignUp : ExpressRouterCallback = (req,res) => {
     let obj: User = req.body as User
     let message = inputCheck(obj)
     if (message != 'good'){
-        res.json({'error':message})
+        res.status(500).send(message)
         return
     }
 
@@ -28,7 +28,7 @@ export const userSignUp : ExpressRouterCallback = (req,res) => {
     let sql = insertNewUser(obj)
     DB.query(sql, (err,results) => {
         if(err){
-            res.json({'error':'impossible insert user','insertID':-1})
+            res.status(500).send('impossible insert user')
             console.log(err)
         }
         else res.json({'error':'good','insertID':(results as OkPacket).insertId})
@@ -40,7 +40,7 @@ export const userLogIn : ExpressRouterCallback = (req,res) => {
     DB.query(query, (err,results) => {
         if(err) console.log(err)
         if(results.length === 1)res.json({'signIn':results[0].id})
-        else res.json({'signIn':'failed'})
+        else res.status(500).send('failed')
     })
 }
 
