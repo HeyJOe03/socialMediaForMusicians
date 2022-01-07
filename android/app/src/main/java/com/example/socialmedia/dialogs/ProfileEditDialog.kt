@@ -31,7 +31,7 @@ import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 
 class ProfileEditDialog(
-    private var onCloseEditDialog: ProfileEditDialog.setOnEditDialogClose
+    private var onCloseEditDialog: ProfileEditDialog.SetOnEditDialogClose
 ) : DialogFragment() {
     private lateinit var b: ProfileEditDialogBinding
     private lateinit var sharedPreferences: SharedPreferences
@@ -149,13 +149,14 @@ class ProfileEditDialog(
             Request.Method.POST,
             postUrl,
             requestBody,
+            //JSONObject(),
             {
                 //dismiss()
                 if(profilePic != null)profilePicEditRequest()
                 else dismiss()
             }
         ) { e -> e.printStackTrace()
-            val dialog = ErrorDialog.newInstance(e.message.toString())
+            val dialog = ErrorDialog.newInstance(String(e.networkResponse.data))
             dialog.show(parentFragmentManager, "Error")}
 
         requestQueue.add(jsonObjectRequest)
@@ -176,7 +177,7 @@ class ProfileEditDialog(
                 dismiss()
             }
         ) { e -> e.printStackTrace()
-            val dialog = ErrorDialog.newInstance(e.networkResponse.data.toString())
+            val dialog = ErrorDialog.newInstance(String(e.networkResponse.data))
             dialog.show(parentFragmentManager, "Error")}
 
         requestQueue.add(jsonObjectRequest)
@@ -231,7 +232,7 @@ class ProfileEditDialog(
 
             }
         ) { e -> e.printStackTrace()
-            val dialog = ErrorDialog.newInstance(e.message.toString())
+            val dialog = ErrorDialog.newInstance(String(e.networkResponse.data))
             dialog.show(parentFragmentManager, "Error")
         }
 
@@ -263,7 +264,7 @@ class ProfileEditDialog(
         onCloseEditDialog.onEditDialogClose()
     }
 
-    interface setOnEditDialogClose{
+    interface SetOnEditDialogClose{
         fun onEditDialogClose()
     }
 }

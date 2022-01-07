@@ -1,5 +1,5 @@
 - [] profile update
-    - call update to the profile when its closed the Dialog + beautify the error display
+    - beautify the error display
     - add position request
 
 -[] timestamp last update

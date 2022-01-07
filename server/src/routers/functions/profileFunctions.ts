@@ -6,14 +6,14 @@ import { updateProfile } from "../../database/sql/update"
 import { OkPacket } from "mysql"
 
 export const profileFromID:ExpressRouterCallback = (req,res) => {
-    if(!req.body.id)res.status(500)
+    if(!req.body.id)res.status(500).send("missing ID")
     else{
         let id = -1
         if(typeof(req.body.id) != 'number'){
             try{
                 id = parseInt(req.body.id)
             } catch(e){
-                res.status(500)
+                res.status(500).send((e as Error).message)
                 return
             }
         } else id = req.body.id
@@ -21,7 +21,7 @@ export const profileFromID:ExpressRouterCallback = (req,res) => {
         
         DB.query(sql, (err,result) => {
             if(err){
-                res.status(500)
+                res.status(500).send(err.message)
                 console.log(err)
             } 
             else if( result[0] == undefined) res.status(500).send("no result")
@@ -66,13 +66,13 @@ export const profileImageFromID:ExpressRouterCallback =(req,res) => {
 
 export const userPosts: ExpressRouterCallback = (req,res) => {
 
-    if(req.body.id == undefined || isNaN(parseInt(req.body.id))) res.status(500).json({'error':'id not provided'})
+    if(req.body.id == undefined || isNaN(parseInt(req.body.id))) res.status(500).send('id not provided')
 
     else{
         let id = parseInt(req.body.id)
         let sql = selectPostsInfo(id)
         DB.query(sql,(err,result) => {
-            if(err) res.status(500).json({'error':"query error"})
+            if(err) res.status(500).send(err.message)
             else res.json({"result":result})   
         })
     }
@@ -86,7 +86,7 @@ export const profileEdit: ExpressRouterCallback = (req,res) => {
 
     //console.log({...req.body,'profile_pic':'base64'})
 
-    if(inputsOK != 'good') res.status(500).json({'err':inputsOK})
+    if(inputsOK != 'good') res.status(500).send(inputsOK)
 
     else{
 
@@ -129,9 +129,9 @@ export const profileFullFromID:ExpressRouterCallback = (req,res) => {
     const sql = selectProfileFull(req.body.id) //select all but not the profile image
     //console.log(sql)
     DB.query(sql,(err,result) => {
-        if(err) res.status(500).json({"error":err.message})
+        if(err) res.status(500).send(err.message)
         else{
-            if(result.length === 0) res.status(500).json({"err":"wrong password or ID"})
+            if(result.length === 0) res.status(500).send("wrong password or ID")
             else{
                 const r = result[0] as Profile 
                 const profile = {...r,
@@ -156,8 +156,8 @@ export const editProfilePic : ExpressRouterCallback = (req,res) => {
         const b = Buffer.from(req.body.img as string,'base64')
         let sql = /*sql*/`UPDATE user SET profile_pic = ?`
         DB.query(sql,b,(err,result) => {
-            if(err) res.status(500)//.json({"err":err.message})
-            else res.status(200).json({'image':'inserted'})
+            if(err) res.status(500).send(err.message)
+            else res.status(200).send('image inserted')
         })
     } catch (error) {
         res.status(500)

@@ -21,7 +21,6 @@ import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.FragmentProfileBinding
-import com.example.socialmedia.dialogs.ErrorDialog
 import com.example.socialmedia.dialogs.PostDialog
 import com.example.socialmedia.dialogs.PostEditDialog
 import com.example.socialmedia.dialogs.ProfileEditDialog
@@ -30,7 +29,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONArray
 
-class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, PostEditDialog.SetOnDismiss, ProfileEditDialog.setOnEditDialogClose {
+class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, PostEditDialog.SetOnDismiss, ProfileEditDialog.SetOnEditDialogClose {
 
     private var _binding: FragmentProfileBinding? = null
     private val b  get() = _binding!!
