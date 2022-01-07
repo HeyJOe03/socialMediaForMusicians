@@ -56,7 +56,7 @@ export const updatePost: ExpressRouterCallback = (req,res) => {
 
     const {id,author,title,description} : BodyUpdate = req.body
 
-    let sql = /*sql*/ `UPDATE posts SET author = '${author}',title = '${title}', description = '${description}' WHERE id = ${id};`
+    let sql = /*sql*/ `UPDATE posts SET author = '${author}',title = '${title}', description = '${description}',last_update_at = CURRENT_TIMESTAMP WHERE id = ${id};`
 
     DB.query(sql,(err) => {
         if(err)res.status(500).json({'error':err.message})
