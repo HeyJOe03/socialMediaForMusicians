@@ -112,13 +112,14 @@ const inputCheck = (p:Profile): string => {
     const nameRegex = new RegExp(/^[a-zA-Z]+$/)
 
     if(!p.username || !p.name || !p.email //|| !p.hash_password 
-        || p.is_looking_someone_to_play_with == null || p.lat == null 
-        || p.lon == null || p.description == null 
+        || p.is_looking_someone_to_play_with == null
+        || p.description == null 
         || p.instrument_interested_in == null //|| p.profile_pic == null
         ) return "Missing fields"
     else if(!usernameRegex.test(p.username)) return "Error in the username sintax"
     else if (!emailRegex.test(p.email)) return "error in the email sintax"
     else if (!nameRegex.test(p.name)) return "error in the name, it mustn't contain number, spaces or symbols"
+    else if(p != null && (p.lat!! > 90 || p.lat!! < -90 || p.lon!! > 180 || p.lon!! < -180)) return "invalid coords"
     //else if (p.hash_password.length != 32) return "password must be the first 32 character of Hash256"
     else return "good"   
 }
@@ -135,8 +136,8 @@ export const profileFullFromID:ExpressRouterCallback = (req,res) => {
             else{
                 const r = result[0] as Profile 
                 const profile = {...r,
-                    "lat":r.lat.toString(),
-                    "lon":r.lon.toString(),
+                    "lat":r.lat,
+                    "lon":r.lon,
                     'is_online': intToBool(result[0].is_online),
                     'is_blocked': intToBool(result[0].is_blocked),
                     "is_looking_someone_to_play_with": intToBool(result[0].is_looking_someone_to_play_with),

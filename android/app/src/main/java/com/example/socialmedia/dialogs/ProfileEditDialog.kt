@@ -1,13 +1,18 @@
 package com.example.socialmedia.dialogs
 
+import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -17,6 +22,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.DialogFragment
 import coil.load
 import coil.transform.CircleCropTransformation
@@ -27,8 +34,10 @@ import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.databinding.ProfileEditDialogBinding
+import kotlinx.coroutines.processNextEventInCurrentThread
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+import java.lang.Exception
 
 class ProfileEditDialog(
     private var onCloseEditDialog: ProfileEditDialog.SetOnEditDialogClose
@@ -36,7 +45,16 @@ class ProfileEditDialog(
     private lateinit var b: ProfileEditDialogBinding
     private lateinit var sharedPreferences: SharedPreferences
     private var profilePic: Bitmap? = null
-    //private var profileIsChanged = false
+    private var locationByNetwork: Location? = null
+    private var locationByGps: Location? = null
+
+    // private var latitude : Double? = null
+    // private var longitude : Double? = null
+    // private var profileIsChanged = false
+
+
+    private lateinit var locationManager: LocationManager
+    //private lateinit var tvGpsLocation: TextView
 
     // binding
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -62,7 +80,11 @@ class ProfileEditDialog(
         }
 
         b.btnGetCoord.setOnClickListener {
-
+            val loc = getLocation()
+            if(loc != null){
+                (b.lonET as TextView).text = loc.longitude.toString()
+                (b.latET as TextView).text = loc.latitude.toString()
+            }
         }
 
         b.btnLookingForOtherPlayers.setOnClickListener {
@@ -86,8 +108,77 @@ class ProfileEditDialog(
             pickImage()
         }
 
+        b.btnClearCoord.setOnClickListener {
+            (b.lonET as TextView).text = ""
+            (b.latET as TextView).text = ""
+        }
+
         return super.onCreateView(inflater, container, savedInstanceState)
     }
+
+
+    private fun getLocation() : Location?{
+        var currentLocation: Location? = null
+        locationManager = context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        if(!isLocationPermissionGranted()) return null
+
+        val hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
+        if (hasGps) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0F, gpsLocationListener)
+        }
+        if (hasNetwork) {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0F, networkLocationListener)
+        }
+
+        val lastKnownLocationByGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+        lastKnownLocationByGps?.let {
+            locationByGps = lastKnownLocationByGps
+        }
+        val lastKnownLocationByNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+        lastKnownLocationByNetwork?.let {
+            locationByNetwork = lastKnownLocationByNetwork
+        }
+        if (locationByGps != null && locationByNetwork != null) {
+            if (locationByGps!!.accuracy > locationByNetwork!!.accuracy) {
+                currentLocation = locationByGps
+                //latitude = currentLocation?.latitude
+                //longitude = currentLocation?.longitude
+                // use latitude and longitude as per your need
+            } else {
+                currentLocation = locationByNetwork
+                //latitude = currentLocation?.latitude
+                //longitude = currentLocation?.longitude
+                // use latitude and longitude as per your need
+            }
+        }
+
+        return currentLocation
+
+    }
+
+    val gpsLocationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            locationByGps= location
+        }
+
+        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+        override fun onProviderEnabled(provider: String) {}
+        override fun onProviderDisabled(provider: String) {}
+    }
+
+    val networkLocationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            locationByNetwork= location
+        }
+
+        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+        override fun onProviderEnabled(provider: String) {}
+        override fun onProviderDisabled(provider: String) {}
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -110,6 +201,9 @@ class ProfileEditDialog(
                 MediaStore.Images.Media.getBitmap(requireContext().contentResolver, data?.data!!)
             }
         }
+        else if(requestCode == GLOBALS.LOCATION_PERMISSION_CODE && resultCode == Activity.RESULT_OK){
+            getLocation()
+        }
     }
 
     private fun createJSONrequestEditProfile(): JSONObject{
@@ -127,8 +221,14 @@ class ProfileEditDialog(
         JSON.put("email",b.emailET.text.toString())
         JSON.put("is_looking_someone_to_play_with",is_looking_someone_to_play_with)
         JSON.put("name",b.nameET.text.toString())
-        JSON.put("lat",b.latET.text.toString().toFloat())
-        JSON.put("lon",b.lonET.text.toString().toFloat())
+        try{
+            JSON.put("lat",b.latET.text.toString().toFloat())
+            JSON.put("lon",b.lonET.text.toString().toFloat())
+        }catch(e: Exception){
+            JSON.put("lat",null)
+            JSON.put("lon",null)
+        }
+
         JSON.put("description",b.descriptionET.text.toString())
         JSON.put("instrument_interested_in",b.instrumentInterestedInET.text.toString())
         //if(profileIsChanged)JSON.put("profile_pic",profilePic?.toBase64())
@@ -189,7 +289,7 @@ class ProfileEditDialog(
 
         val sharedPref : SharedPreferences? = activity?.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
         val userID = sharedPref!!.getLong(GLOBALS.SP_KEY_ID,-1)
-        val hash_password = sharedPref!!.getString(GLOBALS.SP_KEY_PW,"")
+        val hash_password = sharedPref.getString(GLOBALS.SP_KEY_PW,"")
         requestBody.put("id",userID)
         requestBody.put("hash_password",hash_password)
 
@@ -212,8 +312,8 @@ class ProfileEditDialog(
                 (b.usernameET as TextView).text = res.getString("username")
                 (b.emailET as TextView).text = res.getString("email")
                 (b.nameET as TextView).text = res.getString("name")
-                (b.latET as TextView).text = res.getString("lat")
-                (b.lonET as TextView).text = res.getString("lon")
+                (b.latET as TextView).text = if (res.getString("lat") == "null")  "" else res.getString("lat")
+                (b.lonET as TextView).text = if (res.getString("lon") == "null")  "" else res.getString("lon")
                 (b.descriptionET as TextView).text = res.getString("description")
                 (b.instrumentInterestedInET as TextView).text = res.getString("instrument_interested_in")
 
@@ -244,6 +344,14 @@ class ProfileEditDialog(
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, GLOBALS.IMAGE_REQUEST_CODE)
+    }
+
+    private fun isLocationPermissionGranted(): Boolean {
+        return if (ActivityCompat.checkSelfPermission(context!!, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context!!, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), GLOBALS.LOCATION_PERMISSION_CODE)
+            false
+        } else true
     }
 
     private fun Bitmap.toBase64(): String? {
