@@ -46,8 +46,8 @@ class PostPreview2Fragment : Fragment() {
         }
 
         val json: JSONObject = JSONObject()
-        json.put("hashtag",hashtag.toString())
-        json.put("tag",tag.toString())
+        json.put("hashtag",hashtag)
+        json.put("tag",tag)
         json.put("description", b.descriptionET.text.toString())
         json.put("author",b.authorET.text.toString())
         json.put("title",b.titleET.text.toString())
