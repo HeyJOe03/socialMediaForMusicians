@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.socialmedia.R
 import com.example.socialmedia.databinding.FragmentAddPostBinding
 import com.example.socialmedia.databinding.PostPreview2Binding
+import org.json.JSONArray
 import org.json.JSONObject
 
 class PostPreview2Fragment : Fragment() {
@@ -36,6 +37,7 @@ class PostPreview2Fragment : Fragment() {
         for (i in hashtag.indices) {
             hashtag[i] = hashtag[i].filterNot { it == '#' }
             hashtag[i] = hashtag[i].filterNot { it == ' ' }
+            hashtag[i] = "\"${hashtag[i]}\""
         }
 
         tag.removeIf { !it.contains('@') }
@@ -43,11 +45,12 @@ class PostPreview2Fragment : Fragment() {
         for (i in tag.indices) {
             tag[i] = tag[i].filterNot { it == '@' }
             tag[i] = tag[i].filterNot { it == ' ' }
+            tag[i] = "\"${tag[i]}\""
         }
 
         val json: JSONObject = JSONObject()
-        json.put("hashtag",hashtag)
-        json.put("tag",tag)
+        json.put("hashtag",JSONArray(hashtag.toList()))
+        json.put("tag",JSONArray(tag.toList()))
         json.put("description", b.descriptionET.text.toString())
         json.put("author",b.authorET.text.toString())
         json.put("title",b.titleET.text.toString())
