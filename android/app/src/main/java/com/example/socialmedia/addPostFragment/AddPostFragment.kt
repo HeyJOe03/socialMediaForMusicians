@@ -42,7 +42,7 @@ class AddPostFragment(
     private var hasCameraPermission: Boolean = false
     private var indexCurrentPostPreview: Int = 1
     private val nOfPreviews: Int = 2
-    private var message = "answer"
+    private var message = ""
     private var post: Post? = null
 
     private lateinit var layout: View
@@ -117,17 +117,14 @@ class AddPostFragment(
             postUrl,
             postData,
             {it ->
-                post = Post(it.getLong("id"),postData.getString("description"),null,
-                    null,null,postData.getString("author"),postData.getString("title"))
+                post = Post(it.getLong("id"),postData.getString("description"),null, null,null,postData.getString("author"),postData.getString("title"))
                 message = "good"
                 parentFragmentManager.beginTransaction().remove(this).commit()
             }
         ) { error ->
 
-            post = Post(-1,postData.getString("description"),null,
-                null,null,postData.getString("author"),postData.getString("title"))
-            message = "good"
-            message = error.message.toString()
+            post = Post(-1,postData.getString("description"),null, null,null,postData.getString("author"),postData.getString("title"))
+            message = String(error.networkResponse.data)
             error.printStackTrace()
             parentFragmentManager.beginTransaction().remove(this).commit()
         }

@@ -32,8 +32,11 @@ export const loadNewPost: ExpressRouterCallback = (req,res) => {
     const sql = insertNewPost(req.body as Post)
     const b = Buffer.from((req.body as Post).content,'base64')
     DB.query(sql,b,(err,result) => {
-        if(err)res.json({'error':err.message})
-        else res.json({'ok':'ok','id':(result as OkPacket).insertId})
+        if(err)res.status(500).send(err.message)
+        else {
+            res.json({'id':(result as OkPacket).insertId})
+            DB.query(/*sql*/`UPDATE user SET last_post = CURRENT_TIMESTAMP WHERE id = ${(req.body as Post).posted_by}`)
+        }
     })
 }
 

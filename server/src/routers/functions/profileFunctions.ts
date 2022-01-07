@@ -84,8 +84,6 @@ export const profileEdit: ExpressRouterCallback = (req,res) => {
 
     const inputsOK: string = inputCheck(newProfile)
 
-    //console.log({...req.body,'profile_pic':'base64'})
-
     if(inputsOK != 'good') res.status(500).send(inputsOK)
 
     else{
