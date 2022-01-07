@@ -30,7 +30,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONArray
 
-class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, PostEditDialog.SetOnDismiss {
+class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, PostEditDialog.SetOnDismiss, ProfileEditDialog.setOnEditDialogClose {
 
     private var _binding: FragmentProfileBinding? = null
     private val b  get() = _binding!!
@@ -86,7 +86,7 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
         }
 
         b.btnEditProfile.setOnClickListener{
-            val dialog = ProfileEditDialog()
+            val dialog = ProfileEditDialog(this)
             dialog.show(parentFragmentManager, "edit profile")
         }
 
@@ -185,6 +185,10 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
     override fun onLongClickListener(position: Int) {
         val dialog = PostEditDialog(posts[position],this)
         dialog.show(childFragmentManager,"post update-delete dialog")
+    }
+
+    override fun onEditDialogClose() {
+        refresh()
     }
 
     override fun onDestroyView() {

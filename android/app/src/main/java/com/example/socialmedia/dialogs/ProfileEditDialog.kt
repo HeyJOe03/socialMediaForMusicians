@@ -30,7 +30,9 @@ import com.example.socialmedia.databinding.ProfileEditDialogBinding
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 
-class ProfileEditDialog : DialogFragment() {
+class ProfileEditDialog(
+    private var onCloseEditDialog: ProfileEditDialog.setOnEditDialogClose
+) : DialogFragment() {
     private lateinit var b: ProfileEditDialogBinding
     private lateinit var sharedPreferences: SharedPreferences
     private var profilePic: Bitmap? = null
@@ -254,5 +256,14 @@ class ProfileEditDialog : DialogFragment() {
         Base64.decode(this, Base64.DEFAULT).apply {
             return BitmapFactory.decodeByteArray(this, 0, size)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        onCloseEditDialog.onEditDialogClose()
+    }
+
+    interface setOnEditDialogClose{
+        fun onEditDialogClose()
     }
 }
