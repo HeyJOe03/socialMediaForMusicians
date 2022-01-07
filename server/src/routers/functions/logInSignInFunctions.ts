@@ -31,7 +31,7 @@ export const userSignUp : ExpressRouterCallback = (req,res) => {
             res.status(500).send('impossible insert user')
             console.log(err)
         }
-        else res.json({'error':'good','insertID':(results as OkPacket).insertId})
+        else res.json({'insertID':(results as OkPacket).insertId})
     })
 }
 

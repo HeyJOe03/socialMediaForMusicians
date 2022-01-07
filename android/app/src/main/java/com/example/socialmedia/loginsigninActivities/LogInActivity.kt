@@ -57,27 +57,26 @@ class LogInActivity : AppCompatActivity() {
             postUrl,
             postData,
             { response ->
-                Log.println(Log.DEBUG,"response",response[GLOBALS.KEY_SIGNIN].toString())
 
-                if(response[GLOBALS.KEY_SIGNIN].toString() != GLOBALS.SIGN_IN_FAILED){
-                    val ID: Long =
-                        try {
-                            response[GLOBALS.KEY_SIGNIN].toString().toLong()
-                        }catch( e : NumberFormatException){
-                            -1
-                        }
+                val ID: Long =
+                    try {
+                        response[GLOBALS.KEY_SIGNIN].toString().toLong()
+                    }catch( e : NumberFormatException){
+                        -1
+                    }
 
-                    val sharedPreferences : SharedPreferences = this.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER,Context.MODE_PRIVATE)
+                val sharedPreferences : SharedPreferences = this.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER,Context.MODE_PRIVATE)
 
-                    sharedPreferences.edit().putLong(GLOBALS.SP_KEY_ID, ID).apply()
-                    sharedPreferences.edit().putString(GLOBALS.SP_KEY_PW, postData.getString("pw")).apply()
+                sharedPreferences.edit().putLong(GLOBALS.SP_KEY_ID, ID).apply()
+                sharedPreferences.edit().putString(GLOBALS.SP_KEY_PW, postData.getString("pw")).apply()
 
-                    startActivity(Intent(this, MainActivity::class.java))
-                    this.finish()
-                }
-                else inputError()
+                startActivity(Intent(this, MainActivity::class.java))
+                this.finish()
             }
-        ) { error -> error.printStackTrace() }
+        ) { error ->
+            error.printStackTrace()
+            inputError()
+        }
 
         requestQueue.add(jsonObjectRequest)
     }

@@ -21,7 +21,6 @@ object GLOBALS {
     const val SERVER_PROFILE_POSTS = "$SERVER/profile/posts"
 
     const val KEY_SIGNIN = "signIn"
-    const val SIGN_IN_FAILED = "failed"
 
     const val SHARED_PREF_ID_USER = "user"
     const val SP_KEY_ID = "ID"

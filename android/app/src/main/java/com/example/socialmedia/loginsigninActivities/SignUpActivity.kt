@@ -113,34 +113,21 @@ class SignUpActivity : AppCompatActivity() {
             postUrl,
             postData,
             { response ->
-                Log.println(Log.ERROR, "response", response["error"].toString())
-                if(response["error"].toString() != "good"){
-                    //Toast.makeText(applicationContext, response["error"].toString(), Toast.LENGTH_SHORT).show()
-                    Log.println(Log.ERROR, "error", response["error"].toString())
 
-                    openErrorFragment(response["error"].toString())
-                }
-                else{
-                    val myID = response["insertID"].toString().toLong()
-                    if(myID != (-1).toLong()){
+                val myID = response["insertID"].toString().toLong()
 
-                        val sharedPreferences : SharedPreferences = this.getSharedPreferences(
-                            GLOBALS.SHARED_PREF_ID_USER,
-                            Context.MODE_PRIVATE)
+                val sharedPreferences : SharedPreferences = this.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
 
-                        sharedPreferences.edit().putLong(GLOBALS.SP_KEY_ID, myID).apply()
-                        sharedPreferences.edit().putString(GLOBALS.SP_KEY_PW, password).apply()
+                sharedPreferences.edit().putLong(GLOBALS.SP_KEY_ID, myID).apply()
+                sharedPreferences.edit().putString(GLOBALS.SP_KEY_PW, password).apply()
 
-                        startActivity(Intent(this, MainActivity::class.java))
-                        this.finish()
-                    } else{
-                        Toast.makeText(this, "Registration Failed", Toast.LENGTH_SHORT).show()
-                    }
-                }
+                startActivity(Intent(this, MainActivity::class.java))
+                this.finish()
             }
         ) { error ->
             error.printStackTrace()
-        }
+                openErrorFragment(String(error.networkResponse.data))
+            }
 
         requestQueue.add(jsonObjectRequest)
     }
