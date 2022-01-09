@@ -37,7 +37,7 @@ class PostPreview2Fragment : Fragment() {
         for (i in hashtag.indices) {
             hashtag[i] = hashtag[i].filterNot { it == '#' }
             hashtag[i] = hashtag[i].filterNot { it == ' ' }
-            hashtag[i] = "\"${hashtag[i]}\""
+            //hashtag[i] = "\"${hashtag[i]}\""
         }
 
         tag.removeIf { !it.contains('@') }
@@ -45,7 +45,7 @@ class PostPreview2Fragment : Fragment() {
         for (i in tag.indices) {
             tag[i] = tag[i].filterNot { it == '@' }
             tag[i] = tag[i].filterNot { it == ' ' }
-            tag[i] = "\"${tag[i]}\""
+            //tag[i] = "\"${tag[i]}\""
         }
 
         val json: JSONObject = JSONObject()

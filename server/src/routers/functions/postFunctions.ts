@@ -30,10 +30,10 @@ export const getPostImgFromId : ExpressRouterCallback = (req,res) => {
 export const loadNewPost: ExpressRouterCallback = (req,res) => {
     //console.log({...req.body,content:(req.body.content as String).length})
 
-    console.log(typeof(req.body.hashtag as Array<String>))
-    console.log(typeof(req.body.tag as Array<String>))
-    console.log((req.body.hashtag as Array<String>))
-    console.log((req.body.tag as Array<String>))
+    //console.log(typeof(req.body.hashtag as Array<String>))
+    //console.log(typeof(req.body.tag as Array<String>))
+    //console.log((req.body.hashtag as Array<String>))
+    //console.log((req.body.tag as Array<String>)) 
 
     const sql = insertNewPost(req.body as Post)
     const b = Buffer.from((req.body as Post).content,'base64')
