@@ -1,1 +1,3 @@
--[] like query
+-[] create new recycle views
+-[] server side for sheets and shop
+-[] add sheet and shop in client requests
