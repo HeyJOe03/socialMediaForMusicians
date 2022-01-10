@@ -117,7 +117,7 @@ class AddPostFragment(
             postUrl,
             postData,
             {it ->
-                post = Post(it.getLong("id"),postData.getString("description"),null, null,null,it.getLong("likes"),postData.getString("author"),postData.getString("title"))
+                post = Post(it.getLong("id"),postData.getString("description"),null, null,null,0,postData.getString("author"),postData.getString("title"))
                 message = "good"
                 //parentFragmentManager.beginTransaction().remove(this).commit()
             }

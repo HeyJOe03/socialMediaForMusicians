@@ -7,18 +7,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:minHeight="200dp"
+    app:layout_constraintDimensionRatio="1"
     android:clickable="true"
     android:focusable="true">
    <androidx.constraintlayout.widget.ConstraintLayout
        android:layout_width="match_parent"
-       android:minHeight="200dp"
-       android:layout_height="match_parent">
+       android:layout_height="wrap_content">
 
-       <ImageView
+       <com.google.android.material.imageview.ShapeableImageView
            android:id="@+id/post_img"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
+           android:layout_width="0dp"
+           android:layout_height="0dp"
+           app:layout_constraintDimensionRatio="H,1:1"
+           android:scaleType="centerCrop"
            android:adjustViewBounds="true"
            app:layout_constraintBottom_toBottomOf="parent"
            app:layout_constraintEnd_toEndOf="parent"

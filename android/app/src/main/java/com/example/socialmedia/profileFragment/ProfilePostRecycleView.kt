@@ -11,6 +11,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.size.Scale
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.dataClass.Post
@@ -50,6 +51,8 @@ class ProfilePostRecycleView(
         viewHolder.postImg.load(GLOBALS.POST_IMG(dataSet[position].id)){
             crossfade(true)
             placeholder(R.drawable.ic_placeholder)
+            scale(Scale.FILL)
+
         }
 
     }

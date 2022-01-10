@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.request.CachePolicy
@@ -32,6 +33,7 @@ import org.json.JSONArray
 class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, PostEditDialog.SetOnDismiss, ProfileEditDialog.SetOnEditDialogClose {
 
     private var _binding: FragmentProfileBinding? = null
+
     private val b  get() = _binding!!
 
     private var sharedPref: SharedPreferences? = null
@@ -68,7 +70,7 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
         userID = sharedPref!!.getLong(GLOBALS.SP_KEY_ID,-1)
         val hash_password = sharedPref!!.getString(GLOBALS.SP_KEY_PW,"")
 
-        layoutMenager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+        layoutMenager = GridLayoutManager(context,3)
         adapter = ProfilePostRecycleView(emptyList(),this)
 
         b.myPostRV.adapter = adapter
