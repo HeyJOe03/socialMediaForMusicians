@@ -54,12 +54,6 @@ class ProfilePostRecycleView(
 
     }
 
-    private fun String.toBitmap(): Bitmap? {
-        Base64.decode(this, Base64.DEFAULT).apply {
-            return BitmapFactory.decodeByteArray(this, 0, size)
-        }
-    }
-
     fun setData(newData: List<Post>) {
         val diffCallback = PostsDiffutil(dataSet, newData)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -69,10 +63,6 @@ class ProfilePostRecycleView(
 
     override fun getItemCount(): Int {
         return dataSet.size
-    }
-
-    private fun resizeBitmap(bitmap: Bitmap, width: Int, height: Int): Bitmap {
-        return Bitmap.createScaledBitmap(bitmap,width,height,false)
     }
 
     interface OnItemClickListener{

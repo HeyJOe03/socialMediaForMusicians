@@ -38,6 +38,7 @@ class PostDialog(
         b.authorTV.text = post.author
         b.descriptionTV.text = post.description
         b.titleTV.text = post.title
+        b.likesTV.text = post.likes.toString()
         //b.postImg.setImageBitmap(post.content.toBitmap())
         b.postImg.load(GLOBALS.POST_IMG(post.id)){
             crossfade(true)

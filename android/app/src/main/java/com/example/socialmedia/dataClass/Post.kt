@@ -10,6 +10,7 @@ data class Post(
     val posted_by: Long?,
     val created_at: String?,
     val last_update_at: String?,
+    val likes :Int,
     val author: String,
     val title: String
 )
