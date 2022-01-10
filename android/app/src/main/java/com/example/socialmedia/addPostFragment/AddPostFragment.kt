@@ -117,13 +117,13 @@ class AddPostFragment(
             postUrl,
             postData,
             {it ->
-                post = Post(it.getLong("id"),postData.getString("description"),null, null,null,postData.getString("author"),postData.getString("title"))
+                post = Post(it.getLong("id"),postData.getString("description"),null, null,null,it.getLong("likes"),postData.getString("author"),postData.getString("title"))
                 message = "good"
                 //parentFragmentManager.beginTransaction().remove(this).commit()
             }
         ) { error ->
 
-            post = Post(-1,postData.getString("description"),null, null,null,postData.getString("author"),postData.getString("title"))
+            post = Post(-1,postData.getString("description"),null, null,null,-1,postData.getString("author"),postData.getString("title"))
             message = String(error.networkResponse.data)
             error.printStackTrace()
             //parentFragmentManager.beginTransaction().remove(this).commit()

@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:text="number of likes"
             android:layout_marginStart="10dp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
