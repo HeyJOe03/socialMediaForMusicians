@@ -108,7 +108,7 @@ class AddPostFragment(
 
     private fun loadPostRequest(postData: JSONObject){
 
-        val postUrl = GLOBALS.SERVER + "/post/load"
+        val postUrl = GLOBALS.LOAD_DATA(GLOBALS.CONTENT_POST)
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
 

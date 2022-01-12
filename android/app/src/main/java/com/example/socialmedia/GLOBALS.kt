@@ -17,6 +17,8 @@ object GLOBALS {
     private const val SERVER_PROFILE_ROUTE: String = "$SERVER/profile"
     const val SERVER_PROFILE : String = "$SERVER_PROFILE_ROUTE/fromID"
     fun SERVER_PROFILE_PIC(id: Long) : String = "$SERVER_PROFILE_ROUTE/img/$id"
+    const val SERVER_PROFILE_EDIT_IMG : String = "$SERVER_PROFILE_ROUTE/editpic"
+    const val SERVER_PROFILE_GET_INFO : String = "$SERVER_PROFILE_ROUTE/myProfile"
 
 
     //data
@@ -26,7 +28,8 @@ object GLOBALS {
     const val CONTENT_SHOP: String = "shop"
 
     //preview
-    fun GET_IMG_PREVIEW(route:String,id: Long) : String{
+    fun GET_CONTENT_IDS(route:String) : String = "$SERVER_DATA_ROUTE/$route"
+    fun GET_IMG(route:String,id: Long) : String{
         if(route != CONTENT_POST && route != CONTENT_SHEET && route != CONTENT_SHOP) return ""
         else return "$SERVER_DATA_ROUTE/$route/$id"
     }

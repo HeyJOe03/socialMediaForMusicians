@@ -260,7 +260,7 @@ class ProfileEditDialog(
         val JSON = JSONObject()
         JSON.put("img",profilePic?.toBase64()) // if control made in the response of postEditProfileRequest
 
-        val postUrl = GLOBALS.SERVER + "/profile/editpic"
+        val postUrl = GLOBALS.SERVER_PROFILE_EDIT_IMG
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
         val jsonObjectRequest = JsonObjectRequest(
@@ -287,7 +287,7 @@ class ProfileEditDialog(
         requestBody.put("id",userID)
         requestBody.put("hash_password",hash_password)
 
-        val postUrl = GLOBALS.SERVER + "/profile/myProfile"
+        val postUrl = GLOBALS.SERVER_PROFILE_GET_INFO
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
         val jsonObjectRequest = JsonObjectRequest(

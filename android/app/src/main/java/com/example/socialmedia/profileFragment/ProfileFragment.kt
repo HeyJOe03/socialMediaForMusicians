@@ -77,9 +77,9 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
 
         layoutMenager = GridLayoutManager(context,3)
 
-        adapterPost = ContentPreviewRV(emptyList(),"Post",this)
-        adapterSheet = ContentPreviewRV(emptyList(), "Sheet",this)
-        adapterInstrument = ContentPreviewRV(emptyList(), "Instrument",this)
+        adapterPost = ContentPreviewRV(emptyList(),GLOBALS.CONTENT_POST,this)
+        adapterSheet = ContentPreviewRV(emptyList(), GLOBALS.CONTENT_SHEET,this)
+        adapterInstrument = ContentPreviewRV(emptyList(), GLOBALS.CONTENT_SHOP,this)
 
         b.previewRV.adapter = adapterPost //DEFAULT ADAPTER IS ON POST
         b.previewRV.layoutManager = layoutMenager
@@ -101,20 +101,20 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
 
         b.btnPostRV.setOnClickListener{
             b.previewRV.adapter = adapterPost
-            currentRoute = "post"
-            idRequest("post")
+            currentRoute = GLOBALS.CONTENT_POST
+            idRequest(GLOBALS.CONTENT_POST)
         }
 
         b.btnSheetRV.setOnClickListener{
             b.previewRV.adapter = adapterSheet
-            currentRoute = "sheet"
-            idRequest("sheet")
+            currentRoute = GLOBALS.CONTENT_SHEET
+            idRequest(GLOBALS.CONTENT_SHEET)
         }
 
         b.btnShopRV.setOnClickListener{
-            currentRoute = "shop"
+            currentRoute = GLOBALS.CONTENT_SHOP
             b.previewRV.adapter = adapterInstrument
-            idRequest("shop")
+            idRequest(GLOBALS.CONTENT_SHOP)
         }
 
         refresh()
@@ -122,7 +122,7 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
 
     private fun idRequest(route: String) {
 
-        val postUrl = GLOBALS.SERVER + "/data/" + route
+        val postUrl = GLOBALS.GET_CONTENT_IDS(route)
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
         val postData = JSONObject()
@@ -181,9 +181,7 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
                 isLookingSomeoneToPlayWith = n == 1
                 //profileImg = (response["profile_image"] as String).toBitmap()
 
-                val url = GLOBALS.SERVER_PROFILE_PIC(userID)
-
-                b.profilePicture.load(url){
+                b.profilePicture.load(GLOBALS.SERVER_PROFILE_PIC(userID)){
                     crossfade(true)
                     placeholder(R.drawable.ic_placeholder)
                     memoryCachePolicy(CachePolicy.DISABLED) //without this don't update from the same url
@@ -207,7 +205,7 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
 
     override fun onRVClickListener(position: Int, typeOfRV: String) {
         when{
-            typeOfRV == "Post" -> {
+            typeOfRV == GLOBALS.CONTENT_POST -> {
                 val dialog = PostDialog(previewID[position])
                 dialog.show(childFragmentManager,"post dialog")
             }
@@ -216,7 +214,7 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
 
     override fun onRVLongClickListener(position: Int, typeOfRV: String) {
         when{
-            typeOfRV == "Post" -> {
+            typeOfRV == GLOBALS.CONTENT_POST -> {
                 val dialog = PostEditDialog(previewID[position],this)
                 dialog.show(childFragmentManager,"post update-delete dialog")
             }

@@ -62,7 +62,7 @@ class PostDialog(
         b.titleTV.text = post.title
         b.likesTV.text = post.likes.toString()
         //b.postImg.setImageBitmap(post.content.toBitmap())
-        b.postImg.load(GLOBALS.POST_IMG(id)){
+        b.postImg.load(GLOBALS.GET_IMG(GLOBALS.CONTENT_POST,id)){
             crossfade(true)
             placeholder(R.drawable.ic_placeholder)
         }
@@ -70,7 +70,7 @@ class PostDialog(
 
     private fun postRequest() {
 
-        val postUrl = GLOBALS.SERVER + "/data/post/info"
+        val postUrl = GLOBALS.INFO_DATA(GLOBALS.CONTENT_POST)
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
         val postData = JSONObject()

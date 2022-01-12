@@ -64,7 +64,7 @@ class PostEditDialog(
 
     private fun deletePostRequest() {
 
-        val postUrl = GLOBALS.SERVER + "/post/delete"
+        val postUrl = GLOBALS.DELETE_DATA(GLOBALS.CONTENT_POST)
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
         val postData = JSONObject()
@@ -85,7 +85,7 @@ class PostEditDialog(
 
     private fun updatePostRequest() {
 
-        val postUrl = GLOBALS.SERVER + "/post/update"
+        val postUrl = GLOBALS.UPDATE_DATA(GLOBALS.CONTENT_POST)
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
         val postData = JSONObject()
@@ -120,7 +120,7 @@ class PostEditDialog(
 
     private fun postRequest() {
 
-        val postUrl = GLOBALS.SERVER + "/data/post/info"
+        val postUrl = GLOBALS.INFO_DATA(GLOBALS.CONTENT_POST)
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
         val postData = JSONObject()

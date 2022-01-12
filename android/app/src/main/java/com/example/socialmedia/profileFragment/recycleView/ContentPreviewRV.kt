@@ -11,10 +11,11 @@ import coil.size.Scale
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.profileFragment.diffutils.RVMyDiffutil
+import java.lang.Exception
 
 class ContentPreviewRV(
     private var dataSet: List<Long>,
-    val typeOfRV: String, // PUBLIC
+    private val typeOfRV: String, // PUBLIC
     private val onRVRVItemClickListener: OnRVItemClickListener
 ) : RecyclerView.Adapter<ContentPreviewRV.ViewHolder>() {
 
@@ -48,14 +49,10 @@ class ContentPreviewRV(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val contentRQ = when{
-            typeOfRV == "Sheet" -> "sheet"
-            typeOfRV == "Instrument" -> "secondHandInstrument"
-            typeOfRV == "Post" -> "post"
-            else -> throw Error("request does not exist")
-        }
 
-        viewHolder.postImg.load(GLOBALS.SERVER + "/data/" + contentRQ + "/" + dataSet[position]){
+        if(typeOfRV != GLOBALS.CONTENT_POST && typeOfRV != GLOBALS.CONTENT_SHEET && typeOfRV != GLOBALS.CONTENT_SHOP ) throw Exception("invalid content")
+
+        viewHolder.postImg.load(GLOBALS.GET_IMG(typeOfRV,dataSet[position])){
             crossfade(true)
             placeholder(R.drawable.ic_placeholder)
             scale(Scale.FILL)
