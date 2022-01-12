@@ -17,16 +17,18 @@ import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.DialogPostEditBinding
+import com.google.gson.Gson
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
 class PostEditDialog(
-    private val post: Post,
+    private val id: Long,
     private val setOnDismiss: SetOnDismiss
 ): DialogFragment() {
     private var mView: View? = null
     private lateinit var b: DialogPostEditBinding
+    private val gson: Gson = Gson()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.run{
@@ -42,11 +44,8 @@ class PostEditDialog(
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        Log.println(Log.ERROR,"post in long click",post.toString())
-
-        (b.authorET as TextView).text = post.author
-        (b.titleET as TextView).text = post.title
-        (b.descriptionET as TextView).text = post.description
+        setTheViewWithData(Post(-1,"",null,null,null,-1,"",""))
+        postRequest()
 
         b.btnEdit.setOnClickListener {
             updatePostRequest()
@@ -69,7 +68,7 @@ class PostEditDialog(
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
         val postData = JSONObject()
-        postData.put("id", post.id)
+        postData.put("id",id)
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.POST,
@@ -90,7 +89,7 @@ class PostEditDialog(
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
         val postData = JSONObject()
-        postData.put("id", post.id)
+        postData.put("id", id)
         postData.put("author",b.authorET.text.toString())
         postData.put("title",b.titleET.text.toString())
         postData.put("description",b.descriptionET.text.toString())
@@ -111,6 +110,41 @@ class PostEditDialog(
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         setOnDismiss.onDismiss()
+    }
+
+    private fun setTheViewWithData(post: Post){
+        (b.authorET as TextView).text = post.author
+        (b.titleET as TextView).text = post.title
+        (b.descriptionET as TextView).text = post.description
+    }
+
+    private fun postRequest() {
+
+        val postUrl = GLOBALS.SERVER + "/data/post/info"
+        val requestQueue: RequestQueue = Volley.newRequestQueue(context)
+
+        val postData = JSONObject()
+        try {
+            postData.put("id", id)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST,
+            postUrl,
+            postData,
+            { response ->
+                val s = (response as JSONObject).toString()
+                val post = gson.fromJson(s,Post::class.java)
+                setTheViewWithData(post)
+            }
+        ) { error ->
+            error.printStackTrace()
+            Log.println(Log.ERROR,"error","error")
+        }
+
+        requestQueue.add(jsonObjectRequest)
     }
 
     interface SetOnDismiss{

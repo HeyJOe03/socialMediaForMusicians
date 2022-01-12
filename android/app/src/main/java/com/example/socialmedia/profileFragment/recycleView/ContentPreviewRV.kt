@@ -10,20 +10,19 @@ import coil.load
 import coil.size.Scale
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
-import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.profileFragment.diffutils.RVMyDiffutil
 
-class ProfilePostRecycleView(
+class ContentPreviewRV(
     private var dataSet: List<Long>,
     private val typeOfRV: String,
     private val onRVRVItemClickListener: OnRVItemClickListener
-) : RecyclerView.Adapter<ProfilePostRecycleView.ViewHolder>() {
+) : RecyclerView.Adapter<ContentPreviewRV.ViewHolder>() {
 
     init {
         if(typeOfRV != "Instrument" && typeOfRV != "Post" && typeOfRV != "Sheet") throw Error("impossible find the class")
     }
 
-    class ViewHolder(view: View, onRVItemClickListener: OnRVItemClickListener) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, onRVItemClickListener: OnRVItemClickListener, typeOfRV: String) : RecyclerView.ViewHolder(view) {
         val postImg: ImageView
         //val postTitle: TextView
 
@@ -32,11 +31,11 @@ class ProfilePostRecycleView(
             postImg = view.findViewById(R.id.post_img)
             //postTitle = view.findViewById(R.id.post_title)
             itemView.setOnClickListener {
-                onRVItemClickListener.onRVClickListener(layoutPosition)
+                onRVItemClickListener.onRVClickListener(layoutPosition, typeOfRV)
             }
 
             itemView.setOnLongClickListener {
-                onRVItemClickListener.onRVLongClickListener(layoutPosition)
+                onRVItemClickListener.onRVLongClickListener(layoutPosition, typeOfRV)
                 true
             }
         }
@@ -45,7 +44,7 @@ class ProfilePostRecycleView(
     override fun onCreateViewHolder(viewGroup: ViewGroup, p1: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.card_post_sheet_instrument_pic, viewGroup, false)
-        return ViewHolder(view, onRVRVItemClickListener)
+        return ViewHolder(view, onRVRVItemClickListener, typeOfRV)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
@@ -56,7 +55,7 @@ class ProfilePostRecycleView(
             else -> throw Error("request does not exist")
         }
 
-        viewHolder.postImg.load(GLOBALS.SERVER + "/" + contentRQ + "/" + dataSet[position]){
+        viewHolder.postImg.load(GLOBALS.SERVER + "/data/" + contentRQ + "/" + dataSet[position]){
             crossfade(true)
             placeholder(R.drawable.ic_placeholder)
             scale(Scale.FILL)
@@ -76,7 +75,7 @@ class ProfilePostRecycleView(
     }
 
     interface OnRVItemClickListener{
-        fun onRVClickListener(position: Int)
-        fun onRVLongClickListener(position: Int)
+        fun onRVClickListener(position: Int,typeOfRV: String)
+        fun onRVLongClickListener(position: Int,typeOfRV: String)
     }
 }

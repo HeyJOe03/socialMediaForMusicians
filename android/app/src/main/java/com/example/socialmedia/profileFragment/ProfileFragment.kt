@@ -20,18 +20,17 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
-import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.FragmentProfileBinding
 import com.example.socialmedia.dialogs.PostDialog
 import com.example.socialmedia.dialogs.PostEditDialog
 import com.example.socialmedia.dialogs.ProfileEditDialog
-import com.example.socialmedia.profileFragment.recycleView.ProfilePostRecycleView
+import com.example.socialmedia.profileFragment.recycleView.ContentPreviewRV
 import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONArray
 
-class ProfileFragment : Fragment(), ProfilePostRecycleView.OnRVItemClickListener, PostEditDialog.SetOnDismiss, ProfileEditDialog.SetOnEditDialogClose {
+class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, PostEditDialog.SetOnDismiss, ProfileEditDialog.SetOnEditDialogClose {
 
     private var _binding: FragmentProfileBinding? = null
 
@@ -49,7 +48,7 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnRVItemClickListener
     private lateinit var email: String
     //private var profileImg: Bitmap? = null
 
-    private lateinit var adapterPost: ProfilePostRecycleView
+    private lateinit var adapterPost: ContentPreviewRV
     private lateinit var layoutMenager: LinearLayoutManager
 
     private val posts: MutableList<Long> = mutableListOf()
@@ -72,7 +71,7 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnRVItemClickListener
         val hash_password = sharedPref!!.getString(GLOBALS.SP_KEY_PW,"")
 
         layoutMenager = GridLayoutManager(context,3)
-        adapterPost = ProfilePostRecycleView(emptyList(),"post",this)
+        adapterPost = ContentPreviewRV(emptyList(),"Post",this)
 
         b.myPostRV.adapter = adapterPost
         b.myPostRV.layoutManager = layoutMenager
@@ -115,7 +114,7 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnRVItemClickListener
                 posts.clear()
 
                 for(i in 0 until (response["result"] as JSONArray).length()) {
-                    val id = (((response["result"] as JSONArray).get(i) as JSONObject)["id"] as Long)
+                    val id = (((response["result"] as JSONArray).get(i) as JSONObject).getLong("id"))
                     //val post = gson.fromJson((response["result"] as JSONArray).get(i).toString(),Post::class.java)
                     posts.add(id)
                 }
@@ -180,15 +179,22 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnRVItemClickListener
         b.usernameTV.text = username
     }
 
-    override fun onRVClickListener(position: Int) {
-        val dialog = PostDialog(posts[position])
-        dialog.show(childFragmentManager,"post dialog")
+    override fun onRVClickListener(position: Int, typeOfRV: String) {
+        when{
+            typeOfRV == "Post" -> {
+                val dialog = PostDialog(posts[position])
+                dialog.show(childFragmentManager,"post dialog")
+            }
+        }
     }
 
-    override fun onRVLongClickListener(position: Int) {
-        // TODO: implement me
-        //val dialog = PostEditDialog(posts[position],this)
-        //dialog.show(childFragmentManager,"post update-delete dialog")
+    override fun onRVLongClickListener(position: Int, typeOfRV: String) {
+        when{
+            typeOfRV == "Post" -> {
+                val dialog = PostEditDialog(posts[position],this)
+                dialog.show(childFragmentManager,"post update-delete dialog")
+            }
+        }
     }
 
     override fun onEditDialogClose() {

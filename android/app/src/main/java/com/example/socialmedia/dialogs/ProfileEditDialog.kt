@@ -33,8 +33,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
-import com.example.socialmedia.databinding.ProfileEditDialogBinding
-import kotlinx.coroutines.processNextEventInCurrentThread
+import com.example.socialmedia.databinding.DialogProfileEditBinding
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
@@ -42,15 +41,10 @@ import java.lang.Exception
 class ProfileEditDialog(
     private var onCloseEditDialog: ProfileEditDialog.SetOnEditDialogClose
 ) : DialogFragment() {
-    private lateinit var b: ProfileEditDialogBinding
-    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var b: DialogProfileEditBinding
     private var profilePic: Bitmap? = null
     private var locationByNetwork: Location? = null
     private var locationByGps: Location? = null
-
-    // private var latitude : Double? = null
-    // private var longitude : Double? = null
-    // private var profileIsChanged = false
 
 
     private lateinit var locationManager: LocationManager
@@ -60,7 +54,7 @@ class ProfileEditDialog(
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.run{
             //initiate the binding here and pass the root to the dialog view
-            b = ProfileEditDialogBinding.inflate(layoutInflater).apply {
+            b = DialogProfileEditBinding.inflate(layoutInflater).apply {
                 //reference layout elements by name freely here
             }
             AlertDialog.Builder(this).apply {
@@ -359,12 +353,6 @@ class ProfileEditDialog(
         this.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val b = baos.toByteArray()
         return Base64.encodeToString(b, Base64.DEFAULT)
-    }
-
-    private fun String.toBitmap(): Bitmap? {
-        Base64.decode(this, Base64.DEFAULT).apply {
-            return BitmapFactory.decodeByteArray(this, 0, size)
-        }
     }
 
     override fun onDestroy() {

@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.socialmedia.R
-import com.example.socialmedia.databinding.PostPreview2Binding
+import com.example.socialmedia.databinding.SubFragmentPostPreview2Binding
 import org.json.JSONArray
 import org.json.JSONObject
 
 class PostPreview2Fragment : Fragment() {
 
-    private var _binding: PostPreview2Binding? = null
+    private var _binding: SubFragmentPostPreview2Binding? = null
     private val b get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -22,7 +22,7 @@ class PostPreview2Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = PostPreview2Binding.bind(view)
+        _binding = SubFragmentPostPreview2Binding.bind(view)
         // setResult("requestKey", bundleOf("bundleKey" to result))
     }
 

@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
         //Log.println(Log.ERROR, "message", "message ${message}")
         //Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         if (post != null) {
-            val dialog = PostDialog(post)
+            val dialog = PostDialog(post.id)
             dialog.show(supportFragmentManager, "post dialog")
         }
         b.navMenu.selectedItemId = R.id.ic_home

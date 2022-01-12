@@ -4,7 +4,7 @@ import { deleteUserPost, getPostImgFromId, updatePost,userPosts,loadNewPost,post
 const postRouter = express.Router()
 export = postRouter
 
-postRouter.get('/:id',getPostImgFromId)
+postRouter.get('/post/:id',getPostImgFromId)
 
 postRouter.post('/load',loadNewPost)
 

@@ -48,13 +48,15 @@ class PostDialog(
 
         setTheViewWithData(Post(-1,"",null,null,null,-1,"",""))
 
+        postRequest()
+
         b.postDialogLayout.setOnClickListener{
             dismiss()
         }
         return mView
     }
 
-    fun setTheViewWithData(post: Post){
+    private fun setTheViewWithData(post: Post){
         b.authorTV.text = post.author
         b.descriptionTV.text = post.description
         b.titleTV.text = post.title
@@ -66,7 +68,7 @@ class PostDialog(
         }
     }
 
-    private fun postRequests() {
+    private fun postRequest() {
 
         val postUrl = GLOBALS.SERVER + "/data/post/info"
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
