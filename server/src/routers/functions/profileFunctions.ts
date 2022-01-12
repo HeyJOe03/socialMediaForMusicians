@@ -1,8 +1,7 @@
 import ExpressRouterCallback from "../../@types/expressCalback"
 import DB from "../../database/dbconnection"
-import { selectProfile, selectProfilePicture, selectProfileFull} from "../../database/sql/selectUser"
+import { selectProfileQuery, selectProfilePictureQuery, selectProfileFullQuery, updateProfileQuery} from "../../database/sql/userQueries"
 import Profile from "../../@types/profile"
-import { updateProfile } from "../../database/sql/update"
 import { OkPacket } from "mysql"
 
 export const profileFromID:ExpressRouterCallback = (req,res) => {
@@ -17,7 +16,7 @@ export const profileFromID:ExpressRouterCallback = (req,res) => {
                 return
             }
         } else id = req.body.id
-        let sql = selectProfile(id)
+        const sql = selectProfileQuery(id)
         
         DB.query(sql, (err,result) => {
             if(err){
@@ -46,7 +45,7 @@ export const profileImageFromID:ExpressRouterCallback =(req,res) => {
 
     //console.log(id)
 
-    const sql = selectProfilePicture(id)
+    const sql = selectProfilePictureQuery(id)
 
     DB.query(sql, (err,result) => {
 
@@ -73,7 +72,7 @@ export const profileEdit: ExpressRouterCallback = (req,res) => {
 
     else{
 
-        const sql = updateProfile(newProfile)
+        const sql = updateProfileQuery(newProfile)
 
         DB.query(sql,(err,result) => {
             if (err) res.status(500).send({'err':err.message})
@@ -110,7 +109,7 @@ const inputCheck = (p:Profile): string => {
 export const profileFullFromID:ExpressRouterCallback = (req,res) => {
     // TODO: add check on the hash_password
     
-    const sql = selectProfileFull(req.body.id) //select all but not the profile image
+    const sql = selectProfileFullQuery(req.body.id) //select all but not the profile image
     //console.log(sql)
     DB.query(sql,(err,result) => {
         if(err) res.status(500).send(err.message)
@@ -138,7 +137,7 @@ const intToBool = (n : Number) : boolean => {
 export const editProfilePic : ExpressRouterCallback = (req,res) => {
     try {
         const b = Buffer.from(req.body.img as string,'base64')
-        let sql = /*sql*/`UPDATE user SET profile_pic = ?`
+        const sql = /*sql*/`UPDATE user SET profile_pic = ?`
         DB.query(sql,b,(err,result) => {
             if(err) res.status(500).send(err.message)
             else res.status(200).send('image inserted')
