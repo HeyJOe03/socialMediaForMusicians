@@ -1,9 +1,5 @@
-package com.example.socialmedia.profileFragment
+package com.example.socialmedia.profileFragment.recycleView
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +11,7 @@ import coil.size.Scale
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.dataClass.Post
-import java.lang.Exception
+import com.example.socialmedia.profileFragment.diffutils.PostsDiffutil
 
 class ProfilePostRecycleView(
     private var dataSet: List<Post>,
