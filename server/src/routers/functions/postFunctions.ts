@@ -9,22 +9,22 @@ import { deletePost } from "../../database/sql/delete";
 type BodyUpdate = {id:Number,author:string,title:string,description:string}
 
 export const getPostImgFromId : ExpressRouterCallback = (req,res) => {
-    const id = parseInt(req.params.id)
-
-    if(isNaN(id)) res.send('err')
-    else{
-        const sql = selectPostPicture(id)
-        DB.query(sql,(err,result) => {
-            if(err)res.send(err)
-            else{
+    const sql = selectPostPicture(parseInt(req.params.id))
+    DB.query(sql,(err,result) => {
+        if(err)res.status(500).send(err.message)
+        else{
+            try{
                 res.writeHead(200, {
                     'Content-Type': 'image/png',
                     'Content-Length': (result[0].content as Buffer).length
-                });
+                })
                 res.end(result[0].content as Buffer)
+            } catch (e){
+                res.status(500).send("query error id doesn't exist")
             }
-        })
-    }
+            
+        }
+    })
 }
 
 export const loadNewPost: ExpressRouterCallback = (req,res) => { 

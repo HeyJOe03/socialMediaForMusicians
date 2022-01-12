@@ -62,7 +62,7 @@ class PostDialog(
         b.titleTV.text = post.title
         b.likesTV.text = post.likes.toString()
         //b.postImg.setImageBitmap(post.content.toBitmap())
-        b.postImg.load(GLOBALS.POST_IMG(post.id)){
+        b.postImg.load(GLOBALS.POST_IMG(id)){
             crossfade(true)
             placeholder(R.drawable.ic_placeholder)
         }
