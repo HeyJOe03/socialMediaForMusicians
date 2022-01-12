@@ -51,4 +51,4 @@ app.use('/',mainRouter)
 
 app.use('/LogIn-SignUp',logInSignUpRouter)
 app.use('/profile', profileRouter)
-app.use('/content',postRouter)
+app.use('/data',postRouter)

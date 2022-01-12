@@ -5,7 +5,7 @@ import { insertNewPost } from "../../database/sql/insertUser";
 import Post from "../../@types/post";
 import { OkPacket } from "mysql";
 import { deletePost } from "../../database/sql/delete";
-import { selectPostsInfo} from "../../database/sql/selectUser"
+import { selectPostsID} from "../../database/sql/selectUser"
 
 type BodyUpdate = {id:Number,author:string,title:string,description:string}
 
@@ -67,7 +67,7 @@ export const userPosts: ExpressRouterCallback = (req,res) => {
 
     else{
         let id = parseInt(req.body.id)
-        let sql = selectPostsInfo(id)
+        let sql = selectPostsID(id)
         DB.query(sql,(err,result) => {
             if(err) res.status(500).send(err.message)
             else res.json({"result":result})   

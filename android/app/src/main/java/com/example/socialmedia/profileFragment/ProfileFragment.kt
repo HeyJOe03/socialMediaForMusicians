@@ -97,7 +97,7 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnRVItemClickListener
 
     private fun postRequests() {
 
-        val postUrl = GLOBALS.SERVER_PROFILE_POSTS
+        val postUrl = GLOBALS.SERVER + "/data/post"
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
         val postData = JSONObject()

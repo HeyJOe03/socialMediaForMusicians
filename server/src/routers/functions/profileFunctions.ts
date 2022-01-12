@@ -1,6 +1,6 @@
 import ExpressRouterCallback from "../../@types/expressCalback"
 import DB from "../../database/dbconnection"
-import { selectProfile, selectProfilePicture, selectPostsInfo, selectProfileFull} from "../../database/sql/selectUser"
+import { selectProfile, selectProfilePicture, selectProfileFull} from "../../database/sql/selectUser"
 import Profile from "../../@types/profile"
 import { updateProfile } from "../../database/sql/update"
 import { OkPacket } from "mysql"
