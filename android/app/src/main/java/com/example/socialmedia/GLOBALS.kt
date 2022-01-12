@@ -16,9 +16,7 @@ object GLOBALS {
 
     fun SERVER_PROFILE_PIC(id: Long) = "$SERVER/profile/img/$id"
 
-    fun POST_IMG(id: Long): String = "$SERVER/post/$id"
-
-    const val SERVER_PROFILE_POSTS = "$SERVER/profile/posts"
+    //const val SERVER_PROFILE_POSTS = "$SERVER/profile/posts"
 
     const val KEY_SIGNIN = "signIn"
 

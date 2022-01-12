@@ -31,7 +31,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONArray
 
-class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, PostEditDialog.SetOnDismiss, ProfileEditDialog.SetOnEditDialogClose {
+class ProfileFragment : Fragment(), ProfilePostRecycleView.OnRVItemClickListener, PostEditDialog.SetOnDismiss, ProfileEditDialog.SetOnEditDialogClose {
 
     private var _binding: FragmentProfileBinding? = null
 
@@ -49,10 +49,10 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
     private lateinit var email: String
     //private var profileImg: Bitmap? = null
 
-    private lateinit var adapter: ProfilePostRecycleView
+    private lateinit var adapterPost: ProfilePostRecycleView
     private lateinit var layoutMenager: LinearLayoutManager
 
-    private val posts: MutableList<Post> = mutableListOf()
+    private val posts: MutableList<Long> = mutableListOf()
 
     private val gson : Gson = Gson()
 
@@ -72,9 +72,9 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
         val hash_password = sharedPref!!.getString(GLOBALS.SP_KEY_PW,"")
 
         layoutMenager = GridLayoutManager(context,3)
-        adapter = ProfilePostRecycleView(emptyList(),this)
+        adapterPost = ProfilePostRecycleView(emptyList(),"post",this)
 
-        b.myPostRV.adapter = adapter
+        b.myPostRV.adapter = adapterPost
         b.myPostRV.layoutManager = layoutMenager
 
         b.refreshLayout.setOnRefreshListener {
@@ -118,7 +118,7 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
                     val post = gson.fromJson((response["result"] as JSONArray).get(i).toString(),Post::class.java)
                     posts.add(post)
                 }
-                adapter.setData(posts.toList())
+                adapterPost.setData(posts.toList())
             }
         ) { error ->
             error.printStackTrace()
@@ -179,12 +179,12 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnItemClickListener, 
         b.usernameTV.text = username
     }
 
-    override fun onClickListener(position: Int) {
+    override fun onRVClickListener(position: Int) {
         val dialog = PostDialog(posts[position])
         dialog.show(childFragmentManager,"post dialog")
     }
 
-    override fun onLongClickListener(position: Int) {
+    override fun onRVLongClickListener(position: Int) {
         val dialog = PostEditDialog(posts[position],this)
         dialog.show(childFragmentManager,"post update-delete dialog")
     }

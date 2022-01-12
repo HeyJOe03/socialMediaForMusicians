@@ -1,5 +1,4 @@
 import express from "express";
-import DB from "../database/dbconnection";
 import { deleteUserPost, getPostImgFromId, updatePost } from "./functions/postFunctions";
 import { loadNewPost } from "./functions/postFunctions";
 

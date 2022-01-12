@@ -11,26 +11,32 @@ import coil.size.Scale
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.dataClass.Post
-import com.example.socialmedia.profileFragment.diffutils.PostsDiffutil
+import com.example.socialmedia.profileFragment.diffutils.RVMyDiffutil
 
 class ProfilePostRecycleView(
-    private var dataSet: List<Post>,
-    private val onItemClickListener: OnItemClickListener
+    private var dataSet: List<Long>,
+    private val typeOfRV: String,
+    private val onRVRVItemClickListener: OnRVItemClickListener
 ) : RecyclerView.Adapter<ProfilePostRecycleView.ViewHolder>() {
 
-    class ViewHolder(view: View, onItemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(view) {
+    init {
+        if(typeOfRV != "Instrument" && typeOfRV != "Post" && typeOfRV != "Sheet") throw Error("impossible find the class")
+    }
+
+    class ViewHolder(view: View, onRVItemClickListener: OnRVItemClickListener) : RecyclerView.ViewHolder(view) {
         val postImg: ImageView
         //val postTitle: TextView
 
         init {
+
             postImg = view.findViewById(R.id.post_img)
             //postTitle = view.findViewById(R.id.post_title)
             itemView.setOnClickListener {
-                onItemClickListener.onClickListener(layoutPosition)
+                onRVItemClickListener.onRVClickListener(layoutPosition)
             }
 
             itemView.setOnLongClickListener {
-                onItemClickListener.onLongClickListener(layoutPosition)
+                onRVItemClickListener.onRVLongClickListener(layoutPosition)
                 true
             }
         }
@@ -39,22 +45,27 @@ class ProfilePostRecycleView(
     override fun onCreateViewHolder(viewGroup: ViewGroup, p1: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.card_post_sheet_instrument_pic, viewGroup, false)
-        return ViewHolder(view, onItemClickListener)
+        return ViewHolder(view, onRVRVItemClickListener)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        val contentRQ = when{
+            typeOfRV == "Sheet" -> "sheet"
+            typeOfRV == "Instrument" -> "secondHandInstrument"
+            typeOfRV == "Post" -> "post"
+            else -> throw Error("request does not exist")
+        }
 
-        viewHolder.postImg.load(GLOBALS.POST_IMG(dataSet[position].id)){
+        viewHolder.postImg.load(GLOBALS.SERVER + "/" + contentRQ + "/" + dataSet[position]){
             crossfade(true)
             placeholder(R.drawable.ic_placeholder)
             scale(Scale.FILL)
-
         }
 
     }
 
-    fun setData(newData: List<Post>) {
-        val diffCallback = PostsDiffutil(dataSet, newData)
+    fun setData(newData: List<Long>) {
+        val diffCallback = RVMyDiffutil(dataSet, newData)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         dataSet = newData
         diffResult.dispatchUpdatesTo(this)
@@ -64,8 +75,8 @@ class ProfilePostRecycleView(
         return dataSet.size
     }
 
-    interface OnItemClickListener{
-        fun onClickListener(position: Int)
-        fun onLongClickListener(position: Int)
+    interface OnRVItemClickListener{
+        fun onRVClickListener(position: Int)
+        fun onRVLongClickListener(position: Int)
     }
 }
