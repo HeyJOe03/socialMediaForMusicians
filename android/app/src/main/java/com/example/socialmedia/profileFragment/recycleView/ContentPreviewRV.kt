@@ -14,7 +14,7 @@ import com.example.socialmedia.profileFragment.diffutils.RVMyDiffutil
 
 class ContentPreviewRV(
     private var dataSet: List<Long>,
-    private val typeOfRV: String,
+    val typeOfRV: String, // PUBLIC
     private val onRVRVItemClickListener: OnRVItemClickListener
 ) : RecyclerView.Adapter<ContentPreviewRV.ViewHolder>() {
 

@@ -49,11 +49,16 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
     //private var profileImg: Bitmap? = null
 
     private lateinit var adapterPost: ContentPreviewRV
+    private lateinit var adapterSheet: ContentPreviewRV
+    private lateinit var adapterInstrument: ContentPreviewRV
+
     private lateinit var layoutMenager: LinearLayoutManager
 
-    private val posts: MutableList<Long> = mutableListOf()
+    private val previewID: MutableList<Long> = mutableListOf()
 
     private val gson : Gson = Gson()
+
+    private var currentRoute = "post" // || "shop" || "sheet"
 
     //private var requestsDone = false
 
@@ -71,10 +76,13 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
         val hash_password = sharedPref!!.getString(GLOBALS.SP_KEY_PW,"")
 
         layoutMenager = GridLayoutManager(context,3)
-        adapterPost = ContentPreviewRV(emptyList(),"Post",this)
 
-        b.myPostRV.adapter = adapterPost
-        b.myPostRV.layoutManager = layoutMenager
+        adapterPost = ContentPreviewRV(emptyList(),"Post",this)
+        adapterSheet = ContentPreviewRV(emptyList(), "Sheet",this)
+        adapterInstrument = ContentPreviewRV(emptyList(), "Instrument",this)
+
+        b.previewRV.adapter = adapterPost //DEFAULT ADAPTER IS ON POST
+        b.previewRV.layoutManager = layoutMenager
 
         b.refreshLayout.setOnRefreshListener {
             Handler().postDelayed(
@@ -91,12 +99,30 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
             dialog.show(parentFragmentManager, "edit profile")
         }
 
+        b.btnPostRV.setOnClickListener{
+            b.previewRV.adapter = adapterPost
+            currentRoute = "post"
+            idRequest("post")
+        }
+
+        b.btnSheetRV.setOnClickListener{
+            b.previewRV.adapter = adapterSheet
+            currentRoute = "sheet"
+            idRequest("sheet")
+        }
+
+        b.btnShopRV.setOnClickListener{
+            currentRoute = "shop"
+            b.previewRV.adapter = adapterInstrument
+            idRequest("shop")
+        }
+
         refresh()
     }
 
-    private fun postRequests() {
+    private fun idRequest(route: String) {
 
-        val postUrl = GLOBALS.SERVER + "/data/post"
+        val postUrl = GLOBALS.SERVER + "/data/" + route
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
         val postData = JSONObject()
@@ -111,14 +137,14 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
             postUrl,
             postData,
             { response ->
-                posts.clear()
+                previewID.clear()
 
                 for(i in 0 until (response["result"] as JSONArray).length()) {
                     val id = (((response["result"] as JSONArray).get(i) as JSONObject).getLong("id"))
                     //val post = gson.fromJson((response["result"] as JSONArray).get(i).toString(),Post::class.java)
-                    posts.add(id)
+                    previewID.add(id)
                 }
-                adapterPost.setData(posts.toList())
+                adapterPost.setData(previewID.toList())
             }
         ) { error ->
             error.printStackTrace()
@@ -182,7 +208,7 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
     override fun onRVClickListener(position: Int, typeOfRV: String) {
         when{
             typeOfRV == "Post" -> {
-                val dialog = PostDialog(posts[position])
+                val dialog = PostDialog(previewID[position])
                 dialog.show(childFragmentManager,"post dialog")
             }
         }
@@ -191,7 +217,7 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
     override fun onRVLongClickListener(position: Int, typeOfRV: String) {
         when{
             typeOfRV == "Post" -> {
-                val dialog = PostEditDialog(posts[position],this)
+                val dialog = PostEditDialog(previewID[position],this)
                 dialog.show(childFragmentManager,"post update-delete dialog")
             }
         }
@@ -207,7 +233,7 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
     }
 
     private fun refresh(){
-        postRequests()
+        idRequest(currentRoute)
         profileRequest()
     }
 
