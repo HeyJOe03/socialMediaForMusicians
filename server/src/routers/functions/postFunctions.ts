@@ -1,11 +1,10 @@
 import ExpressRouterCallback from "../../@types/expressCalback"
 import DB from "../../database/dbconnection";
-import { selectPostPicture } from "../../database/sql/selectUser";
+import { selectPostPicture, selectPostInfo,selectPostsID } from "../../database/sql/selectUser";
 import { insertNewPost } from "../../database/sql/insertUser";
 import Post from "../../@types/post";
 import { OkPacket } from "mysql";
 import { deletePost } from "../../database/sql/delete";
-import { selectPostsID} from "../../database/sql/selectUser"
 
 type BodyUpdate = {id:Number,author:string,title:string,description:string}
 
@@ -87,4 +86,13 @@ export const updatePost: ExpressRouterCallback = (req,res) => {
         else res.status(200).json({'good':'ok'})
     })
 
+}
+
+export const postInfo: ExpressRouterCallback = (req,res) => {
+    const id = req.body.id
+    const sql = selectPostInfo(id)
+    DB.query(sql,(err,result) => {
+        if(err)res.status(500).send(err.message)
+        else res.status(200).json(result)
+    })
 }

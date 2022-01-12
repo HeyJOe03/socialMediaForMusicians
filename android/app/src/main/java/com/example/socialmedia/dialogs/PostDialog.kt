@@ -11,20 +11,20 @@ import coil.load
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.dataClass.Post
-import com.example.socialmedia.databinding.PostDialogBinding
+import com.example.socialmedia.databinding.DialogPostBinding
 
 class PostDialog(
-    val post: Post
+    val id: Long
 ): DialogFragment() {
 
     private var mView: View? = null
 
-    private lateinit var b: PostDialogBinding
+    private lateinit var b: DialogPostBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.run {
             //initiate the binding here and pass the root to the dialog view
-            b = PostDialogBinding.inflate(layoutInflater).apply {
+            b = DialogPostBinding.inflate(layoutInflater).apply {
                 //reference layout elements by name freely here
             }
             AlertDialog.Builder(this).apply {
@@ -35,6 +35,15 @@ class PostDialog(
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
+        setTheViewWithData(Post(-1,"",null,null,null,-1,"",""))
+
+        b.postDialogLayout.setOnClickListener{
+            dismiss()
+        }
+        return mView
+    }
+
+    fun setTheViewWithData(post: Post){
         b.authorTV.text = post.author
         b.descriptionTV.text = post.description
         b.titleTV.text = post.title
@@ -44,12 +53,6 @@ class PostDialog(
             crossfade(true)
             placeholder(R.drawable.ic_placeholder)
         }
-
-        b.postDialogLayout.setOnClickListener{
-            dismiss()
-        }
-
-        return mView
     }
 
 }

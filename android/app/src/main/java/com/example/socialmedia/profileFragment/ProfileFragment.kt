@@ -186,8 +186,9 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnRVItemClickListener
     }
 
     override fun onRVLongClickListener(position: Int) {
-        val dialog = PostEditDialog(posts[position],this)
-        dialog.show(childFragmentManager,"post update-delete dialog")
+        // TODO: implement me
+        //val dialog = PostEditDialog(posts[position],this)
+        //dialog.show(childFragmentManager,"post update-delete dialog")
     }
 
     override fun onEditDialogClose() {

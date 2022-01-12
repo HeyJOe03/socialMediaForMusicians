@@ -1,10 +1,8 @@
 package com.example.socialmedia.dialogs
 
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +16,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.dataClass.Post
-import com.example.socialmedia.databinding.PostEditDialogBinding
+import com.example.socialmedia.databinding.DialogPostEditBinding
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -28,12 +26,12 @@ class PostEditDialog(
     private val setOnDismiss: SetOnDismiss
 ): DialogFragment() {
     private var mView: View? = null
-    private lateinit var b: PostEditDialogBinding
+    private lateinit var b: DialogPostEditBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.run{
             //initiate the binding here and pass the root to the dialog view
-            b = PostEditDialogBinding.inflate(layoutInflater).apply {
+            b = DialogPostEditBinding.inflate(layoutInflater).apply {
                 //reference layout elements by name freely here
             }
             AlertDialog.Builder(this).apply {

@@ -1,6 +1,5 @@
 import express from "express";
-import { deleteUserPost, getPostImgFromId, updatePost,userPosts } from "./functions/postFunctions";
-import { loadNewPost } from "./functions/postFunctions";
+import { deleteUserPost, getPostImgFromId, updatePost,userPosts,loadNewPost,postInfo } from "./functions/postFunctions";
 
 const postRouter = express.Router()
 export = postRouter
@@ -14,3 +13,5 @@ postRouter.post('/delete',deleteUserPost)
 postRouter.post('/update',updatePost)
 
 postRouter.post('/post',userPosts)
+
+postRouter.post('/post/info',postInfo)
