@@ -12,6 +12,6 @@ shopRouter.post('/delete',deleteUserPost)
 
 shopRouter.post('/update',updatePost)
 
-shopRouter.post('/post',userPosts)
+shopRouter.post('/',userPosts)
 
 shopRouter.post('/info',postInfo)

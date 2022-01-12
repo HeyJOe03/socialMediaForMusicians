@@ -20,7 +20,7 @@ class ContentPreviewRV(
 ) : RecyclerView.Adapter<ContentPreviewRV.ViewHolder>() {
 
     init {
-        if(typeOfRV != "Instrument" && typeOfRV != "Post" && typeOfRV != "Sheet") throw Error("impossible find the class")
+        if(typeOfRV != GLOBALS.CONTENT_POST && typeOfRV !=  GLOBALS.CONTENT_SHEET && typeOfRV !=  GLOBALS.CONTENT_SHOP) throw Error("impossible find the class")
     }
 
     class ViewHolder(view: View, onRVItemClickListener: OnRVItemClickListener, typeOfRV: String) : RecyclerView.ViewHolder(view) {

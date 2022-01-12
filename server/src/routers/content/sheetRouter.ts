@@ -12,6 +12,6 @@ sheetRouter.post('/delete',deleteUserPost)
 
 sheetRouter.post('/update',updatePost)
 
-sheetRouter.post('/post',userPosts)
+sheetRouter.post('/',userPosts)
 
 sheetRouter.post('/info',postInfo)

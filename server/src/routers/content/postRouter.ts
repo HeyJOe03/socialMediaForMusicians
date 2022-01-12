@@ -12,6 +12,6 @@ postRouter.post('/delete',deleteUserPost)
 
 postRouter.post('/update',updatePost)
 
-postRouter.post('/post',userPosts)
+postRouter.post('/',userPosts)
 
 postRouter.post('/info',postInfo)
