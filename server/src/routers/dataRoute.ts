@@ -1,7 +1,7 @@
 import {Router} from "express"
-import postRouter from './postRouter'
-import sheetRouter from './sheetRouter'
-import shopRouter from './shopRouter'
+import postRouter from './content/postRouter'
+import sheetRouter from './content/sheetRouter'
+import shopRouter from './content/shopRouter'
 
 const dataRouter = Router()
 export = dataRouter

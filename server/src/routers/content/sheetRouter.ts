@@ -1,4 +1,4 @@
-import { deleteUserPost, getPostImgFromId, updatePost,userPosts,loadNewPost,postInfo } from "./functions/sheetFunctions"
+import { deleteUserPost, getPostImgFromId, updatePost,userPosts,loadNewPost,postInfo } from "../functions/sheetFunctions"
 import {Router} from 'express'
 
 const sheetRouter = Router()

@@ -1,4 +1,4 @@
-import { deleteUserPost, getPostImgFromId, updatePost,userPosts,loadNewPost,postInfo } from "./functions/shopFunctions"
+import { deleteUserPost, getPostImgFromId, updatePost,userPosts,loadNewPost,postInfo } from "../functions/shopFunctions"
 import {Router} from 'express'
 
 const shopRouter = Router()
