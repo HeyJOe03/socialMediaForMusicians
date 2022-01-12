@@ -1,15 +1,13 @@
 import ExpressRouterCallback from "../../@types/expressCalback"
 import DB from "../../database/dbconnection"
-import { selectPostPicture, selectPostInfo,selectPostsID } from "../../database/sql/postQueries"
-import { insertNewPost } from "../../database/sql/insertUser"
+import { selectPostPictureQuery, selectPostInfoQuery,selectPostsIDQuery,insertNewPostQuery,deletePostQuery, updatePostQuery } from "../../database/sql/postQueries"
 import Post from "../../@types/post"
 import { OkPacket } from "mysql"
-import { deletePost } from "../../database/sql/delete"
 
 type BodyUpdate = {id:Number,author:string,title:string,description:string}
 
 export const getPostImgFromId : ExpressRouterCallback = (req,res) => {
-    const sql = selectPostPicture(parseInt(req.params.id))
+    const sql = selectPostPictureQuery(parseInt(req.params.id))
     DB.query(sql,(err,result) => {
         if(err)res.status(500).send(err.message)
         else{
@@ -29,7 +27,7 @@ export const getPostImgFromId : ExpressRouterCallback = (req,res) => {
 
 export const loadNewPost: ExpressRouterCallback = (req,res) => { 
 
-    const sql = insertNewPost(req.body as Post)
+    const sql = insertNewPostQuery(req.body as Post)
     const b = Buffer.from((req.body as Post).content,'base64')
     DB.query(sql,b,(err,result) => {
         if(err)res.status(500).send(err.message)
@@ -53,7 +51,8 @@ export const deleteUserPost: ExpressRouterCallback = (req,res) => {
     if(isNaN(id)) res.status(500).send({'error':'missing id'})
 
     else{
-        DB.query(deletePost(id),(err) => {
+        const sql = deletePostQuery(id)
+        DB.query(sql,(err) => {
             if(err) res.status(500).json({'error':'error'})
             else res.status(200).json(id)
         })
@@ -66,7 +65,7 @@ export const userPosts: ExpressRouterCallback = (req,res) => {
 
     else{
         let id = parseInt(req.body.id)
-        let sql = selectPostsID(id)
+        const sql = selectPostsIDQuery(id)
         DB.query(sql,(err,result) => {
             if(err) res.status(500).send(err.message)
             else res.json({"result":result})   
@@ -79,8 +78,7 @@ export const updatePost: ExpressRouterCallback = (req,res) => {
 
     const {id,author,title,description} : BodyUpdate = req.body
 
-    let sql = /*sql*/ `UPDATE posts SET author = '${author}',title = '${title}', description = '${description}',last_update_at = CURRENT_TIMESTAMP WHERE id = ${id};`
-
+    const sql = updatePostQuery(id,author,title,description)
     DB.query(sql,(err) => {
         if(err)res.status(500).json({'error':err.message})
         else res.status(200).json({'good':'ok'})
@@ -90,7 +88,7 @@ export const updatePost: ExpressRouterCallback = (req,res) => {
 
 export const postInfo: ExpressRouterCallback = (req,res) => {
     const id = req.body.id
-    const sql = selectPostInfo(id)
+    const sql = selectPostInfoQuery(id)
     DB.query(sql,(err,result) => {
         if(err)res.status(500).send(err.message)
         else res.status(200).json(result[0])

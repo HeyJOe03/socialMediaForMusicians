@@ -1,13 +1,12 @@
 import ExpressRouterCallback from "../../@types/expressCalback"
 import DB from "../../database/dbconnection"
-import { selectOneUsername, selectUserLogIn} from "../../database/sql/selectUser"
+import { selectOneUsernameQuery, selectUserLogInQuery, insertNewUserQuery} from "../../database/sql/userQueries"
 import User from "../../@types/user"
-import { OkPacket, MysqlError } from "mysql"
-import { insertNewUser } from "../../database/sql/insertUser"
+import { OkPacket } from "mysql"
 
 export const userExist : ExpressRouterCallback = (req,res) => {
-    let query: string = selectOneUsername(req.body.username)
-    DB.query(query, (err,results) => {
+    const sql = selectOneUsernameQuery(req.body.username)
+    DB.query(sql, (err,results) => {
         if(err) console.log(err)
         if(results.length === 0)res.json({'exist':'false'})
         else res.json({'exist':'true'})
@@ -22,10 +21,8 @@ export const userSignUp : ExpressRouterCallback = (req,res) => {
         return
     }
 
-    //console.log(req.body)
-
     //else
-    let sql = insertNewUser(obj)
+    const sql = insertNewUserQuery(obj)
     DB.query(sql, (err,results) => {
         if(err){
             res.status(500).send('impossible insert user')
@@ -36,8 +33,8 @@ export const userSignUp : ExpressRouterCallback = (req,res) => {
 }
 
 export const userLogIn : ExpressRouterCallback = (req,res) => {
-    let query: string = selectUserLogIn(req.body.username,req.body.pw)
-    DB.query(query, (err,results) => {
+    const sql = selectUserLogInQuery(req.body.username,req.body.pw)
+    DB.query(sql, (err,results) => {
         if(err) console.log(err)
         if(results.length === 1)res.json({'signIn':results[0].id})
         else res.status(500).send('failed')
