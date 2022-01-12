@@ -1,5 +1,5 @@
-import express from "express";
-import { deleteUserPost, getPostImgFromId, updatePost,userPosts,loadNewPost,postInfo } from "./functions/postFunctions";
+import express from "express"
+import { deleteUserPost, getPostImgFromId, updatePost,userPosts,loadNewPost,postInfo } from "./functions/postFunctions"
 
 const postRouter = express.Router()
 export = postRouter

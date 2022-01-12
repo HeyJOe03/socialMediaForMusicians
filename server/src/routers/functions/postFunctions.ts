@@ -1,10 +1,10 @@
 import ExpressRouterCallback from "../../@types/expressCalback"
-import DB from "../../database/dbconnection";
-import { selectPostPicture, selectPostInfo,selectPostsID } from "../../database/sql/selectUser";
-import { insertNewPost } from "../../database/sql/insertUser";
-import Post from "../../@types/post";
-import { OkPacket } from "mysql";
-import { deletePost } from "../../database/sql/delete";
+import DB from "../../database/dbconnection"
+import { selectPostPicture, selectPostInfo,selectPostsID } from "../../database/sql/selectUser"
+import { insertNewPost } from "../../database/sql/insertUser"
+import Post from "../../@types/post"
+import { OkPacket } from "mysql"
+import { deletePost } from "../../database/sql/delete"
 
 type BodyUpdate = {id:Number,author:string,title:string,description:string}
 
