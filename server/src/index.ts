@@ -15,7 +15,7 @@ import DB from './database/dbconnection'
 import mainRouter from './routers/mainRoute';
 import logInSignUpRouter from './routers/logInSignUpRouter'
 import profileRouter from './routers/profileRoute';
-import postRouter from './routers/postRoute'
+import dataRouter from './routers/dataRoute'
 
 // define consts
 const app = express();
@@ -51,4 +51,4 @@ app.use('/',mainRouter)
 
 app.use('/LogIn-SignUp',logInSignUpRouter)
 app.use('/profile', profileRouter)
-app.use('/data',postRouter)
+app.use('/data',dataRouter)

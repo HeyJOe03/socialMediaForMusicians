@@ -1,10 +1,10 @@
-import express from "express"
 import { deleteUserPost, getPostImgFromId, updatePost,userPosts,loadNewPost,postInfo } from "./functions/postFunctions"
+import {Router} from 'express'
 
-const postRouter = express.Router()
+const postRouter = Router()
 export = postRouter
 
-postRouter.get('/post/:id',getPostImgFromId)
+postRouter.get('/:id',getPostImgFromId)
 
 postRouter.post('/load',loadNewPost)
 
@@ -14,4 +14,4 @@ postRouter.post('/update',updatePost)
 
 postRouter.post('/post',userPosts)
 
-postRouter.post('/post/info',postInfo)
+postRouter.post('/info',postInfo)
