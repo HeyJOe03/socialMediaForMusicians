@@ -115,14 +115,15 @@ class ProfileFragment : Fragment(), ProfilePostRecycleView.OnRVItemClickListener
                 posts.clear()
 
                 for(i in 0 until (response["result"] as JSONArray).length()) {
-                    val post = gson.fromJson((response["result"] as JSONArray).get(i).toString(),Post::class.java)
-                    posts.add(post)
+                    val id = (((response["result"] as JSONArray).get(i) as JSONObject)["id"] as Long)
+                    //val post = gson.fromJson((response["result"] as JSONArray).get(i).toString(),Post::class.java)
+                    posts.add(id)
                 }
                 adapterPost.setData(posts.toList())
             }
         ) { error ->
             error.printStackTrace()
-            Log.println(Log.ERROR,"error","errror")
+            Log.println(Log.ERROR,"error","error")
         }
 
         requestQueue.add(jsonObjectRequest)
