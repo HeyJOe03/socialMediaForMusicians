@@ -16,7 +16,7 @@ class PostPreview1Fragment(
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.post_preview_1, container, false)
+        return inflater.inflate(R.layout.sub_fragment_post_preview_1, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

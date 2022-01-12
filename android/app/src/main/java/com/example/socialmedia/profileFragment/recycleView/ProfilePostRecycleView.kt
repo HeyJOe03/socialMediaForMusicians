@@ -38,7 +38,7 @@ class ProfilePostRecycleView(
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, p1: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.post_card, viewGroup, false)
+            .inflate(R.layout.card_post, viewGroup, false)
         return ViewHolder(view, onItemClickListener)
     }
 

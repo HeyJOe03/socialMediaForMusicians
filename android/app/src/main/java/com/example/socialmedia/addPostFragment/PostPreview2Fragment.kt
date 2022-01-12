@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.socialmedia.R
-import com.example.socialmedia.databinding.FragmentAddPostBinding
 import com.example.socialmedia.databinding.PostPreview2Binding
 import org.json.JSONArray
 import org.json.JSONObject
@@ -18,7 +17,7 @@ class PostPreview2Fragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.post_preview_2, container, false)
+        return inflater.inflate(R.layout.sub_fragment_post_preview_2, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

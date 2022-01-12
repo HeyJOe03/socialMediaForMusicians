@@ -13,7 +13,7 @@ import com.example.socialmedia.R
 class ErrorDialog : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.registration_error_dialog, container, false)
+        return inflater.inflate(R.layout.dialog_registration_error, container, false)
     }
 
     private lateinit var errorTV : TextView
