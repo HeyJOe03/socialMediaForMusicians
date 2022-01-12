@@ -1,6 +1,6 @@
 import ExpressRouterCallback from "../../@types/expressCalback"
 import DB from "../../database/dbconnection"
-import { selectPostPicture, selectPostInfo,selectPostsID } from "../../database/sql/selectUser"
+import { selectPostPicture, selectPostInfo,selectPostsID } from "../../database/sql/postQueries"
 import { insertNewPost } from "../../database/sql/insertUser"
 import Post from "../../@types/post"
 import { OkPacket } from "mysql"
