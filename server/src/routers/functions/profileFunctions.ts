@@ -64,21 +64,6 @@ export const profileImageFromID:ExpressRouterCallback =(req,res) => {
 
 }
 
-export const userPosts: ExpressRouterCallback = (req,res) => {
-
-    if(req.body.id == undefined || isNaN(parseInt(req.body.id))) res.status(500).send('id not provided')
-
-    else{
-        let id = parseInt(req.body.id)
-        let sql = selectPostsInfo(id)
-        DB.query(sql,(err,result) => {
-            if(err) res.status(500).send(err.message)
-            else res.json({"result":result})   
-        })
-    }
-
-}
-
 export const profileEdit: ExpressRouterCallback = (req,res) => {
     const newProfile = req.body as Profile
 
