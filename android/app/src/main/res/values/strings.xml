@@ -5,4 +5,7 @@
     <string name="permission_required">Camera access is required to display the camera preview.</string>
     <string name="ok">OK</string>
     <string name="permission_granted">Permission is granted. You can use the camera now.</string>
+    <string name="new_post">New post:</string>
+    <string name="new_sheet">New sheet:</string>
+    <string name="new_shop">New instrument to sell:</string>
 </resources>

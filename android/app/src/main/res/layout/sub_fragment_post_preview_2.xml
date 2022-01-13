@@ -7,6 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="20dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -42,11 +43,20 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/label_content_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="@string/new_post"/>
+
         <LinearLayout
             android:id="@+id/layout_sheet_and_shop"
             android:visibility="visible"
             android:layout_width="match_parent"
-            android:padding="20dp"
             android:orientation="vertical"
             android:layout_height="match_parent">
 
@@ -73,31 +83,14 @@
                 android:textSize="20sp"
                 android:hint="Description:"/>
 
-
-            <EditText
-                android:id="@+id/tagET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Tag: [@username]"
-                android:inputType="text"
-                android:textSize="20sp"/>
-
-            <EditText
-                android:id="@+id/hashtagET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Hashtag: [#hashtag]"
-                android:inputType="textMultiLine"
-                android:textSize="20sp" />
-
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_shop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:padding="20dp">
+            android:visibility="gone">
 
             <EditText
                 android:id="@+id/instrument_description_ET"
@@ -116,6 +109,23 @@
                 android:textSize="20sp" />
 
         </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/tagET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tag: [@username]"
+            android:inputType="text"
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/hashtagET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Hashtag: [#hashtag]"
+            android:inputType="textMultiLine"
+            android:textSize="20sp" />
 
     </LinearLayout>
 </ScrollView>

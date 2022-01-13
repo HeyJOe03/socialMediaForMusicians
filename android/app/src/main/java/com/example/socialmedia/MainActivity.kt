@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.socialmedia.addPostFragment.AddPostFragment
 import com.example.socialmedia.dataClass.Post
@@ -27,13 +28,16 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
 
     private lateinit var mSocket: Socket
 
-    override fun onClose(message: String, post: Post?) {
+    //override fun onClose(message: String, post: Post?) {
+    override fun onClose(message: String) {
         //Log.println(Log.ERROR, "message", "message ${message}")
         //Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        /*
         if (post != null) {
             val dialog = PostDialog(post.id)
             dialog.show(supportFragmentManager, "post dialog")
-        }
+        }*/
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         b.navMenu.selectedItemId = R.id.ic_home
     }
 

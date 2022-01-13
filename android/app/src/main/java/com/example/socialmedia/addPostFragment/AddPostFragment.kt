@@ -43,7 +43,7 @@ class AddPostFragment(
     private var indexCurrentPostPreview: Int = 1
     private val nOfPreviews: Int = 2
     private var message = ""
-    private var post: Post? = null
+    //private var post: Post? = null
 
     private lateinit var layout: View
 
@@ -60,7 +60,7 @@ class AddPostFragment(
         _binding = FragmentAddPostBinding.bind(view)
         layout = b.layoutMainAddPost
 
-        post = null
+        //post = null
 
         if(ActivityCompat.checkSelfPermission(this.context!!, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
             requestPermission(view)
@@ -108,7 +108,7 @@ class AddPostFragment(
 
     private fun loadPostRequest(postData: JSONObject){
 
-        val postUrl = GLOBALS.LOAD_DATA(GLOBALS.CONTENT_POST)
+        val postUrl = GLOBALS.LOAD_DATA(postData.getString("contentType"))
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
 
@@ -117,13 +117,13 @@ class AddPostFragment(
             postUrl,
             postData,
             {it ->
-                post = Post(it.getLong("id"),postData.getString("description"),null, null,null,0,postData.getString("author"),postData.getString("title"))
-                message = "good"
-                //parentFragmentManager.beginTransaction().remove(this).commit()
+                //post = Post(it.getLong("id"),postData.getString("description"),null, null,null,0,postData.getString("author"),postData.getString("title"))
+                message = "Done Successfully!!"
+                parentFragmentManager.beginTransaction().remove(this).commit()
             }
         ) { error ->
 
-            post = Post(-1,postData.getString("description"),null, null,null,-1,postData.getString("author"),postData.getString("title"))
+            //post = Post(-1,postData.getString("description"),null, null,null,-1,postData.getString("author"),postData.getString("title"))
             message = String(error.networkResponse.data)
             error.printStackTrace()
             //parentFragmentManager.beginTransaction().remove(this).commit()
@@ -204,7 +204,8 @@ class AddPostFragment(
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        setOnClose.onClose(message,post)
+        //setOnClose.onClose(message,post)
+        setOnClose.onClose(message)
         indexCurrentPostPreview = 1
     }
 
@@ -270,7 +271,8 @@ class AddPostFragment(
     }
 
     interface SetOnClose{
-        fun onClose(message: String, post: Post?)
+        //fun onClose(message: String, post: Post?)
+        fun onClose(message: String)
     }
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
