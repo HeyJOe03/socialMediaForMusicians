@@ -29,19 +29,19 @@ class PostPreview2Fragment : Fragment() {
             contentType = GLOBALS.CONTENT_POST
             b.layoutSheetAndShop.visibility = View.VISIBLE
             b.layoutShop.visibility = View.GONE
-            b.labelContentType.text = R.string.new_post.toString()
+            b.labelContentType.text = getString(R.string.new_post)
         }
         b.btnSelectorSheet.setOnClickListener {
             contentType = GLOBALS.CONTENT_SHEET
             b.layoutSheetAndShop.visibility = View.VISIBLE
             b.layoutShop.visibility = View.GONE
-            b.labelContentType.text = R.string.new_sheet.toString()
+            b.labelContentType.text = getString(R.string.new_sheet)
         }
         b.btnSelectorShop.setOnClickListener {
             contentType = GLOBALS.CONTENT_SHOP
             b.layoutSheetAndShop.visibility = View.GONE
             b.layoutShop.visibility = View.VISIBLE
-            b.labelContentType.text = R.string.new_shop.toString()
+            b.labelContentType.text = getString(R.string.new_shop)
         }
     }
 

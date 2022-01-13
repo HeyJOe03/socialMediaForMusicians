@@ -143,7 +143,11 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
                     //val post = gson.fromJson((response["result"] as JSONArray).get(i).toString(),Post::class.java)
                     previewID.add(id)
                 }
-                adapterPost.setData(previewID.toList())
+                when(route){
+                    GLOBALS.CONTENT_POST -> adapterPost.setData(previewID.toList())
+                    GLOBALS.CONTENT_SHEET -> adapterSheet.setData(previewID.toList())
+                    GLOBALS.CONTENT_SHOP -> adapterInstrument.setData(previewID.toList())
+                }
             }
         ) { error ->
             error.printStackTrace()

@@ -26,12 +26,11 @@ export const getShopImgFromId : ExpressRouterCallback = (req,res) => {
     })
 }
 
-export const loadNewShop: ExpressRouterCallback = (req,res) => { 
-
+export const loadNewShop: ExpressRouterCallback = (req,res) => {
     const sql = insertNewShopQuery(req.body as Shop)
     const b = Buffer.from((req.body as Shop).content!!,'base64')
     DB.query(sql,b,(err,result) => {
-        if(err)res.status(500).send(err.message)
+        if(err) res.status(500).send(err.message)
         else {
             res.json({'id':(result as OkPacket).insertId})
             DB.query(/*sql*/`UPDATE user SET last_instrument_offer = CURRENT_TIMESTAMP WHERE id = ${(req.body as Shop).posted_by};`);
