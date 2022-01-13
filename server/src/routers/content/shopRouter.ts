@@ -1,17 +1,17 @@
-import { deleteUserPost, getPostImgFromId, updatePost,userPosts,loadNewPost,postInfo } from "../functions/shopFunctions"
+import { deleteUserShop, getShopImgFromId, updateShop,userShops,loadNewShop,infoShop } from "../functions/shopFunctions"
 import {Router} from 'express'
 
 const shopRouter = Router()
 export = shopRouter
 
-shopRouter.get('/:id',getPostImgFromId)
+shopRouter.get('/:id',getShopImgFromId)
 
-shopRouter.post('/load',loadNewPost)
+shopRouter.post('/load',loadNewShop)
 
-shopRouter.post('/delete',deleteUserPost)
+shopRouter.post('/delete',deleteUserShop)
 
-shopRouter.post('/update',updatePost)
+shopRouter.post('/update',updateShop)
 
-shopRouter.post('/',userPosts)
+shopRouter.post('/',userShops)
 
-shopRouter.post('/info',postInfo)
+shopRouter.post('/info',infoShop)

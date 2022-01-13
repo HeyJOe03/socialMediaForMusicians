@@ -24,6 +24,6 @@ export const deleteShopQuery = (id: Number): string => {
     return /*sql*/`DELETE FROM secondhandinstruments WHERE id = ${id}`
 }
 
-export const updateShopQuery = (id: Number,instrument_description:string,price:Number): string => {
+export const updateShopQuery = (id: Number,price:Number,instrument_description:string): string => {
     return /*sql*/ `UPDATE posts SET price = ${price},instrument_description = '${instrument_description}',last_update_at = CURRENT_TIMESTAMP WHERE id = ${id};`
 }
