@@ -28,7 +28,7 @@ export const getPostImgFromId : ExpressRouterCallback = (req,res) => {
 export const loadNewPost: ExpressRouterCallback = (req,res) => { 
 
     const sql = insertNewPostQuery(req.body as Post)
-    const b = Buffer.from((req.body as Post).content,'base64')
+    const b = Buffer.from((req.body as Post).content!!,'base64')
     DB.query(sql,b,(err,result) => {
         if(err)res.status(500).send(err.message)
         else {
