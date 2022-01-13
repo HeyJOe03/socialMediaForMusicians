@@ -1,4 +1,4 @@
-package com.example.socialmedia.profileFragment.recycleView
+package com.example.socialmedia.profileFragment
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +10,6 @@ import coil.load
 import coil.size.Scale
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
-import com.example.socialmedia.profileFragment.diffutils.RVMyDiffutil
 import java.lang.Exception
 
 class ContentPreviewRV(

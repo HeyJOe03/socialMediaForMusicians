@@ -1,4 +1,4 @@
-package com.example.socialmedia.profileFragment.diffutils
+package com.example.socialmedia.profileFragment
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.socialmedia.dataClass.Post

@@ -24,7 +24,6 @@ import com.example.socialmedia.databinding.FragmentProfileBinding
 import com.example.socialmedia.dialogs.PostDialog
 import com.example.socialmedia.dialogs.PostEditDialog
 import com.example.socialmedia.dialogs.ProfileEditDialog
-import com.example.socialmedia.profileFragment.recycleView.ContentPreviewRV
 import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
