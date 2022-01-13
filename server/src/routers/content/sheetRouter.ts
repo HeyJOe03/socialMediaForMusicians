@@ -1,17 +1,17 @@
-import { deleteUserPost, getPostImgFromId, updatePost,userPosts,loadNewPost,postInfo } from "../functions/sheetFunctions"
+import { deleteUserSheet, getSheetImgFromId, updateSheet,userSheets,loadNewSheet,infoSheet } from "../functions/sheetFunctions"
 import {Router} from 'express'
 
 const sheetRouter = Router()
 export = sheetRouter
 
-sheetRouter.get('/:id',getPostImgFromId)
+sheetRouter.get('/:id',getSheetImgFromId)
 
-sheetRouter.post('/load',loadNewPost)
+sheetRouter.post('/load',loadNewSheet)
 
-sheetRouter.post('/delete',deleteUserPost)
+sheetRouter.post('/delete',deleteUserSheet)
 
-sheetRouter.post('/update',updatePost)
+sheetRouter.post('/update',updateSheet)
 
-sheetRouter.post('/',userPosts)
+sheetRouter.post('/',userSheets)
 
-sheetRouter.post('/info',postInfo)
+sheetRouter.post('/info',infoSheet)

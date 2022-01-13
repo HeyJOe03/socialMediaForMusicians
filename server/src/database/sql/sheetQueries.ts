@@ -12,7 +12,7 @@ export const selectSheetPictureQuery = (id: number) : string => {
     return /*sql*/`SELECT sheet FROM musicsheet WHERE id = ${id}`
 }
 
-export const insertNewPostQuery = (sheet: Sheet) : string => {
+export const insertNewSheetQuery = (sheet: Sheet) : string => {
     let sql = /*sql*/`
         INSERT INTO posts (author,title,description,posted_by,sheet) 
         VALUES ('${sheet.author}','${sheet.title}','${sheet.description}',${sheet.posted_by},?)`
