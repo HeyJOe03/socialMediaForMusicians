@@ -29,11 +29,11 @@ export const getPostImgFromId : ExpressRouterCallback = (req,res) => {
 export const loadNewPost: ExpressRouterCallback = (req,res) => { 
 
     const sql = insertNewPostQuery(req.body as Post)
-    const b = Buffer.from((req.body as Post).content,'base64')
+    const b = Buffer.from((req.body as Post).content!!,'base64')
     DB.query(sql,b,(err,result) => {
         if(err)res.status(500).send(err.message)
         else {
-            res.json({'id':(result as OkPacket).insertId})
+            res.json({'id':(result as OkPacket).insertId}) //FIXME: remember
             DB.query(/*sql*/`UPDATE user SET last_post = CURRENT_TIMESTAMP WHERE id = ${(req.body as Post).posted_by};`);
             (req.body.hashtag as [string]).forEach((e:string) => {
                 DB.query(/*sql*/`INSERT INTO hashtag (hashtag_name,hashtag_in) VALUES ('${e}',${(result as OkPacket).insertId})`) 
