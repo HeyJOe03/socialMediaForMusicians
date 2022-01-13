@@ -14,7 +14,7 @@ export const selectShopPictureQuery = (id: number) : string => {
 
 export const insertNewShopQuery = (shop: Shop) : string => {
     let sql = /*sql*/`
-        INSERT INTO posts (price,instrument_description,posted_by,content) 
+        INSERT INTO secondhandinstruments (price,instrument_description,posted_by,content) 
         VALUES (${shop.price},'${shop.instrument_description}',${shop.posted_by},?)`
 
     return sql
@@ -25,5 +25,5 @@ export const deleteShopQuery = (id: Number): string => {
 }
 
 export const updateShopQuery = (id: Number,price:Number,instrument_description:string): string => {
-    return /*sql*/ `UPDATE posts SET price = ${price},instrument_description = '${instrument_description}',last_update_at = CURRENT_TIMESTAMP WHERE id = ${id};`
+    return /*sql*/ `UPDATE secondhandinstruments SET price = ${price},instrument_description = '${instrument_description}',last_update_at = CURRENT_TIMESTAMP WHERE id = ${id};`
 }

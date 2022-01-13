@@ -4,7 +4,7 @@ export default interface Sheet{
     title : string
     description : string
     posted_by: Number
-    sheet? : string
+    content? : string
     likes? : Number
     created_at? : Date
     last_update_at? : Date

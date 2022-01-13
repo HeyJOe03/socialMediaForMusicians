@@ -28,7 +28,7 @@ export const getSheetImgFromId : ExpressRouterCallback = (req,res) => {
 export const loadNewSheet: ExpressRouterCallback = (req,res) => { 
 
     const sql = insertNewSheetQuery(req.body as Sheet)
-    const b = Buffer.from((req.body as Sheet).sheet!!,'base64')
+    const b = Buffer.from((req.body as Sheet).content!!,'base64')
     DB.query(sql,b,(err,result) => {
         if(err)res.status(500).send(err.message)
         else {

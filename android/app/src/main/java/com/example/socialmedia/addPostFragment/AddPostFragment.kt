@@ -26,12 +26,10 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
-import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.FragmentAddPostBinding
 import com.google.android.material.snackbar.Snackbar
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
-import java.util.*
 
 class AddPostFragment(
     private val setOnClose: AddPostFragment.SetOnClose
