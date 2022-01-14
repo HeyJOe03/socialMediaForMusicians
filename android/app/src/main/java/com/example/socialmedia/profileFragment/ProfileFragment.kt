@@ -1,5 +1,6 @@
 package com.example.socialmedia.profileFragment
 
+import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,15 +23,13 @@ import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.databinding.FragmentProfileBinding
-import com.example.socialmedia.dialogs.PostDialog
-import com.example.socialmedia.dialogs.PostEditDialog
-import com.example.socialmedia.dialogs.ProfileEditDialog
+import com.example.socialmedia.dialogs.*
 import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONArray
 
-class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, PostEditDialog.SetOnDismiss, ProfileEditDialog.SetOnEditDialogClose {
+class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, PostEditDialog.SetOnDismiss,SheetEditDialog.SetOnDismiss, ProfileEditDialog.SetOnEditDialogClose {
 
     private var _binding: FragmentProfileBinding? = null
 
@@ -207,21 +207,21 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
     }
 
     override fun onRVClickListener(position: Int, typeOfRV: String) {
-        when{
-            typeOfRV == GLOBALS.CONTENT_POST -> {
-                val dialog = PostDialog(previewID[position])
-                dialog.show(childFragmentManager,"post dialog")
-            }
+        val dialog: DialogFragment? = when(typeOfRV){
+            GLOBALS.CONTENT_POST -> PostDialog(previewID[position])
+            GLOBALS.CONTENT_SHEET -> SheetDialog(previewID[position])
+            else -> null
         }
+        dialog?.show(childFragmentManager,"post dialog")
     }
 
     override fun onRVLongClickListener(position: Int, typeOfRV: String) {
-        when{
-            typeOfRV == GLOBALS.CONTENT_POST -> {
-                val dialog = PostEditDialog(previewID[position],this)
-                dialog.show(childFragmentManager,"post update-delete dialog")
-            }
+        val dialog: DialogFragment? = when(typeOfRV){
+            GLOBALS.CONTENT_POST -> PostEditDialog(previewID[position],this)
+            GLOBALS.CONTENT_SHEET -> SheetEditDialog(previewID[position],this)
+            else -> null
         }
+        dialog?.show(childFragmentManager,"post update-delete dialog")
     }
 
     override fun onEditDialogClose() {
