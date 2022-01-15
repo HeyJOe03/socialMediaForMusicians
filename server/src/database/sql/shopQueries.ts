@@ -5,7 +5,7 @@ export const selectShopsIDQuery = (id: number) : string => {
 }
 
 export const selectShopInfoQuery = (id: number) : string => {
-    return /*sql*/`SELECT id,instrument_description,posted_by,created_at,last_update_at,likes FROM secondhandinstruments WHERE id = ${id}`
+    return /*sql*/`SELECT id,instrument_description,posted_by,created_at,last_update_at,likes,price FROM secondhandinstruments WHERE id = ${id}`
 }
 
 export const selectShopPictureQuery = (id: number) : string => {

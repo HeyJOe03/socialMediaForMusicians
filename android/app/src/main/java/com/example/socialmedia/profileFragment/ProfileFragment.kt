@@ -210,6 +210,7 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
         val dialog: DialogFragment? = when(typeOfRV){
             GLOBALS.CONTENT_POST -> PostDialog(previewID[position])
             GLOBALS.CONTENT_SHEET -> SheetDialog(previewID[position])
+            GLOBALS.CONTENT_SHOP -> ShopDialog(previewID[position])
             else -> null
         }
         dialog?.show(childFragmentManager,"post dialog")
