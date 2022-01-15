@@ -220,25 +220,7 @@ class PostDialog(
             //Finally writing the bitmap to the output stream that we opened
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
             Toast.makeText(context!!,"Photo saved",Toast.LENGTH_LONG).show()
+            // TODO: create the notification
         }
     }
-
-    /*
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == GLOBALS.WRITE_EXTERNAL_STORAGE_RESULT_CODE) {
-            val pic: Bitmap? = data?.getParcelableExtra("data")
-            imagePreview = pic
-            val fragment = PostPreview1Fragment(imagePreview)
-            val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
-            transaction.apply {
-                replace(R.id.fl_addPost_wrapper, fragment)
-                commit()
-            }
-
-            b.btnLoadFromGallery.visibility = View.GONE
-            b.btnLoadFromCamera.visibility = View.GONE
-            b.btnNext.visibility = View.VISIBLE
-        }
-    }*/
-
 }
