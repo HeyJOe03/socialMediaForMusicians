@@ -1,4 +1,0 @@
--[v] create new recycle views
--[v] server side for sheets and shop
--[v] add sheet and shop in client requests
--[] add click listeners for shop (update and delete dialogs)
