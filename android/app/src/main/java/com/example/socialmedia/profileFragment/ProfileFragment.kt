@@ -29,7 +29,11 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONArray
 
-class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, PostEditDialog.SetOnDismiss,SheetEditDialog.SetOnDismiss, ProfileEditDialog.SetOnEditDialogClose {
+class ProfileFragment :
+    Fragment(),
+    ContentPreviewRV.OnRVItemClickListener,
+    PostEditDialog.SetOnDismiss,SheetEditDialog.SetOnDismiss,ShopEditDialog.SetOnDismiss,
+    ProfileEditDialog.SetOnEditDialogClose {
 
     private var _binding: FragmentProfileBinding? = null
 
@@ -220,6 +224,7 @@ class ProfileFragment : Fragment(), ContentPreviewRV.OnRVItemClickListener, Post
         val dialog: DialogFragment? = when(typeOfRV){
             GLOBALS.CONTENT_POST -> PostEditDialog(previewID[position],this)
             GLOBALS.CONTENT_SHEET -> SheetEditDialog(previewID[position],this)
+            GLOBALS.CONTENT_SHOP -> ShopEditDialog(previewID[position],this)
             else -> null
         }
         dialog?.show(childFragmentManager,"post update-delete dialog")
