@@ -5,5 +5,5 @@ data class Sheet(
     val author: String?,
     val title: String?,
     val likes: Long,
-    val description: String?,
+    val description: String?
 )
