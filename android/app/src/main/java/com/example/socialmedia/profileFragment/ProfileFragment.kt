@@ -1,10 +1,10 @@
 package com.example.socialmedia.profileFragment
 
-import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +24,12 @@ import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.databinding.FragmentProfileBinding
 import com.example.socialmedia.dialogs.*
-import com.google.gson.Gson
+import com.example.socialmedia.dialogs.edit.PostEditDialog
+import com.example.socialmedia.dialogs.edit.SheetEditDialog
+import com.example.socialmedia.dialogs.edit.ShopEditDialog
+import com.example.socialmedia.dialogs.info.PostDialog
+import com.example.socialmedia.dialogs.info.SheetDialog
+import com.example.socialmedia.dialogs.info.ShopDialog
 import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONArray
@@ -32,12 +37,12 @@ import org.json.JSONArray
 class ProfileFragment :
     Fragment(),
     ContentPreviewRV.OnRVItemClickListener,
-    PostEditDialog.SetOnDismiss,SheetEditDialog.SetOnDismiss,ShopEditDialog.SetOnDismiss,
+    PostEditDialog.SetOnDismiss, SheetEditDialog.SetOnDismiss, ShopEditDialog.SetOnDismiss,
     ProfileEditDialog.SetOnEditDialogClose {
 
     private var _binding: FragmentProfileBinding? = null
 
-    private val b  get() = _binding!!
+    private val b get() = _binding!!
 
     private var sharedPref: SharedPreferences? = null
     private var userID: Long = -1
@@ -58,8 +63,6 @@ class ProfileFragment :
     private lateinit var layoutMenager: LinearLayoutManager
 
     private val previewID: MutableList<Long> = mutableListOf()
-
-    private val gson : Gson = Gson()
 
     private var currentRoute = "post" // || "shop" || "sheet"
 
@@ -88,7 +91,7 @@ class ProfileFragment :
         b.previewRV.layoutManager = layoutMenager
 
         b.refreshLayout.setOnRefreshListener {
-            Handler().postDelayed(
+            Handler(Looper.myLooper()!!).postDelayed(
                 { // Runnable
                     refresh()
                     b.refreshLayout.isRefreshing = false

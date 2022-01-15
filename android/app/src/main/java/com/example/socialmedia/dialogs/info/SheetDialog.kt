@@ -1,4 +1,4 @@
-package com.example.socialmedia.dialogs
+package com.example.socialmedia.dialogs.info
 
 import android.app.Dialog
 import android.os.Bundle
@@ -15,7 +15,6 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
-import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.dataClass.Sheet
 import com.example.socialmedia.databinding.DialogSheetBinding
 import com.google.gson.Gson

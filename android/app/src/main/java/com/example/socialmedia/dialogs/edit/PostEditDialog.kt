@@ -1,4 +1,4 @@
-package com.example.socialmedia.dialogs
+package com.example.socialmedia.dialogs.edit
 
 import android.app.Dialog
 import android.content.DialogInterface
@@ -18,7 +18,6 @@ import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.DialogPostEditBinding
 import com.google.gson.Gson
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 

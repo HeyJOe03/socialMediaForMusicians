@@ -10,9 +10,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.socialmedia.addPostFragment.AddPostFragment
-import com.example.socialmedia.dataClass.Post
 import com.example.socialmedia.databinding.ActivityMainBinding
-import com.example.socialmedia.dialogs.PostDialog
 import com.example.socialmedia.profileFragment.ProfileFragment
 import com.example.socialmedia.loginsigninActivities.LogInActivity
 import com.example.socialmedia.homeFragment.HomeFragment
@@ -59,15 +57,15 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
         SocketHandler.establishConnection()
         mSocket = SocketHandler.getSocket()
 
-        val profileFragment: ProfileFragment = ProfileFragment()
-        val homeFragment: HomeFragment = HomeFragment()
-        val addPostFragment: AddPostFragment = AddPostFragment(this)
-        val shopFragment: ShopFragment = ShopFragment()
+        val profileFragment = ProfileFragment()
+        val homeFragment = HomeFragment()
+        val addPostFragment = AddPostFragment(this)
+        val shopFragment = ShopFragment()
 
         makeCurrentFragment(homeFragment)
         b.navMenu.selectedItemId = R.id.ic_home
 
-        b.navMenu.setOnNavigationItemSelectedListener {
+        b.navMenu.setOnItemSelectedListener{
             when (it.itemId) {
                 R.id.ic_profile -> makeCurrentFragment(profileFragment)
                 R.id.ic_home -> makeCurrentFragment(homeFragment)

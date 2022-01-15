@@ -1,4 +1,4 @@
-package com.example.socialmedia.dialogs
+package com.example.socialmedia.dialogs.edit
 
 import android.app.Dialog
 import android.content.DialogInterface
@@ -15,24 +15,24 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
-import com.example.socialmedia.dataClass.Shop
-import com.example.socialmedia.databinding.DialogShopEditBinding
+import com.example.socialmedia.dataClass.Sheet
+import com.example.socialmedia.databinding.DialogSheetEditBinding
 import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
 
-class ShopEditDialog(
+class SheetEditDialog(
     private val id: Long,
     private val setOnDismiss: SetOnDismiss
 ): DialogFragment() {
     private var mView: View? = null
-    private lateinit var b: DialogShopEditBinding
+    private lateinit var b: DialogSheetEditBinding
     private val gson: Gson = Gson()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.run{
             //initiate the binding here and pass the root to the dialog view
-            b = DialogShopEditBinding.inflate(layoutInflater).apply {
+            b = DialogSheetEditBinding.inflate(layoutInflater).apply {
                 //reference layout elements by name freely here
             }
             AlertDialog.Builder(this).apply {
@@ -43,36 +43,36 @@ class ShopEditDialog(
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        setTheViewWithData(Shop(-1,0,0.0f,null))
-        shopRequest()
+        setTheViewWithData(Sheet(-1,"",null,0,null))
+        sheetRequest()
 
         b.btnEdit.setOnClickListener {
-            updateShopRequest()
+            updateSheetRequest()
         }
 
         b.btnDelete.setOnClickListener{
-            deleteShopRequest()
+            deleteSheetRequest()
         }
 
-        b.shopEditDialogLayout.setOnClickListener {
+        b.sheetEditDialogLayout.setOnClickListener {
             dismiss()
         }
 
         return mView
     }
 
-    private fun deleteShopRequest() {
+    private fun deleteSheetRequest() {
 
-        val shopUrl = GLOBALS.DELETE_DATA(GLOBALS.CONTENT_SHOP)
+        val sheetUrl = GLOBALS.DELETE_DATA(GLOBALS.CONTENT_SHEET)
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
-        val shopData = JSONObject()
-        shopData.put("id",id)
+        val sheetData = JSONObject()
+        sheetData.put("id",id)
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.POST,
-            shopUrl,
-            shopData,
+            sheetUrl,
+            sheetData,
             { dismiss() }
         ) { error ->
             error.printStackTrace()
@@ -82,21 +82,22 @@ class ShopEditDialog(
         requestQueue.add(jsonObjectRequest)
     }
 
-    private fun updateShopRequest() {
+    private fun updateSheetRequest() {
 
-        val shopUrl = GLOBALS.UPDATE_DATA(GLOBALS.CONTENT_SHOP)
+        val sheetUrl = GLOBALS.UPDATE_DATA(GLOBALS.CONTENT_SHEET)
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
-        val shopData = JSONObject()
-        shopData.put("id", id)
-        shopData.put("price",b.priceET.text.toString())
-        shopData.put("instrument_description",b.instrumentDescriptionET.text.toString())
+        val sheetData = JSONObject()
+        sheetData.put("id", id)
+        sheetData.put("author",b.authorET.text.toString())
+        sheetData.put("title",b.titleET.text.toString())
+        sheetData.put("description",b.descriptionET.text.toString())
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.POST,
-            shopUrl,
-            shopData,
-            { dismiss() }
+            sheetUrl,
+            sheetData,
+            {response -> dismiss() }
         ) { error ->
             error.printStackTrace()
             dismiss()
@@ -110,31 +111,32 @@ class ShopEditDialog(
         setOnDismiss.onDismiss()
     }
 
-    private fun setTheViewWithData(shop: Shop){
-        (b.priceET as TextView).text = shop.price.toString()
-        (b.instrumentDescriptionET as TextView).text = shop.instrument_description
+    private fun setTheViewWithData(sheet: Sheet){
+        (b.authorET as TextView).text = sheet.author
+        (b.titleET as TextView).text = sheet.title
+        (b.descriptionET as TextView).text = sheet.description
     }
 
-    private fun shopRequest() {
+    private fun sheetRequest() {
 
-        val shopUrl = GLOBALS.INFO_DATA(GLOBALS.CONTENT_SHOP)
+        val sheetUrl = GLOBALS.INFO_DATA(GLOBALS.CONTENT_SHEET)
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
-        val shopData = JSONObject()
+        val sheetData = JSONObject()
         try {
-            shopData.put("id", id)
+            sheetData.put("id", id)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.POST,
-            shopUrl,
-            shopData,
+            sheetUrl,
+            sheetData,
             { response ->
                 val s = (response as JSONObject).toString()
-                val shop = gson.fromJson(s,Shop::class.java)
-                setTheViewWithData(shop)
+                val sheet = gson.fromJson(s,Sheet::class.java)
+                setTheViewWithData(sheet)
             }
         ) { error ->
             error.printStackTrace()

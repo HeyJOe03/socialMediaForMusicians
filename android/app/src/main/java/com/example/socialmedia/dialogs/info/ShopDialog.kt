@@ -1,4 +1,4 @@
-package com.example.socialmedia.dialogs
+package com.example.socialmedia.dialogs.info
 
 import android.app.Dialog
 import android.os.Bundle
@@ -15,14 +15,13 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
-import com.example.socialmedia.dataClass.Post
-import com.example.socialmedia.databinding.DialogPostBinding
+import com.example.socialmedia.dataClass.Shop
+import com.example.socialmedia.databinding.DialogShopBinding
 import com.google.gson.Gson
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-class PostDialog(
+class ShopDialog(
     val id: Long
 ): DialogFragment() {
 
@@ -30,12 +29,12 @@ class PostDialog(
 
     private var mView: View? = null
 
-    private lateinit var b: DialogPostBinding
+    private lateinit var b: DialogShopBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.run {
             //initiate the binding here and pass the root to the dialog view
-            b = DialogPostBinding.inflate(layoutInflater).apply {
+            b = DialogShopBinding.inflate(layoutInflater).apply {
                 //reference layout elements by name freely here
             }
             AlertDialog.Builder(this).apply {
@@ -46,48 +45,46 @@ class PostDialog(
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        setTheViewWithData(Post(-1,"",null,null,null,-1,"",""))
+        setTheViewWithData(Shop(-1,0,0.0f, null))
 
-        postRequest()
+        shopRequest()
 
-        b.postDialogLayout.setOnClickListener{
+        b.shopDialogLayout.setOnClickListener{
             dismiss()
         }
         return mView
     }
 
-    private fun setTheViewWithData(post: Post){
-        b.authorTV.text = post.author
-        b.descriptionTV.text = post.description
-        b.titleTV.text = post.title
-        b.likesTV.text = post.likes.toString()
-        //b.postImg.setImageBitmap(post.content.toBitmap())
-        b.postImg.load(GLOBALS.GET_IMG(GLOBALS.CONTENT_POST,id)){
+    private fun setTheViewWithData(shop: Shop){
+        b.instrumentDescriptionTV.text = shop.instrument_description
+        b.priceTV.text = shop.price.toString()
+        b.likesTV.text = shop.likes.toString()
+        b.shopImg.load(GLOBALS.GET_IMG(GLOBALS.CONTENT_SHOP,id)){
             crossfade(true)
             placeholder(R.drawable.ic_placeholder)
         }
     }
 
-    private fun postRequest() {
+    private fun shopRequest() {
 
-        val postUrl = GLOBALS.INFO_DATA(GLOBALS.CONTENT_POST)
+        val shopUrl = GLOBALS.INFO_DATA(GLOBALS.CONTENT_SHOP)
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
-        val postData = JSONObject()
+        val shopData = JSONObject()
         try {
-            postData.put("id", id)
+            shopData.put("id", id)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.POST,
-            postUrl,
-            postData,
+            shopUrl,
+            shopData,
             { response ->
                 val s = (response as JSONObject).toString()
-                val post = gson.fromJson(s,Post::class.java)
-                setTheViewWithData(post)
+                val shop = gson.fromJson(s,Shop::class.java)
+                setTheViewWithData(shop)
             }
         ) { error ->
             error.printStackTrace()
