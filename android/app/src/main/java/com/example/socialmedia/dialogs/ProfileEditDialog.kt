@@ -258,6 +258,9 @@ class ProfileEditDialog(
 
     private fun profilePicEditRequest(){
         val JSON = JSONObject()
+        val sharedPreferences : SharedPreferences = activity!!.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
+        val userID = sharedPreferences.getLong(GLOBALS.SP_KEY_ID,-1)
+        JSON.put("id",userID)
         JSON.put("img",profilePic?.toBase64()) // if control made in the response of postEditProfileRequest
 
         val postUrl = GLOBALS.SERVER_PROFILE_EDIT_IMG
@@ -271,8 +274,11 @@ class ProfileEditDialog(
                 dismiss()
             }
         ) { e -> e.printStackTrace()
-            val dialog = ErrorDialog.newInstance(String(e.networkResponse.data))
-            dialog.show(parentFragmentManager, "Error")}
+            try{
+                val dialog = ErrorDialog.newInstance(String(e.networkResponse.data))
+                dialog.show(parentFragmentManager, "Error")
+            }catch(e: Exception){}
+            }
 
         requestQueue.add(jsonObjectRequest)
     }

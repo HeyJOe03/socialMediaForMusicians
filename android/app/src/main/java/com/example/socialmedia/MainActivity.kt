@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.SearchEvent
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.socialmedia.addPostFragment.AddPostFragment
@@ -15,6 +16,7 @@ import com.example.socialmedia.profileFragment.ProfileFragment
 import com.example.socialmedia.loginsigninActivities.LogInActivity
 import com.example.socialmedia.homeFragment.HomeFragment
 import com.example.socialmedia.objects.SocketHandler
+import com.example.socialmedia.searchFragment.SearchFragment
 import com.example.socialmedia.shopFragment.ShopFragment
 import io.socket.client.Socket
 
@@ -61,6 +63,7 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
         val homeFragment = HomeFragment()
         val addPostFragment = AddPostFragment(this)
         val shopFragment = ShopFragment()
+        val searchFragment = SearchFragment()
 
         makeCurrentFragment(homeFragment)
         b.navMenu.selectedItemId = R.id.ic_home
@@ -71,6 +74,7 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
                 R.id.ic_home -> makeCurrentFragment(homeFragment)
                 R.id.ic_add -> makeCurrentFragment(addPostFragment)
                 R.id.ic_shop -> makeCurrentFragment(shopFragment)
+                R.id.ic_search -> makeCurrentFragment(searchFragment)
             }
             true
         }

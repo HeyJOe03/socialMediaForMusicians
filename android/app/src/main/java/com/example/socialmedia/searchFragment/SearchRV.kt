@@ -26,7 +26,7 @@ class SearchRV(
 
         init {
             profilePic = view.findViewById(R.id.profile_picture)
-            usernameTV = view.findViewById(R.id.usernameTV)
+            usernameTV = view.findViewById(R.id.username_TV)
             clickableLayout = view.findViewById(R.id.clickable_layout_search_user)
 
             clickableLayout.setOnClickListener{
@@ -47,7 +47,7 @@ class SearchRV(
         viewHolder.profilePic.load(GLOBALS.SERVER_PROFILE_PIC(dataSet[position].id)){
             crossfade(true)
             placeholder(R.drawable.ic_placeholder)
-            scale(Scale.FILL)
+            scale(Scale.FIT)
         }
 
         viewHolder.usernameTV.text = dataSet[position].username
