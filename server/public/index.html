@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+
+  <body>
+      <input type="text" id="text" placeholder="user:"/>
+
+      <script>
+        var socket = io();
+
+        socket.on('search-user',(obj) => {
+            console.log(obj)
+        })
+    
+        const input = document.getElementById('text')
+        
+        input.oninput = () => {
+            //console.log(input.value)
+            socket.emit('search-user',input.value)
+        }
+    
+        </script>
+    </body>
+</html>

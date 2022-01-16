@@ -6,7 +6,7 @@ import { createServer } from 'http';
 // Installed libraries
 import 'dotenv/config'
 import express from 'express';
-import {Server} from 'socket.io'
+import {Server, Socket} from 'socket.io'
 
 // Modules
 import DB from './database/dbconnection'
@@ -16,6 +16,7 @@ import mainRouter from './routers/mainRoute';
 import logInSignUpRouter from './routers/logInSignUpRouter'
 import profileRouter from './routers/profileRoute';
 import dataRouter from './routers/dataRoute'
+import { socketHandler } from './socketFunctions';
 
 // define consts
 const app = express();
@@ -34,12 +35,7 @@ DB.connect((err) => {
 
 // SocketIO 
 
-io.on('connection',(socket) => {
-    console.log(`user ${socket.id} has connected`)
-    socket.on('disconnect', () => {
-        console.log(`user ${socket.id} has disconnected`)
-    })
-})
+io.on('connection',socketHandler)
 
 // express - requests
 
