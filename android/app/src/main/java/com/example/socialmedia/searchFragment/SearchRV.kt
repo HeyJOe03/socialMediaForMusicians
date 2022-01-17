@@ -23,17 +23,17 @@ class SearchRV(
     class ViewHolder(view: View, onRVSearchUserClickListener: OnRVSearchUserClickListener) : RecyclerView.ViewHolder(view) {
         val profilePic: ShapeableImageView
         val usernameTV: TextView
-        val clickableLayout: ConstraintLayout
+        //val clickableLayout: ConstraintLayout
 
         init {
             profilePic = view.findViewById(R.id.profile_picture)
             usernameTV = view.findViewById(R.id.username_TV)
-            clickableLayout = view.findViewById(R.id.clickable_layout_search_user)
-
+            //clickableLayout = view.findViewById(R.id.clickable_layout_search_user)
+            /*
             clickableLayout.setOnClickListener{
                 // TODO: add listener
                 onRVSearchUserClickListener.onRVClickListener(layoutPosition)
-            }
+            }*/
         }
     }
 

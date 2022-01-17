@@ -19,6 +19,8 @@ const disconnectEvent = () => {
 }
 
 const searchUser = (search: string) => {
+    console.log(search)
+
     if(search == '') return
     const sql = searchUserQuery(search)
     DB.query(sql,(err,result) => {
