@@ -135,15 +135,15 @@ const intToBool = (n : Number) : boolean => {
 }
 
 export const editProfilePic : ExpressRouterCallback = (req,res) => {
-    console.log(req.body)
+    //console.log(req.body)
     try {
         const b = Buffer.from(req.body.img as string,'base64')
         const sql = /*sql*/`UPDATE user SET profile_pic = ? WHERE id = ${req.body.id}`
         DB.query(sql,b,(err) => {
-            if(err) res.status(500).json(err.message)
-            else res.status(200).json('image inserted')
+            if(err) res.status(500).json({'error':err.message})
+            else res.status(200).json({'result':'image inserted'})
         })
-    } catch (error) {
-        res.status(500)
+    } catch (e: any) {
+        res.status(500).json({'error':(e as Error).message})
     }
 }
