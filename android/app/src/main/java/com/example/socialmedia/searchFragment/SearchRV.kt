@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.size.Scale
+import coil.transform.CircleCropTransformation
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.dataClass.UserSearch
@@ -47,7 +48,7 @@ class SearchRV(
         viewHolder.profilePic.load(GLOBALS.SERVER_PROFILE_PIC(dataSet[position].id)){
             crossfade(true)
             placeholder(R.drawable.ic_placeholder)
-            scale(Scale.FIT)
+            transformations(CircleCropTransformation())
         }
 
         viewHolder.usernameTV.text = dataSet[position].username
