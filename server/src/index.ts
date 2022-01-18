@@ -17,6 +17,7 @@ import logInSignUpRouter from './routers/logInSignUpRouter'
 import profileRouter from './routers/profileRoute';
 import dataRouter from './routers/dataRoute'
 import { socketHandler } from './socketFunctions';
+import workRouter from './routers/workflow';
 
 // define consts
 const app = express();
@@ -48,3 +49,4 @@ app.use('/',mainRouter)
 app.use('/LogIn-SignUp',logInSignUpRouter)
 app.use('/profile', profileRouter)
 app.use('/data',dataRouter)
+app.use('/request',workRouter)
