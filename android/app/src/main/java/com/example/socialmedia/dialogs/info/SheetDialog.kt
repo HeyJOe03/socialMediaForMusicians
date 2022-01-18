@@ -80,6 +80,10 @@ class SheetDialog(
             true
         }
 
+        b.sheetImg.setOnClickListener {
+            dismiss()
+        }
+
         b.sheetDialogLayout.setOnClickListener{
             dismiss()
         }

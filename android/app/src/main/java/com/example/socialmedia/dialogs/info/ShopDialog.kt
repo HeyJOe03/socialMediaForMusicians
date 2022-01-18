@@ -80,6 +80,10 @@ class ShopDialog(
             true
         }
 
+        b.shopImg.setOnClickListener {
+            dismiss()
+        }
+
         b.shopDialogLayout.setOnClickListener{
             dismiss()
         }

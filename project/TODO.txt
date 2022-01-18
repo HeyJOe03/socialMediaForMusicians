@@ -1,2 +1,3 @@
-- [] RV in search con test
-- [] socket connection events
+- [v] RV in search con test
+- [v] socket connection events
+- [] profile onclick

@@ -87,6 +87,10 @@ class PostDialog(
             true
         }
 
+        b.postImg.setOnClickListener {
+            dismiss()
+        }
+
         b.postDialogLayout.setOnClickListener{
             dismiss()
         }
