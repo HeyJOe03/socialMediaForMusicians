@@ -93,16 +93,29 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/btn_follow"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:background="@color/grey_700"
+                android:textSize="13dp"
+                android:text="follow"
+                app:layout_constraintTop_toBottomOf="@id/bioLayout"
+                />
+
             <LinearLayout
                 android:id="@+id/nav_post_sheet_shop"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:background="@color/grey_700"
                 android:orientation="horizontal"
+                android:padding="4dp"
+
                 android:weightSum="3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/bioLayout"
+                app:layout_constraintTop_toBottomOf="@id/btn_follow"
                 android:textSize="0sp"
                 android:layout_marginTop="10dp"
                 >

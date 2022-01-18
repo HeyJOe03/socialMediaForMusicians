@@ -1,3 +1,4 @@
 - [v] RV in search con test
 - [v] socket connection events
-- [] profile onclick
+- [v] profile onclick
+- [] follow
