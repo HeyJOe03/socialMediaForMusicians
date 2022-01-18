@@ -28,5 +28,18 @@ export const followRequest : ExpressRouterCallback = (req,res) => {
 }
 
 export const unFollowRequest: ExpressRouterCallback = (req,res) => {
+    const sql = /*sql*/`DELETE FROM follow WHERE followed = ${req.body.followed} AND follower = ${req.body.follower}`
+    DB.query(sql,(err) => {
+        if(err)res.status(500).json({'error':err.message})
+        else res.status(200).json({'good':'deleted'})
+    })
+}
 
+export const alreadyFollowRequest: ExpressRouterCallback = (req,res) => {
+    const sql = /*sql*/`SELECT id FROM follow WHERE followed = ${req.body.followed} AND follower = ${req.body.follower}`
+    DB.query(sql,(err,result) => {
+        if(err)res.status(500).json({'error':err.message})
+        else if((result as any[]).length !== 0) res.status(200).json({'alreadyFollow':true})
+        else res.status(200).json({'alreadyFollow':false})
+    })
 }

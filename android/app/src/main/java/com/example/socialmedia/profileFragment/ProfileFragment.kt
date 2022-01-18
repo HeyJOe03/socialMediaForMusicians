@@ -2,6 +2,7 @@ package com.example.socialmedia.profileFragment
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,6 +10,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -47,7 +50,7 @@ class ProfileFragment(
     private val b get() = _binding!!
 
     private var sharedPref: SharedPreferences? = null
-    private var userID: Long = -1
+    private var myUserID: Long = -1
 
     private lateinit var username: String
     private lateinit var description: String
@@ -61,6 +64,7 @@ class ProfileFragment(
     private lateinit var adapterPost: ContentPreviewRV
     private lateinit var adapterSheet: ContentPreviewRV
     private lateinit var adapterInstrument: ContentPreviewRV
+    private var alreadyFollow: Boolean = false
 
     private lateinit var layoutMenager: LinearLayoutManager
 
@@ -77,11 +81,12 @@ class ProfileFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view,savedInstanceState)
         _binding = FragmentProfileBinding.bind(view)
+
+        sharedPref = activity?.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
+        myUserID = sharedPref!!.getLong(GLOBALS.SP_KEY_ID,-1)
         //setContentView(b.root)
 
-        if(id == (-1).toLong()){
-            sharedPref = activity?.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
-            userID = sharedPref!!.getLong(GLOBALS.SP_KEY_ID,-1)
+        if(id == (-1).toLong() || myUserID == id){
             val hash_password = sharedPref!!.getString(GLOBALS.SP_KEY_PW,"")
 
             b.btnEditProfile.visibility = View.VISIBLE
@@ -90,10 +95,27 @@ class ProfileFragment(
                 val dialog = ProfileEditDialog(this)
                 dialog.show(parentFragmentManager, "edit profile")
             }
+
+            b.btnFollow.visibility = View.GONE
+            b.btnFollow.isClickable = false
         } else {
-            userID = id
+            myUserID = id
             b.btnEditProfile.visibility = View.GONE
             b.btnEditProfile.isClickable = false
+
+            sharedPref = activity?.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
+            val me = sharedPref!!.getLong(GLOBALS.SP_KEY_ID,-1)
+            requestIfAlreadyFollowThisUser(me,myUserID)
+
+            b.btnFollow.visibility = View.VISIBLE
+            b.btnFollow.isClickable = true
+            b.btnFollow.setOnClickListener {
+                sharedPref = activity?.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
+                val me = sharedPref!!.getLong(GLOBALS.SP_KEY_ID,-1)
+
+                if(alreadyFollow) unFollowPostRequest(me,myUserID)
+                else followPostRequest(me,myUserID)
+            }
         }
 
 
@@ -144,7 +166,7 @@ class ProfileFragment(
 
         val postData = JSONObject()
         try {
-            postData.put("id", userID)
+            postData.put("id", myUserID)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -175,13 +197,64 @@ class ProfileFragment(
         requestQueue.add(jsonObjectRequest)
     }
 
+    private fun followPostRequest(follower: Long, followed: Long) {
+
+        val postUrl = GLOBALS.FOLLOW_ROUTE
+        val requestQueue: RequestQueue = Volley.newRequestQueue(context)
+
+        val postData = JSONObject()
+        try {
+            postData.put("follower", follower)
+            postData.put("followed",followed)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST,
+            postUrl,
+            postData,
+            {
+                alreadyFollow = true
+                b.btnFollow.setBackgroundColor(ContextCompat.getColor(context!!, R.color.grey_500))
+            }
+        ) {}
+
+        requestQueue.add(jsonObjectRequest)
+    }
+
+    private fun unFollowPostRequest(follower: Long, followed: Long){
+        val postUrl = GLOBALS.UNFOLLOW_ROUTE
+        val requestQueue: RequestQueue = Volley.newRequestQueue(context)
+
+        val postData = JSONObject()
+        try {
+            postData.put("follower", follower)
+            postData.put("followed",followed)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST,
+            postUrl,
+            postData,
+            {
+                alreadyFollow = false
+                b.btnFollow.setBackgroundColor(ContextCompat.getColor(context!!, R.color.grey_700))
+            }
+        ) {}
+
+        requestQueue.add(jsonObjectRequest)
+    }
+
     private fun profileRequest(){
         val postUrl = GLOBALS.SERVER_PROFILE
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
         val postData = JSONObject()
         try {
-            postData.put("id", userID)
+            postData.put("id", myUserID)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -202,7 +275,7 @@ class ProfileFragment(
                 isLookingSomeoneToPlayWith = n == 1
                 //profileImg = (response["profile_image"] as String).toBitmap()
 
-                b.profilePicture.load(GLOBALS.SERVER_PROFILE_PIC(userID)){
+                b.profilePicture.load(GLOBALS.SERVER_PROFILE_PIC(myUserID)){
                     crossfade(true)
                     placeholder(R.drawable.ic_placeholder)
                     memoryCachePolicy(CachePolicy.DISABLED) //without this don't update from the same url
@@ -214,6 +287,32 @@ class ProfileFragment(
         ) { error ->
             error.printStackTrace()
         }
+
+        requestQueue.add(jsonObjectRequest)
+    }
+
+    private fun requestIfAlreadyFollowThisUser(me: Long, other: Long){
+        val postUrl = GLOBALS.FOLLOW_CHECK_ROUTE
+        val requestQueue: RequestQueue = Volley.newRequestQueue(context)
+
+        val postData = JSONObject()
+        try {
+            postData.put("follower", me)
+            postData.put("followed",other)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST,
+            postUrl,
+            postData,
+            {
+                alreadyFollow = it["alreadyFollow"] as Boolean
+                if(alreadyFollow) b.btnFollow.setBackgroundColor(ContextCompat.getColor(context!!, R.color.grey_500))
+                else b.btnFollow.setBackgroundColor(ContextCompat.getColor(context!!, R.color.grey_700))
+            }
+        ) {}
 
         requestQueue.add(jsonObjectRequest)
     }

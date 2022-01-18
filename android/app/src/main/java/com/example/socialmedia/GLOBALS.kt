@@ -40,6 +40,12 @@ object GLOBALS {
     fun DELETE_DATA(route: String) : String = "$SERVER_DATA_ROUTE/$route/delete"
     fun INFO_DATA(route: String) : String = "$SERVER_DATA_ROUTE/$route/info"
 
+    //FOLLOW
+    private const val REQUESTS_ROUTE: String = "$SERVER/request"
+    const val FOLLOW_ROUTE: String = "$REQUESTS_ROUTE/follow"
+    const val UNFOLLOW_ROUTE: String = "$REQUESTS_ROUTE/unfollow"
+    const val FOLLOW_CHECK_ROUTE: String = "$REQUESTS_ROUTE/alreadyFollow"
+
 
     const val KEY_SIGNIN : String = "signIn"
 
