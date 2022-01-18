@@ -45,6 +45,7 @@ object GLOBALS {
     const val FOLLOW_ROUTE: String = "$REQUESTS_ROUTE/follow"
     const val UNFOLLOW_ROUTE: String = "$REQUESTS_ROUTE/unfollow"
     const val FOLLOW_CHECK_ROUTE: String = "$REQUESTS_ROUTE/alreadyFollow"
+    const val COUNT_FOLLOW: String = "$REQUESTS_ROUTE/countFollow"
 
 
     const val KEY_SIGNIN : String = "signIn"

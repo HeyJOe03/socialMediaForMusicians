@@ -98,7 +98,8 @@ class ProfileFragment(
 
             b.btnFollow.visibility = View.GONE
             b.btnFollow.isClickable = false
-        } else {
+        }
+        else {
             myUserID = id
             b.btnEditProfile.visibility = View.GONE
             b.btnEditProfile.isClickable = false
@@ -118,6 +119,7 @@ class ProfileFragment(
             }
         }
 
+        countFollowedAndFollower(myUserID)
 
         layoutMenager = GridLayoutManager(context,3)
 
@@ -248,6 +250,32 @@ class ProfileFragment(
         requestQueue.add(jsonObjectRequest)
     }
 
+    private fun countFollowedAndFollower(us: Long){
+        val postUrl = GLOBALS.COUNT_FOLLOW
+        val requestQueue: RequestQueue = Volley.newRequestQueue(context)
+
+        val postData = JSONObject()
+        try {
+            postData.put("id", us)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST,
+            postUrl,
+            postData,
+            {
+                b.followedTV.text = it["followed"].toString()
+                b.followerTV.text = it["follower"].toString()
+            }
+        ) {
+            Log.println(Log.ERROR,"error",String(it.networkResponse.data))
+        }
+
+        requestQueue.add(jsonObjectRequest)
+    }
+
     private fun profileRequest(){
         val postUrl = GLOBALS.SERVER_PROFILE
         val requestQueue: RequestQueue = Volley.newRequestQueue(context)
@@ -357,6 +385,7 @@ class ProfileFragment(
 
     private fun refresh(){
         idRequest(currentRoute)
+        countFollowedAndFollower(myUserID)
         profileRequest()
     }
 

@@ -43,3 +43,23 @@ export const alreadyFollowRequest: ExpressRouterCallback = (req,res) => {
         else res.status(200).json({'alreadyFollow':false})
     })
 }
+
+export const countFollowerAndFollowed: ExpressRouterCallback = (req,res) => {
+    const sql1 = /*sql*/ `SELECT COUNT(*) FROM follow WHERE follower = ${req.body.id}`
+    const sql2 = /*sql*/ `SELECT COUNT(*) FROM follow WHERE followed = ${req.body.id}`
+    let follower = 0
+    let followed = 0
+    DB.query(sql1,(err,result) => {
+        if(err)res.status(500).json({'error':err.message})
+        else{
+            followed = result[0]['COUNT(*)']
+            DB.query(sql2,(err,result) => {
+                if(err)res.status(500).json({'error':err.message})
+                else{
+                    follower = result[0]['COUNT(*)']
+                    res.status(200).json({follower,followed})
+                }
+            })
+        }
+    })
+}
