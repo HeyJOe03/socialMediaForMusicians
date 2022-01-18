@@ -34,7 +34,9 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONArray
 
-class ProfileFragment :
+class ProfileFragment(
+    private val id: Long
+) :
     Fragment(),
     ContentPreviewRV.OnRVItemClickListener,
     PostEditDialog.SetOnDismiss, SheetEditDialog.SetOnDismiss, ShopEditDialog.SetOnDismiss,
@@ -77,9 +79,23 @@ class ProfileFragment :
         _binding = FragmentProfileBinding.bind(view)
         //setContentView(b.root)
 
-        sharedPref = activity?.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
-        userID = sharedPref!!.getLong(GLOBALS.SP_KEY_ID,-1)
-        val hash_password = sharedPref!!.getString(GLOBALS.SP_KEY_PW,"")
+        if(id == (-1).toLong()){
+            sharedPref = activity?.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
+            userID = sharedPref!!.getLong(GLOBALS.SP_KEY_ID,-1)
+            val hash_password = sharedPref!!.getString(GLOBALS.SP_KEY_PW,"")
+
+            b.btnEditProfile.visibility = View.VISIBLE
+            b.btnEditProfile.isClickable = true
+            b.btnEditProfile.setOnClickListener{
+                val dialog = ProfileEditDialog(this)
+                dialog.show(parentFragmentManager, "edit profile")
+            }
+        } else {
+            userID = id
+            b.btnEditProfile.visibility = View.GONE
+            b.btnEditProfile.isClickable = false
+        }
+
 
         layoutMenager = GridLayoutManager(context,3)
 
@@ -98,11 +114,6 @@ class ProfileFragment :
                 },
                 1000,
             ) // This is how you can choose when it will end
-        }
-
-        b.btnEditProfile.setOnClickListener{
-            val dialog = ProfileEditDialog(this)
-            dialog.show(parentFragmentManager, "edit profile")
         }
 
         b.btnPostRV.setOnClickListener{
@@ -224,6 +235,9 @@ class ProfileFragment :
     }
 
     override fun onRVLongClickListener(position: Int, typeOfRV: String) {
+
+        if(id == (-1).toLong()) return
+
         val dialog: DialogFragment? = when(typeOfRV){
             GLOBALS.CONTENT_POST -> PostEditDialog(previewID[position],this)
             GLOBALS.CONTENT_SHEET -> SheetEditDialog(previewID[position],this)

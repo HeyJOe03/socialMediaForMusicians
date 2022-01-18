@@ -21,6 +21,7 @@ import com.example.socialmedia.dataClass.UserSearch
 import com.example.socialmedia.databinding.FragmentSearchBinding
 import com.example.socialmedia.objects.SocketHandler.mSocket
 import com.example.socialmedia.profileFragment.ContentPreviewRV
+import com.example.socialmedia.profileFragment.ProfileFragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -32,8 +33,7 @@ class SearchFragment : Fragment(), SearchRV.OnRVSearchUserClickListener {
     private lateinit var adapterUser: SearchRV
     private var _binding: FragmentSearchBinding? = null
     private val b get() = _binding!!
-    private val testList = listOf<UserSearch>(UserSearch(1,"uno"), UserSearch(2,"due"),UserSearch(3,"tre"))
-
+    private var results: List<UserSearch> = emptyList()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
@@ -59,6 +59,7 @@ class SearchFragment : Fragment(), SearchRV.OnRVSearchUserClickListener {
 
                 val sType = object : TypeToken<List<UserSearch>>() { }.type
                 val list: List<UserSearch>  = gson.fromJson(args[0].toString(), sType)
+                results = list
 
                 activity!!.runOnUiThread {
                     adapterUser.setData(list)
@@ -69,7 +70,10 @@ class SearchFragment : Fragment(), SearchRV.OnRVSearchUserClickListener {
     }
 
     override fun onRVClickListener(position: Int) {
-        TODO("Not yet implemented")
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.fl_wrapper, ProfileFragment(results[position].id))
+            commit()
+        }
     }
 
 

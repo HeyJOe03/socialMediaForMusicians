@@ -28,15 +28,7 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
 
     private lateinit var mSocket: Socket
 
-    //override fun onClose(message: String, post: Post?) {
     override fun onClose(message: String) {
-        //Log.println(Log.ERROR, "message", "message ${message}")
-        //Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        /*
-        if (post != null) {
-            val dialog = PostDialog(post.id)
-            dialog.show(supportFragmentManager, "post dialog")
-        }*/
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         b.navMenu.selectedItemId = R.id.ic_home
     }
@@ -59,7 +51,7 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
         SocketHandler.establishConnection()
         mSocket = SocketHandler.getSocket()
 
-        val profileFragment = ProfileFragment()
+        val profileFragment = ProfileFragment(-1)
         val homeFragment = HomeFragment()
         val addPostFragment = AddPostFragment(this)
         val shopFragment = ShopFragment()
@@ -80,13 +72,6 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
         }
     }
 
-    private fun makeCurrentFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fl_wrapper, fragment)
-            commit()
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu,menu)
         return true
@@ -99,6 +84,13 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun makeCurrentFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fl_wrapper, fragment)
+            commit()
         }
     }
 
