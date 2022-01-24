@@ -2,7 +2,7 @@ package com.example.socialmedia
 
 object GLOBALS {
     private const val SERVER_PROTOCOL: String = "http"
-    private const val SERVER_ADDRESS: String = "192.168.1.102"
+    private const val SERVER_ADDRESS: String = "192.168.43.116"
     private const val SERVER_PORT: Int = 5000
 
     const val SERVER = "$SERVER_PROTOCOL://$SERVER_ADDRESS:$SERVER_PORT"
@@ -30,8 +30,8 @@ object GLOBALS {
     //preview
     fun GET_CONTENT_IDS(route:String) : String = "$SERVER_DATA_ROUTE/$route"
     fun GET_IMG(route:String,id: Long) : String{
-        if(route != CONTENT_POST && route != CONTENT_SHEET && route != CONTENT_SHOP) return ""
-        else return "$SERVER_DATA_ROUTE/$route/$id"
+        return if(route != CONTENT_POST && route != CONTENT_SHEET && route != CONTENT_SHOP) ""
+        else "$SERVER_DATA_ROUTE/$route/$id"
     }
 
     //shared routes (post,sheet,shop)
@@ -55,7 +55,7 @@ object GLOBALS {
     const val SP_KEY_PW : String = "PW"
 
     const val CAMERA_PHOTO_RESULT_CODE: Int = 102
-    const val CAMERA_PERMISSION_REQUEST_CODE: Int = 101
+    // const val CAMERA_PERMISSION_REQUEST_CODE: Int = 101
     const val LOCATION_PERMISSION_CODE: Int = 104
     const val IMAGE_REQUEST_CODE: Int = 103
 }
