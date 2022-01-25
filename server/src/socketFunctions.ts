@@ -1,5 +1,6 @@
 import { Socket } from "socket.io"
 import DB from "./database/dbconnection"
+import { updateLastTimeOnline } from "./database/sql/miscellaneousQuery"
 import { searchUserQuery } from "./database/sql/searchQuery"
 
 let mSocket: Socket
@@ -23,7 +24,7 @@ const myIDEvent = (id : Number) => {
 const disconnectEvent = () => {
     console.log(`user ${mSocket.id} has disconnected`)
 
-    DB.query(/*sql*/`UPDATE user SET last_time_online = CURRENT_TIMESTAMP WHERE id = ${mId}`, (err) => err ? console.log(err.message) : "" )
+    DB.query(updateLastTimeOnline(mId), (err) => err ? console.log(err.message) : "" )
 }
 
 const searchUser = (search: string) => {
