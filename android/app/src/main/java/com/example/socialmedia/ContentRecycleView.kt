@@ -1,4 +1,4 @@
-package com.example.socialmedia.profileFragment
+package com.example.socialmedia
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,15 +8,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.size.Scale
-import com.example.socialmedia.GLOBALS
-import com.example.socialmedia.R
 import java.lang.Exception
 
-class ContentPreviewRV(
+class ContentRecycleView(
     private var dataSet: List<Long>,
     private val typeOfRV: String, // PUBLIC
     private val onRVRVItemClickListener: OnRVItemClickListener
-) : RecyclerView.Adapter<ContentPreviewRV.ViewHolder>() {
+) : RecyclerView.Adapter<ContentRecycleView.ViewHolder>() {
 
     init {
         if(typeOfRV != GLOBALS.CONTENT_POST && typeOfRV !=  GLOBALS.CONTENT_SHEET && typeOfRV !=  GLOBALS.CONTENT_SHOP) throw Error("impossible find the class")
@@ -29,7 +27,7 @@ class ContentPreviewRV(
         init {
 
             postImg = view.findViewById(R.id.post_img)
-            //postTitle = view.findViewById(R.id.post_title)
+
             itemView.setOnClickListener {
                 onRVItemClickListener.onRVClickListener(layoutPosition, typeOfRV)
             }

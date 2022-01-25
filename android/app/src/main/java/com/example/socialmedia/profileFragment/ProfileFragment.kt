@@ -2,7 +2,6 @@ package com.example.socialmedia.profileFragment
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,7 +9,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -23,6 +21,7 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.socialmedia.ContentRecycleView
 import com.example.socialmedia.GLOBALS
 import com.example.socialmedia.R
 import com.example.socialmedia.databinding.FragmentProfileBinding
@@ -41,12 +40,11 @@ class ProfileFragment(
     private val id: Long
 ) :
     Fragment(),
-    ContentPreviewRV.OnRVItemClickListener,
+    ContentRecycleView.OnRVItemClickListener,
     PostEditDialog.SetOnDismiss, SheetEditDialog.SetOnDismiss, ShopEditDialog.SetOnDismiss,
     ProfileEditDialog.SetOnEditDialogClose {
 
     private var _binding: FragmentProfileBinding? = null
-
     private val b get() = _binding!!
 
     private var sharedPref: SharedPreferences? = null
@@ -61,9 +59,9 @@ class ProfileFragment(
     private lateinit var email: String
     //private var profileImg: Bitmap? = null
 
-    private lateinit var adapterPost: ContentPreviewRV
-    private lateinit var adapterSheet: ContentPreviewRV
-    private lateinit var adapterInstrument: ContentPreviewRV
+    private lateinit var adapterPost: ContentRecycleView
+    private lateinit var adapterSheet: ContentRecycleView
+    private lateinit var adapterInstrument: ContentRecycleView
     private var alreadyFollow: Boolean = false
 
     private lateinit var layoutMenager: LinearLayoutManager
@@ -123,9 +121,9 @@ class ProfileFragment(
 
         layoutMenager = GridLayoutManager(context,3)
 
-        adapterPost = ContentPreviewRV(emptyList(),GLOBALS.CONTENT_POST,this)
-        adapterSheet = ContentPreviewRV(emptyList(), GLOBALS.CONTENT_SHEET,this)
-        adapterInstrument = ContentPreviewRV(emptyList(), GLOBALS.CONTENT_SHOP,this)
+        adapterPost = ContentRecycleView(emptyList(),GLOBALS.CONTENT_POST,this)
+        adapterSheet = ContentRecycleView(emptyList(), GLOBALS.CONTENT_SHEET,this)
+        adapterInstrument = ContentRecycleView(emptyList(), GLOBALS.CONTENT_SHOP,this)
 
         b.previewRV.adapter = adapterPost //DEFAULT ADAPTER IS ON POST
         b.previewRV.layoutManager = layoutMenager
@@ -363,7 +361,10 @@ class ProfileFragment(
 
     override fun onRVLongClickListener(position: Int, typeOfRV: String) {
 
-        if(id == (-1).toLong()) return
+        sharedPref = activity?.getSharedPreferences(GLOBALS.SHARED_PREF_ID_USER, Context.MODE_PRIVATE)
+        val me = sharedPref!!.getLong(GLOBALS.SP_KEY_ID,-1)
+
+        if(id == (-1).toLong() || id != me) return
 
         val dialog: DialogFragment? = when(typeOfRV){
             GLOBALS.CONTENT_POST -> PostEditDialog(previewID[position],this)
@@ -371,7 +372,7 @@ class ProfileFragment(
             GLOBALS.CONTENT_SHOP -> ShopEditDialog(previewID[position],this)
             else -> null
         }
-        dialog?.show(childFragmentManager,"post update-delete dialog")
+        dialog?.show(parentFragmentManager,"post update-delete dialog")
     }
 
     override fun onEditDialogClose() {
