@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity(), AddPostFragment.SetOnClose {
         SocketHandler.setSocket()
         SocketHandler.establishConnection()
         mSocket = SocketHandler.getSocket()
+        mSocket.emit(GLOBALS.S_MY_ID,userID)
 
         val profileFragment = ProfileFragment(userID)
         val homeFragment = HomeFragment()

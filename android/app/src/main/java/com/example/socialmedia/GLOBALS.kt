@@ -48,12 +48,16 @@ object GLOBALS {
     const val COUNT_FOLLOW: String = "$REQUESTS_ROUTE/countFollow"
 
 
+    // shared pref
     const val KEY_SIGNIN : String = "signIn"
-
     const val SHARED_PREF_ID_USER : String = "user"
     const val SP_KEY_ID : String = "ID"
     const val SP_KEY_PW : String = "PW"
 
+    // emits
+   const val S_MY_ID: String = "myID"
+
+    // permissions
     const val CAMERA_PHOTO_RESULT_CODE: Int = 102
     // const val CAMERA_PERMISSION_REQUEST_CODE: Int = 101
     const val LOCATION_PERMISSION_CODE: Int = 104
